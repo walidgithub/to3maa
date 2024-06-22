@@ -10,6 +10,13 @@ class HomePageView extends StatefulWidget {
 class _HomePageViewState extends State<HomePageView> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return SafeArea(
+        child: Scaffold(
+      body: contentBody(),
+    ));
+  }
+
+  Widget contentBody() {
+    return Container();
   }
 }
