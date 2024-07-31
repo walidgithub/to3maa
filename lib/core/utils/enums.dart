@@ -1,0 +1,26 @@
+enum RequestState {
+  initialState,
+  zakatLoading,
+  zakatProductsLoading,
+  productsLoading,
+  //------------------
+  insertLoading,
+  updateLoading,
+  deleteLoading,
+  //------------------
+  zakatLoaded,
+  zakatProductsLoaded,
+  productsLoaded,
+  //------------------
+  insertDone,
+  updateDone,
+  deleteDone,
+  //------------------
+  zakatError,
+  zakatProductsError,
+  productsError,
+  //------------------
+  insertError,
+  updateError,
+  deleteError,
+}
