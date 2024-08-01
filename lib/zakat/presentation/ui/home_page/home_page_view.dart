@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_laravel/core/utils/functions.dart';
 import 'package:flutter_laravel/zakat/domain/entities/tab_items.dart';
+import 'package:flutter_laravel/zakat/presentation/di/di.dart';
 import 'package:flutter_laravel/zakat/presentation/shared/constant/app_assets.dart';
 import 'package:flutter_laravel/zakat/presentation/shared/constant/app_constants.dart';
 import 'package:flutter_laravel/zakat/presentation/shared/constant/app_fonts.dart';
 import 'package:flutter_laravel/zakat/presentation/shared/constant/app_strings.dart';
 import 'package:flutter_laravel/zakat/presentation/shared/style/app_colors.dart';
 import 'package:flutter_laravel/zakat/presentation/shared/constant/app_typography.dart';
+import 'package:flutter_laravel/zakat/presentation/ui/home_page/cubit/zakat_cubit.dart';
 import 'package:flutter_laravel/zakat/presentation/ui/home_page/tabs/add_zakat/add_zahat_view.dart';
 import 'package:flutter_laravel/zakat/presentation/ui/home_page/tabs/cart/cart_view.dart';
 import 'package:flutter_laravel/zakat/presentation/ui/home_page/tabs/products/products_view.dart';
@@ -42,10 +46,18 @@ class _HomePageViewState extends State<HomePageView> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: Scaffold(
-      body: contentBody(context),
-    ));
+    return WillPopScope(
+      onWillPop: () => onBackButtonPressed(context),
+      child: GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: SafeArea(
+            child: Scaffold(
+          body: BlocProvider(
+            create: (context) => sl<ZakatCubit>(),
+            child: contentBody(context)),
+        )),
+      ),
+    );
   }
 
   Widget contentBody(BuildContext context) {
@@ -86,7 +98,7 @@ class _HomePageViewState extends State<HomePageView> {
                     quarterTurns: 3,
                     child: Center(
                       child: Text(
-                        AppStrings.zakat,
+                        AppStrings.appName,
                         style: AppTypography.kBold24
                             .copyWith(fontFamily: AppFonts.boldFontFamily),
                       ),

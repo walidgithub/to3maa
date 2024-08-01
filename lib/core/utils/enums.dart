@@ -3,22 +3,28 @@ enum RequestState {
   zakatLoading,
   zakatProductsLoading,
   productsLoading,
+  getZakatProductsByKilosLoading,
+  getZakatProductsByZakatIdLoading,
+  //------------------
+  zakatLoaded,
+  zakatProductsLoaded,
+  productsLoaded,
+  getZakatProductsByKilosLoaded,
+  getZakatProductsByZakatIdLoaded,
+  //------------------
+  zakatError,
+  zakatProductsError,
+  productsError,
+  getZakatProductsByKilosError,
+  getZakatProductsByZakatIdError,
   //------------------
   insertLoading,
   updateLoading,
   deleteLoading,
   //------------------
-  zakatLoaded,
-  zakatProductsLoaded,
-  productsLoaded,
-  //------------------
   insertDone,
   updateDone,
   deleteDone,
-  //------------------
-  zakatError,
-  zakatProductsError,
-  productsError,
   //------------------
   insertError,
   updateError,

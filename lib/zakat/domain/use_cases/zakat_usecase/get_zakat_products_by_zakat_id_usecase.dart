@@ -4,10 +4,10 @@ import 'package:flutter_laravel/zakat/domain/repository/base_repository.dart';
 import 'package:flutter_laravel/zakat/domain/responses/zakat_products_respose.dart';
 import 'package:flutter_laravel/zakat/domain/use_cases/base_usecase/base_usecase.dart';
 
-class GetZakatProductsByIdUseCase extends BaseUsecase {
+class GetZakatProductsByZakatIdUseCase extends BaseUsecase {
   final BaseRepository baseRepository;
 
-  GetZakatProductsByIdUseCase(this.baseRepository);
+  GetZakatProductsByZakatIdUseCase(this.baseRepository);
 
   @override
   Future<Either<Failure, List<ZakatProductsResponse>>> call(parameters) async {

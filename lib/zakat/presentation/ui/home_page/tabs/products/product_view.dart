@@ -30,13 +30,13 @@ class _ProductViewState extends State<ProductView> {
     return FadeInUp(
       duration: Duration(milliseconds: AppConstants.animation),
       child: SizedBox(
-        height: 120.h,
+        height: 150.h,
         child: Stack(
           alignment: Alignment.bottomCenter,
           children: [
             Container(
               width: MediaQuery.sizeOf(context).width * 0.75,
-              height: 100.h,
+              height: 130.h,
               padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 10.w),
               decoration: BoxDecoration(
                 color: AppColors.cBackGround,
@@ -103,59 +103,110 @@ class _ProductViewState extends State<ProductView> {
                   ),
                 )),
             Positioned(
-                bottom: 3.h,
-                left: 15.w,
+                bottom: 40.h,
+                left: 10.w,
                 child: SizedBox(
-                  width: 140.w,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      SizedBox(
-                        width: 50.w,
-                        height: 30.h,
-                        child: TextField(
-                            keyboardType: TextInputType.number,
-                            controller: _editController,
-                            style: TextStyle(
-                                fontSize: 15.sp,
-                                fontFamily: AppFonts.boldFontFamily),
-                            decoration: const InputDecoration(
-                                border: InputBorder.none)),
-                      ),
-                      SizedBox(
-                        width: 10.w,
-                      ),
-                      Text(
-                        'ج.م',
-                        style: AppTypography.kLight14
-                            .copyWith(fontFamily: AppFonts.boldFontFamily),
-                      ),
-                      SizedBox(
-                        width: 10.w,
-                      ),
-                      Container(
-                          width: 50.w,
+                    width: 100.w,
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 30.w,
+                          height: 30.w,
+                          decoration: BoxDecoration(
+                            border:
+                                Border.all(width: 2.w, color: AppColors.cWhite),
+                            borderRadius: BorderRadius.circular(4.w),
+                            color: AppColors.cPrimary,
+                            shape: BoxShape.rectangle,
+                          ),
+                          child: Icon(
+                            Icons.edit,
+                            size: 16.w,
+                          ),
+                        ),
+                        SizedBox(
+                          width: 20.h,
+                        ),
+                        Container(
+                          width: 30.w,
                           height: 30.w,
                           decoration: BoxDecoration(
                             border: Border.all(
                                 width: 2.w, color: AppColors.cPrimary),
-                            borderRadius:
-                                BorderRadius.circular(AppConstants.radius),
+                            borderRadius: BorderRadius.circular(4.w),
                             color: AppColors.cWhite,
                             shape: BoxShape.rectangle,
                           ),
-                          child: Center(
-                            child: Text(
-                              AppStrings.save,
-                              style: AppTypography.kLight11.copyWith(
-                                fontFamily: AppFonts.qabasFontFamily,
-                                color: AppColors.cButton,
-                              ),
-                            ),
-                          ))
-                    ],
+                          child: Icon(
+                            Icons.delete_outline,
+                            size: 20.w,
+                            color: AppColors.cButton,
+                          ),
+                        ),
+                      ],
+                    ))),
+            Positioned(
+              bottom: 5.h,
+              left: 10.w,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Text(
+                    AppStrings.editPrice,
+                    style: AppTypography.kLight11.copyWith(
+                      fontFamily: AppFonts.qabasFontFamily,
+                      color: AppColors.cButton,
+                    ),
                   ),
-                )),
+                  SizedBox(
+                    width: 5.h,
+                  ),
+                  SizedBox(
+                    width: 50.w,
+                    height: 30.h,
+                    child: TextField(
+                        keyboardType: TextInputType.number,
+                        controller: _editController,
+                        style: TextStyle(
+                            fontSize: 15.sp,
+                            fontFamily: AppFonts.boldFontFamily),
+                        decoration:
+                            const InputDecoration(border: InputBorder.none)),
+                  ),
+                  SizedBox(
+                    width: 10.w,
+                  ),
+                  Text(
+                    'ج.م',
+                    style: AppTypography.kLight14
+                        .copyWith(fontFamily: AppFonts.boldFontFamily),
+                  ),
+                  SizedBox(
+                    width: 10.w,
+                  ),
+                  Container(
+                      width: 50.w,
+                      height: 30.w,
+                      decoration: BoxDecoration(
+                        border:
+                            Border.all(width: 2.w, color: AppColors.cPrimary),
+                        borderRadius:
+                            BorderRadius.circular(AppConstants.radius),
+                        color: AppColors.cWhite,
+                        shape: BoxShape.rectangle,
+                      ),
+                      child: Center(
+                        child: Text(
+                          AppStrings.save,
+                          style: AppTypography.kLight11.copyWith(
+                            fontFamily: AppFonts.qabasFontFamily,
+                            color: AppColors.cButton,
+                          ),
+                        ),
+                      ))
+                ],
+              ),
+            )
           ],
         ),
       ),

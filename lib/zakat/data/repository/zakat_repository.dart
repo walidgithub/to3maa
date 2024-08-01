@@ -29,7 +29,7 @@ class ZakatRepository extends BaseRepository {
       DeleteProductRequest deletetProductRequest) async {
     try {
       final result =
-      await _zakatDataSource.deletetProductData(deletetProductRequest);
+      await _zakatDataSource.deleteProductData(deletetProductRequest);
       return Right(result);
     } catch (error) {
       return Left(ErrorHandler.handle(error).failure);
@@ -41,7 +41,7 @@ class ZakatRepository extends BaseRepository {
       DeleteZakatRequest deletetZakatRequest) async {
     try {
       final result =
-      await _zakatDataSource.deletetZakatData(deletetZakatRequest);
+      await _zakatDataSource.deleteZakatData(deletetZakatRequest);
       return Right(result);
     } catch (error) {
       return Left(ErrorHandler.handle(error).failure);
@@ -53,7 +53,7 @@ class ZakatRepository extends BaseRepository {
       DeleteZakatProductsRequest deletetZakatProductsRequest) async {
     try {
       final result =
-      await _zakatDataSource.deletetZakatProductsData(deletetZakatProductsRequest);
+      await _zakatDataSource.deleteZakatProductsData(deletetZakatProductsRequest);
       return Right(result);
     } catch (error) {
       return Left(ErrorHandler.handle(error).failure);
@@ -66,7 +66,7 @@ class ZakatRepository extends BaseRepository {
           GetZakatProductsByZatatIdRequest
               getZakatProductsByZatatIdRequest) async {
     try {
-      final result = await _zakatDataSource.getZakatProductsByZakatId(getZakatProductsByZatatIdRequest);
+      final result = await _zakatDataSource.getZakatProductsByZatatId(getZakatProductsByZatatIdRequest);
       return Right(result);
     } catch (error) {
       return Left(ErrorHandler.handle(error).failure);

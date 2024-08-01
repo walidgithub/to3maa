@@ -1,10 +1,10 @@
 class AppStrings {
-  static const String appName = "Zakat";
-  static const String zakat = "زكــــاة";
+  static const String appName = "طُــعــمــة";
   static const String addZakat = "أضــف زكــاة";
   static const String totals = "إجـمـالـيـات";
   static const String products = "المـنـتـجـات";
   static const String addNew = "أضــف جــديــد";
+  static const String editProduct = "تــعــديــل";
   static const String cart = "الـعـربـة";
 
   static const String member = "الإســم";
@@ -25,10 +25,16 @@ class AppStrings {
   static const String total = "الإجمالى: ";
   static const String remain = "المتبقى: ";
   static const String save = "حـــفـــظ";
+  static const String editPrice = "تـعـديـل الـسـعـر:";
   static const String deleteAll = "حـذف الـكـل";
   static const String kilo = "كـيـلـو";
 
-  static const String someThingWentWrong = "some thinf went wrong";
+  static const String someThingWentWrong = "some thing went wrong";
+
+  static const String yes = 'نعم';
+  static const String no = 'لا';
+  static const String warning = 'تحذير';
+  static const String closeApp = 'هل تريد الخروج من التطبيق؟';
 
   // error handler
   static const String success = "success";
