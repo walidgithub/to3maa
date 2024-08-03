@@ -11,12 +11,17 @@ class AddProductView extends StatefulWidget {
   final String productName;
   final String productPrice;
   final String productDesc;
-  const AddProductView(
-      {super.key,
-      required this.productImage,
-      required this.productName,
-      required this.productPrice,
-      required this.productDesc});
+  final Function increaseQunatity;
+  final Function decreaseQunatity;
+  const AddProductView({
+    super.key,
+    required this.productImage,
+    required this.productName,
+    required this.productPrice,
+    required this.productDesc,
+    required this.increaseQunatity,
+    required this.decreaseQunatity,
+  });
 
   @override
   State<AddProductView> createState() => _AddProductViewState();
@@ -54,7 +59,7 @@ class _AddProductViewState extends State<AddProductView> {
                   Row(
                     children: [
                       Text(
-                        widget.productPrice,
+                        widget.productPrice.toString(),
                         style: AppTypography.kLight16.copyWith(
                             fontFamily: AppFonts.boldFontFamily,
                             color: AppColors.cNumber),
@@ -114,6 +119,7 @@ class _AddProductViewState extends State<AddProductView> {
                           setState(() {
                             itemQuantity++;
                           });
+                          widget.increaseQunatity(itemQuantity);
                         },
                         child: Container(
                           width: 30.w,
@@ -143,6 +149,7 @@ class _AddProductViewState extends State<AddProductView> {
                               itemQuantity--;
                             }
                           });
+                          widget.decreaseQunatity(itemQuantity);
                         },
                         child: Container(
                           width: 30.w,

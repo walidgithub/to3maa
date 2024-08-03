@@ -1,5 +1,4 @@
-import 'package:flutter_laravel/zakat/presentation/shared/constant/app_assets.dart';
-import 'package:flutter_laravel/zakat/presentation/shared/constant/app_strings.dart';
+import 'package:flutter_laravel/zakat/domain/responses/products_respose.dart';
 
 class Products {
   String? productImage;
@@ -13,30 +12,30 @@ class Products {
       this.productDesc});
 }
 
-List<Products> products = [
-  Products(
-      productImage: AppAssets.package,
-      productName: AppStrings.rice,
-      productPrice: '30',
-      productDesc: 'أرز فاخر'),
-  Products(
-      productImage: AppAssets.wheat,
-      productName: AppStrings.wheat,
-      productPrice: '30',
-      productDesc: 'دقيق فاخر'),
-  Products(
-      productImage: AppAssets.raisins,
-      productName: AppStrings.raisins,
-      productPrice: '30',
-      productDesc: 'زبيب فاخر'),
-  Products(
-      productImage: AppAssets.dates,
-      productName: AppStrings.dates,
-      productPrice: '30',
-      productDesc: 'تمر فاخر'),
-  Products(
-      productImage: AppAssets.parley,
-      productName: AppStrings.parley,
-      productPrice: '30',
-      productDesc: 'شعير فاخر'),
+List<ProductsResponse> products = [
+  // Products(
+  //     productImage: AppAssets.package,
+  //     productName: AppStrings.rice,
+  //     productPrice: '30',
+  //     productDesc: 'أرز فاخر'),
+  // Products(
+  //     productImage: AppAssets.wheat,
+  //     productName: AppStrings.wheat,
+  //     productPrice: '30',
+  //     productDesc: 'دقيق فاخر'),
+  // Products(
+  //     productImage: AppAssets.raisins,
+  //     productName: AppStrings.raisins,
+  //     productPrice: '30',
+  //     productDesc: 'زبيب فاخر'),
+  // Products(
+  //     productImage: AppAssets.dates,
+  //     productName: AppStrings.dates,
+  //     productPrice: '30',
+  //     productDesc: 'تمر فاخر'),
+  // Products(
+  //     productImage: AppAssets.parley,
+  //     productName: AppStrings.parley,
+  //     productPrice: '30',
+  //     productDesc: 'شعير فاخر'),
 ];

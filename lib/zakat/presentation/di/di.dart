@@ -35,7 +35,8 @@ class ServiceLocator {
     sl.registerLazySingleton<DbHelper>(() => DbHelper());
 
     // Cubit
-    sl.registerFactory(() => ZakatCubit(sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl()));
+    sl.registerFactory(() => ZakatCubit(sl(), sl(), sl(), sl(), sl(), sl(),
+        sl(), sl(), sl(), sl(), sl(), sl(), sl()));
 
     // Use Cases
     sl.registerLazySingleton<DeleteProductUseCase>(
@@ -81,7 +82,6 @@ class ServiceLocator {
     sl.registerLazySingleton<BaseRepository>(() => ZakatRepository(sl()));
 
     // Local DataSource
-    sl.registerLazySingleton<BaseDataSource>(
-        () => ZakatDataSource(sl()));
+    sl.registerLazySingleton<BaseDataSource>(() => ZakatDataSource(sl()));
   }
 }

@@ -1,16 +1,16 @@
 import 'package:equatable/equatable.dart';
 
 class InsertZakatRequest extends Equatable {
-  final int id;
-  final String membersCount;
-  final int zakatValue;
-  final int remainValue;
+  final int? id;
+  final String? membersCount;
+  final String? zakatValue;
+  final String? remainValue;
 
   const InsertZakatRequest({
-    required this.id,
-    required this.membersCount,
-    required this.zakatValue,
-    required this.remainValue,
+    this.id,
+    this.membersCount,
+    this.zakatValue,
+    this.remainValue,
   });
 
   Map<String, dynamic> toJson() {

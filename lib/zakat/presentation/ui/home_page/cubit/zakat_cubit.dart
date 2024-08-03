@@ -66,7 +66,7 @@ class ZakatCubit extends Cubit<ZakatState> {
     emit(state.copyWith(
         zakatState: RequestState.insertLoading, zakatMessage: '', zakatId: 0));
 
-    final result = await insertProductUseCase(insertZakatRequest);
+    final result = await insertZakatUseCase(insertZakatRequest);
 
     result.fold(
         (l) => emit(state.copyWith(
@@ -84,7 +84,7 @@ class ZakatCubit extends Cubit<ZakatState> {
         zakatMessage: '',
         zakatProductId: 0));
 
-    final result = await insertProductUseCase(insertZakatProductsRequest);
+    final result = await insertZakatProductsUseCase(insertZakatProductsRequest);
 
     result.fold(
         (l) => emit(state.copyWith(
@@ -237,7 +237,7 @@ class ZakatCubit extends Cubit<ZakatState> {
 
   FutureOr<void> getAllProducts() async {
     emit(state.copyWith(
-        zakatState: RequestState.zakatProductsLoading,
+        zakatState: RequestState.productsLoading,
         zakatMessage: '',
         productsList: []));
 
@@ -245,11 +245,10 @@ class ZakatCubit extends Cubit<ZakatState> {
 
     result.fold(
         (l) => emit(state.copyWith(
-            zakatState: RequestState.zakatProductsError,
-            zakatMessage: l.message)),
+            zakatState: RequestState.productsError, zakatMessage: l.message)),
         (r) => emit(state.copyWith(
               productsList: r,
-              zakatState: RequestState.zakatProductsLoaded,
+              zakatState: RequestState.productsLoaded,
             )));
   }
 

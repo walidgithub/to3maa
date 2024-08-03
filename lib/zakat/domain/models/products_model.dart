@@ -1,12 +1,13 @@
 import 'package:flutter_laravel/zakat/domain/responses/products_respose.dart';
 
 class ProductsModel extends ProductsResponse {
-  const ProductsModel({
+  ProductsModel({
     required super.id,
     required super.productName,
     required super.productPrice,
     required super.productDesc,
     required super.productImage,
+    required super.productQuantity,
   });
 
   factory ProductsModel.fromMap(Map<String, dynamic> map) {
@@ -16,6 +17,7 @@ class ProductsModel extends ProductsResponse {
       productPrice: map['productPrice'],
       productDesc: map['productDesc'],
       productImage: map['productImage'],
+      productQuantity: map['productQuantity'],
     );
   }
 }

@@ -18,10 +18,10 @@ import 'package:flutter_laravel/zakat/domain/responses/zakat_products_respose.da
 import 'package:flutter_laravel/zakat/domain/responses/zakat_respose.dart';
 
 class ZakatRepository extends BaseRepository {
-  final ZakatDataSource _zakatDataSource;
+  final BaseDataSource _baseDataSource;
 
   ZakatRepository(
-    this._zakatDataSource,
+    this._baseDataSource,
   );
 
   @override
@@ -29,7 +29,7 @@ class ZakatRepository extends BaseRepository {
       DeleteProductRequest deletetProductRequest) async {
     try {
       final result =
-      await _zakatDataSource.deleteProductData(deletetProductRequest);
+      await _baseDataSource.deleteProductData(deletetProductRequest);
       return Right(result);
     } catch (error) {
       return Left(ErrorHandler.handle(error).failure);
@@ -41,7 +41,7 @@ class ZakatRepository extends BaseRepository {
       DeleteZakatRequest deletetZakatRequest) async {
     try {
       final result =
-      await _zakatDataSource.deleteZakatData(deletetZakatRequest);
+      await _baseDataSource.deleteZakatData(deletetZakatRequest);
       return Right(result);
     } catch (error) {
       return Left(ErrorHandler.handle(error).failure);
@@ -53,7 +53,7 @@ class ZakatRepository extends BaseRepository {
       DeleteZakatProductsRequest deletetZakatProductsRequest) async {
     try {
       final result =
-      await _zakatDataSource.deleteZakatProductsData(deletetZakatProductsRequest);
+      await _baseDataSource.deleteZakatProductsData(deletetZakatProductsRequest);
       return Right(result);
     } catch (error) {
       return Left(ErrorHandler.handle(error).failure);
@@ -66,7 +66,40 @@ class ZakatRepository extends BaseRepository {
           GetZakatProductsByZatatIdRequest
               getZakatProductsByZatatIdRequest) async {
     try {
-      final result = await _zakatDataSource.getZakatProductsByZatatId(getZakatProductsByZatatIdRequest);
+      final result = await _baseDataSource.getZakatProductsByZatatId(getZakatProductsByZatatIdRequest);
+      return Right(result);
+    } catch (error) {
+      return Left(ErrorHandler.handle(error).failure);
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<ProductsResponse>>> getAllProducts() async {
+    try {
+      final result =
+      await _baseDataSource.getAllProducts();
+      return Right(result);
+    } catch (error) {
+      return Left(ErrorHandler.handle(error).failure);
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<ZakatResponse>>> getAllZakat() async {
+    try {
+      final result =
+      await _baseDataSource.getAllZakat();
+      return Right(result);
+    } catch (error) {
+      return Left(ErrorHandler.handle(error).failure);
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<ZakatProductsResponse>>> getAllZakatProductsByKilos() async {
+    try {
+      final result =
+      await _baseDataSource.getAllZakatProductsByKilos();
       return Right(result);
     } catch (error) {
       return Left(ErrorHandler.handle(error).failure);
@@ -78,7 +111,7 @@ class ZakatRepository extends BaseRepository {
       InsertProductRequest insertProductRequest) async {
     try {
       final result =
-      await _zakatDataSource.insertProductData(insertProductRequest);
+      await _baseDataSource.insertProductData(insertProductRequest);
       return Right(result);
     } catch (error) {
       return Left(ErrorHandler.handle(error).failure);
@@ -90,7 +123,7 @@ class ZakatRepository extends BaseRepository {
       InsertZakatRequest insertZakatRequest) async {
     try {
       final result =
-      await _zakatDataSource.insertZakatData(insertZakatRequest);
+      await _baseDataSource.insertZakatData(insertZakatRequest);
       return Right(result);
     } catch (error) {
       return Left(ErrorHandler.handle(error).failure);
@@ -102,7 +135,7 @@ class ZakatRepository extends BaseRepository {
       InsertZakatProductsRequest insertZakatProductsRequest) async {
     try {
       final result =
-      await _zakatDataSource.insertZakatProductsData(insertZakatProductsRequest);
+      await _baseDataSource.insertZakatProductsData(insertZakatProductsRequest);
       return Right(result);
     } catch (error) {
       return Left(ErrorHandler.handle(error).failure);
@@ -114,7 +147,7 @@ class ZakatRepository extends BaseRepository {
       UpdateProductRequest updateProductRequest) async {
     try {
       final result =
-      await _zakatDataSource.updateProductData(updateProductRequest);
+      await _baseDataSource.updateProductData(updateProductRequest);
       return Right(result);
     } catch (error) {
       return Left(ErrorHandler.handle(error).failure);
@@ -126,7 +159,7 @@ class ZakatRepository extends BaseRepository {
       UpdateZakatRequest updateZakatRequest) async {
     try {
       final result =
-      await _zakatDataSource.updateZakatData(updateZakatRequest);
+      await _baseDataSource.updateZakatData(updateZakatRequest);
       return Right(result);
     } catch (error) {
       return Left(ErrorHandler.handle(error).failure);
@@ -138,28 +171,10 @@ class ZakatRepository extends BaseRepository {
       UpdateZakatProductsRequest updateZakatProductsRequest) async {
     try {
       final result =
-      await _zakatDataSource.updateZakatProductsData(updateZakatProductsRequest);
+      await _baseDataSource.updateZakatProductsData(updateZakatProductsRequest);
       return Right(result);
     } catch (error) {
       return Left(ErrorHandler.handle(error).failure);
     }
-  }
-
-  @override
-  Future<Either<Failure, List<ProductsResponse>>> getAllProducts() async {
-    // TODO: implement getAllProducts
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<Either<Failure, List<ZakatResponse>>> getAllZakat() async {
-    // TODO: implement getAllZakat
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<Either<Failure, List<ZakatProductsResponse>>> getAllZakatProductsByKilos() async {
-    // TODO: implement getAllZakatProductsByKilos
-    throw UnimplementedError();
   }
 }

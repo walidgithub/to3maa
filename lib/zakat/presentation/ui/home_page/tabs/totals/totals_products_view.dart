@@ -54,7 +54,7 @@ class _TotalsProductsViewState extends State<TotalsProductsView> {
                   Row(
                     children: [
                       Text(
-                        widget.productPrice,
+                        widget.productPrice.toString(),
                         style: AppTypography.kLight16.copyWith(
                             fontFamily: AppFonts.boldFontFamily,
                             color: AppColors.cNumber),

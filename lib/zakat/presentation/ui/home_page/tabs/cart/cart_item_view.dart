@@ -10,8 +10,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class CartItemView extends StatefulWidget {
   final int membersCount;
   final int zakatValue;
-  final double total;
-  final double remain;
+  final String total;
+  final String remain;
   const CartItemView(
       {super.key,
       required this.membersCount,

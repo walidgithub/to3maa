@@ -12,12 +12,15 @@ class ProductView extends StatefulWidget {
   final String productName;
   final String productPrice;
   final String productDesc;
-  const ProductView(
-      {super.key,
-      required this.productImage,
-      required this.productName,
-      required this.productPrice,
-      required this.productDesc});
+  final Function deleteProduct;
+  const ProductView({
+    super.key,
+    required this.productImage,
+    required this.productName,
+    required this.productPrice,
+    required this.productDesc,
+    required this.deleteProduct,
+  });
 
   @override
   State<ProductView> createState() => _ProductViewState();
@@ -55,7 +58,7 @@ class _ProductViewState extends State<ProductView> {
                   Row(
                     children: [
                       Text(
-                        widget.productPrice,
+                        widget.productPrice.toString(),
                         style: AppTypography.kLight16.copyWith(
                             fontFamily: AppFonts.boldFontFamily,
                             color: AppColors.cNumber),
@@ -127,20 +130,25 @@ class _ProductViewState extends State<ProductView> {
                         SizedBox(
                           width: 20.h,
                         ),
-                        Container(
-                          width: 30.w,
-                          height: 30.w,
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                                width: 2.w, color: AppColors.cPrimary),
-                            borderRadius: BorderRadius.circular(4.w),
-                            color: AppColors.cWhite,
-                            shape: BoxShape.rectangle,
-                          ),
-                          child: Icon(
-                            Icons.delete_outline,
-                            size: 20.w,
-                            color: AppColors.cButton,
+                        GestureDetector(
+                          onTap: () {
+                            widget.deleteProduct();
+                          },
+                          child: Container(
+                            width: 30.w,
+                            height: 30.w,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                  width: 2.w, color: AppColors.cPrimary),
+                              borderRadius: BorderRadius.circular(4.w),
+                              color: AppColors.cWhite,
+                              shape: BoxShape.rectangle,
+                            ),
+                            child: Icon(
+                              Icons.delete_outline,
+                              size: 20.w,
+                              color: AppColors.cButton,
+                            ),
                           ),
                         ),
                       ],

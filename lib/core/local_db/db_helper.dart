@@ -17,9 +17,9 @@ import 'package:sqflite/sqflite.dart';
 class DbHelper {
   Database? _db;
 
-  String dbdName = 'zakat_test.db';
+  String dbdName = 'zakat_test2.db';
 
-  static int? insertedNewPostId;
+  static int? insertedNewRecord;
 
   Future<Database> get database async {
     if (_db != null) {
@@ -57,7 +57,8 @@ class DbHelper {
   // add -------------------------------------------
   Future<int> insertZakatData(InsertZakatRequest insertZakatRequest) async {
     final db = _db!.database;
-    return db.insert('zakat', insertZakatRequest.toJson());
+    insertedNewRecord = await db.insert('zakat', insertZakatRequest.toJson());
+    return insertedNewRecord!;
   }
 
   Future<int> insertZakatProductsData(
@@ -69,7 +70,9 @@ class DbHelper {
   Future<int> insertProductData(
       InsertProductRequest insertProductRequest) async {
     final db = _db!.database;
-    return db.insert('productsData', insertProductRequest.toJson());
+    insertedNewRecord =
+        await db.insert('productsData', insertProductRequest.toJson());
+    return insertedNewRecord!;
   }
 
   // update ------------------------------------------
@@ -140,6 +143,7 @@ class DbHelper {
     return db.delete('productsData',
         where: 'id = ?', whereArgs: [deleteProductRequest.id]);
   }
+
   // get data -------------------------------------------
   Future<List<ProductsModel>> getAllProducts() async {
     if (_db == null) {

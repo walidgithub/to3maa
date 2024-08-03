@@ -1,18 +1,18 @@
 import 'package:equatable/equatable.dart';
 
 class InsertProductRequest extends Equatable {
-  final int id;
-  final String productName;
-  final String productPrice;
-  final String productDesc;
-  final String productImage;
+  final int? id;
+  final String? productName;
+  final String? productPrice;
+  final String? productDesc;
+  final String? productImage;
 
   const InsertProductRequest({
-    required this.id,
-    required this.productName,
-    required this.productPrice,
-    required this.productDesc,
-    required this.productImage,
+    this.id,
+    this.productName,
+    this.productPrice,
+    this.productDesc,
+    this.productImage,
   });
 
   Map<String, dynamic> toJson() {
@@ -26,5 +26,6 @@ class InsertProductRequest extends Equatable {
   }
 
   @override
-  List<Object?> get props => [id, productName, productPrice, productDesc, productImage];
+  List<Object?> get props =>
+      [id, productName, productPrice, productDesc, productImage];
 }

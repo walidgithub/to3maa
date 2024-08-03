@@ -44,7 +44,8 @@ class ZakatDataSource extends BaseDataSource {
   }
 
   @override
-  Future<int> deleteProductData(DeleteProductRequest deletetProductRequest) async {
+  Future<int> deleteProductData(
+      DeleteProductRequest deletetProductRequest) async {
     final res = await _dbHelper.deleteProductData(deletetProductRequest);
     try {
       return res;
@@ -66,7 +67,8 @@ class ZakatDataSource extends BaseDataSource {
   @override
   Future<int> deleteZakatProductsData(
       DeleteZakatProductsRequest deletetZakatProductsRequest) async {
-    final res = await _dbHelper.deleteZakatProductsData(deletetZakatProductsRequest);
+    final res =
+        await _dbHelper.deleteZakatProductsData(deletetZakatProductsRequest);
     try {
       return res;
     } catch (e) {
@@ -107,7 +109,8 @@ class ZakatDataSource extends BaseDataSource {
   @override
   Future<List<ZakatProductsResponse>> getZakatProductsByZatatId(
       GetZakatProductsByZatatIdRequest getZakatProductsByZatatIdRequest) async {
-    final res = await _dbHelper.getZakatProductsByZatatId(getZakatProductsByZatatIdRequest);
+    final res = await _dbHelper
+        .getZakatProductsByZatatId(getZakatProductsByZatatIdRequest);
     try {
       return res;
     } catch (e) {
@@ -116,7 +119,8 @@ class ZakatDataSource extends BaseDataSource {
   }
 
   @override
-  Future<int> insertProductData(InsertProductRequest insertProductRequest) async {
+  Future<int> insertProductData(
+      InsertProductRequest insertProductRequest) async {
     final res = await _dbHelper.insertProductData(insertProductRequest);
     try {
       return res;
@@ -138,7 +142,8 @@ class ZakatDataSource extends BaseDataSource {
   @override
   Future<int> insertZakatProductsData(
       InsertZakatProductsRequest insertZakatProductsRequest) async {
-    final res = await _dbHelper.insertZakatProductsData(insertZakatProductsRequest);
+    final res =
+        await _dbHelper.insertZakatProductsData(insertZakatProductsRequest);
     try {
       return res;
     } catch (e) {
@@ -147,7 +152,8 @@ class ZakatDataSource extends BaseDataSource {
   }
 
   @override
-  Future<int> updateProductData(UpdateProductRequest updateProductRequest) async {
+  Future<int> updateProductData(
+      UpdateProductRequest updateProductRequest) async {
     final res = await _dbHelper.updateProductData(updateProductRequest);
     try {
       return res;
@@ -169,7 +175,8 @@ class ZakatDataSource extends BaseDataSource {
   @override
   Future<int> updateZakatProductsData(
       UpdateZakatProductsRequest updateZakatProductsRequest) async {
-    final res = await _dbHelper.updateZakatProductsData(updateZakatProductsRequest);
+    final res =
+        await _dbHelper.updateZakatProductsData(updateZakatProductsRequest);
     try {
       return res;
     } catch (e) {
