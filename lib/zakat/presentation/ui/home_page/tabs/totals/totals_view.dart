@@ -47,10 +47,10 @@ class _TotalsViewState extends State<TotalsView> {
                     ),
                 itemBuilder: (BuildContext context, int index) {
                   return TotalsProductsView(
-                    productName: products[index].productName!,
-                    productImage: products[index].productImage!,
-                    productPrice: products[index].productPrice!,
-                    productDesc: products[index].productDesc!,
+                    productName: products[index].productName,
+                    productImage: products[index].productImage,
+                    productPrice: products[index].productPrice,
+                    productDesc: products[index].productDesc,
                   );
                 }),
           ),
