@@ -1,5 +1,6 @@
 import 'package:flutter_laravel/zakat/domain/models/products_model.dart';
 import 'package:flutter_laravel/zakat/domain/models/zakat_model.dart';
+import 'package:flutter_laravel/zakat/domain/models/zakat_products_by_kilos_model.dart';
 import 'package:flutter_laravel/zakat/domain/models/zakat_products_model.dart';
 import 'package:flutter_laravel/zakat/domain/requsts/delete_product_request.dart';
 import 'package:flutter_laravel/zakat/domain/requsts/delete_zakat_products_request.dart';
@@ -17,9 +18,10 @@ import 'package:sqflite/sqflite.dart';
 class DbHelper {
   Database? _db;
 
-  String dbdName = 'zakat_test2.db';
+  String dbdName = 'zakat_test6.db';
 
-  static int? insertedNewRecord;
+  static int? insertedNewProduct;
+  static int? insertedNewZakat;
 
   Future<Database> get database async {
     if (_db != null) {
@@ -57,8 +59,8 @@ class DbHelper {
   // add -------------------------------------------
   Future<int> insertZakatData(InsertZakatRequest insertZakatRequest) async {
     final db = _db!.database;
-    insertedNewRecord = await db.insert('zakat', insertZakatRequest.toJson());
-    return insertedNewRecord!;
+    insertedNewZakat = await db.insert('zakat', insertZakatRequest.toJson());
+    return insertedNewZakat!;
   }
 
   Future<int> insertZakatProductsData(
@@ -70,9 +72,9 @@ class DbHelper {
   Future<int> insertProductData(
       InsertProductRequest insertProductRequest) async {
     final db = _db!.database;
-    insertedNewRecord =
+    insertedNewProduct =
         await db.insert('productsData', insertProductRequest.toJson());
-    return insertedNewRecord!;
+    return insertedNewProduct!;
   }
 
   // update ------------------------------------------
@@ -183,7 +185,7 @@ class DbHelper {
   }
 
   // get totals -------------------------------------------------
-  Future<List<ZakatProductsModel>> getAllZakatProductsByKilos() async {
+  Future<List<ZakatProductsByKilosModel>> getAllZakatProductsByKilos() async {
     if (_db == null) {
       await initDB(dbdName);
     }
@@ -191,7 +193,7 @@ class DbHelper {
     final db = _db!.database;
 
     final result = await db.rawQuery(
-        'SELECT SUM(productQuantity) FROM zakatProducts GROUP BY productName');
-    return result.map((map) => ZakatProductsModel.fromMap(map)).toList();
+        'SELECT productName, productPrice, productDesc, productImage, SUM(productQuantity) as sumProductQuantity FROM zakatProducts GROUP BY productName');
+    return result.map((map) => ZakatProductsByKilosModel.fromMap(map)).toList();
   }
 }

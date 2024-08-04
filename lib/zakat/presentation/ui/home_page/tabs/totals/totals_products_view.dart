@@ -12,12 +12,15 @@ class TotalsProductsView extends StatefulWidget {
   final String productName;
   final String productPrice;
   final String productDesc;
+  final int sumProductQuantity;
   const TotalsProductsView(
       {super.key,
       required this.productImage,
       required this.productName,
       required this.productPrice,
-      required this.productDesc});
+      required this.productDesc,
+      required this.sumProductQuantity
+      });
 
   @override
   State<TotalsProductsView> createState() => _TotalsProductsViewState();
@@ -110,7 +113,7 @@ class _TotalsProductsViewState extends State<TotalsProductsView> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Text(
-                        '32323',
+                        widget.sumProductQuantity.toString(),
                         style: AppTypography.kLight14.copyWith(
                             fontFamily: AppFonts.boldFontFamily,
                             color: AppColors.cNumber),

@@ -1,16 +1,18 @@
 import 'package:equatable/equatable.dart';
 
 class UpdateProductRequest extends Equatable {
-  final int id;
-  final String productName;
-  final String productPrice;
-  final String productDesc;
+  final int? id;
+  final String? productName;
+  final String? productPrice;
+  final String? productDesc;
+  final String? productImage;
 
   const UpdateProductRequest({
-    required this.id,
-    required this.productName,
-    required this.productPrice,
-    required this.productDesc,
+    this.id,
+    this.productName,
+    this.productPrice,
+    this.productDesc,
+    this.productImage,
   });
 
   Map<String, dynamic> toJson() {
@@ -19,6 +21,7 @@ class UpdateProductRequest extends Equatable {
     data["productName"] = productName;
     data["productPrice"] = productPrice;
     data["productDesc"] = productDesc;
+    data["productImage"] = productImage;
     return data;
   }
 

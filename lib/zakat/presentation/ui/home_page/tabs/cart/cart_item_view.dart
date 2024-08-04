@@ -9,15 +9,20 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CartItemView extends StatefulWidget {
   final int membersCount;
-  final int zakatValue;
+  final String zakatValue;
   final String total;
   final String remain;
-  const CartItemView(
-      {super.key,
-      required this.membersCount,
-      required this.zakatValue,
-      required this.total,
-      required this.remain});
+  final Function deleteCart;
+  final Function editCart;
+  const CartItemView({
+    super.key,
+    required this.membersCount,
+    required this.zakatValue,
+    required this.total,
+    required this.remain,
+    required this.deleteCart,
+    required this.editCart,
+  });
 
   @override
   State<CartItemView> createState() => _CartItemViewState();
@@ -110,7 +115,7 @@ class _CartItemViewState extends State<CartItemView> {
                             Row(
                               children: [
                                 Text(
-                                  widget.zakatValue.toString(),
+                                  widget.remain.toString(),
                                   style: AppTypography.kLight16.copyWith(
                                       fontFamily: AppFonts.boldFontFamily,
                                       color: AppColors.cNumber),
@@ -133,38 +138,48 @@ class _CartItemViewState extends State<CartItemView> {
                         ),
                         Row(
                           children: [
-                            Container(
-                              width: 30.w,
-                              height: 30.w,
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                    width: 2.w, color: AppColors.cWhite),
-                                borderRadius: BorderRadius.circular(4.w),
-                                color: AppColors.cPrimary,
-                                shape: BoxShape.rectangle,
-                              ),
-                              child: Icon(
-                                Icons.edit,
-                                size: 16.w,
+                            GestureDetector(
+                              onTap: () {
+                                widget.editCart();
+                              },
+                              child: Container(
+                                width: 30.w,
+                                height: 30.w,
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                      width: 2.w, color: AppColors.cWhite),
+                                  borderRadius: BorderRadius.circular(4.w),
+                                  color: AppColors.cPrimary,
+                                  shape: BoxShape.rectangle,
+                                ),
+                                child: Icon(
+                                  Icons.edit,
+                                  size: 16.w,
+                                ),
                               ),
                             ),
                             SizedBox(
                               width: 20.h,
                             ),
-                            Container(
-                              width: 30.w,
-                              height: 30.w,
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                    width: 2.w, color: AppColors.cPrimary),
-                                borderRadius: BorderRadius.circular(4.w),
-                                color: AppColors.cWhite,
-                                shape: BoxShape.rectangle,
-                              ),
-                              child: Icon(
-                                Icons.delete_outline,
-                                size: 20.w,
-                                color: AppColors.cButton,
+                            GestureDetector(
+                              onTap: () {
+                                widget.deleteCart();
+                              },
+                              child: Container(
+                                width: 30.w,
+                                height: 30.w,
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                      width: 2.w, color: AppColors.cPrimary),
+                                  borderRadius: BorderRadius.circular(4.w),
+                                  color: AppColors.cWhite,
+                                  shape: BoxShape.rectangle,
+                                ),
+                                child: Icon(
+                                  Icons.delete_outline,
+                                  size: 20.w,
+                                  color: AppColors.cButton,
+                                ),
                               ),
                             ),
                           ],

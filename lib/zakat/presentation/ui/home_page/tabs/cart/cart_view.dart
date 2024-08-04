@@ -1,11 +1,17 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_laravel/core/utils/enums.dart';
 import 'package:flutter_laravel/zakat/domain/entities/cart_items.dart';
+import 'package:flutter_laravel/zakat/domain/requsts/delete_zakat_products_request.dart';
+import 'package:flutter_laravel/zakat/domain/requsts/delete_zakat_request.dart';
 import 'package:flutter_laravel/zakat/presentation/shared/constant/app_constants.dart';
 import 'package:flutter_laravel/zakat/presentation/shared/constant/app_fonts.dart';
 import 'package:flutter_laravel/zakat/presentation/shared/constant/app_strings.dart';
 import 'package:flutter_laravel/zakat/presentation/shared/constant/app_typography.dart';
 import 'package:flutter_laravel/zakat/presentation/shared/style/app_colors.dart';
+import 'package:flutter_laravel/zakat/presentation/ui/home_page/cubit/zakat_cubit.dart';
+import 'package:flutter_laravel/zakat/presentation/ui/home_page/cubit/zakat_states.dart';
 import 'package:flutter_laravel/zakat/presentation/ui/home_page/tabs/cart/cart_item_view.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -17,6 +23,32 @@ class CartView extends StatefulWidget {
 }
 
 class _CartViewState extends State<CartView> {
+  @override
+  void initState() {
+    getAllZakat();
+    super.initState();
+  }
+
+  Future<void> getAllZakat() async {
+    await ZakatCubit.get(context).getAllZakat();
+  }
+
+  double getTotal() {
+    double total = 0.0;
+    for (var x in cartItems) {
+      total = total + double.parse(x.zakatValue);
+    }
+    return total;
+  }
+
+  double getRemain() {
+    double remain = 0.0;
+    for (var x in cartItems) {
+      remain = remain + double.parse(x.remainValue);
+    }
+    return remain;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Directionality(
@@ -36,136 +68,178 @@ class _CartViewState extends State<CartView> {
           ),
         ),
         backgroundColor: AppColors.cWhite,
-        body: Column(
-          children: [
-            SizedBox(
-              height: 10.h,
-            ),
-            Expanded(
-                child: SingleChildScrollView(
-              child: ListView.separated(
-                  itemCount: cartItems.length,
-                  shrinkWrap: true,
-                  scrollDirection: Axis.vertical,
-                  physics: const NeverScrollableScrollPhysics(),
-                  separatorBuilder: (BuildContext context, int index) =>
-                      SizedBox(
-                        height: 20.h,
-                      ),
-                  itemBuilder: (BuildContext context, int index) {
-                    return CartItemView(
-                      membersCount: cartItems[index].membersCount!,
-                      zakatValue: cartItems[index].zakatValue!,
-                      total: cartItems[index].total!,
-                      remain: cartItems[index].remain!,
-                    );
-                  }),
-            )),
-            SizedBox(
-              height: 5.h,
-            ),
-            Container(
-              height: 100.h,
-              width: MediaQuery.sizeOf(context).width * 0.75,
-              padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 10.w),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(AppConstants.radius),
-                color: AppColors.cButton,
+        body: BlocConsumer<ZakatCubit, ZakatState>(
+            listener: (context, state) async {
+          if (state.zakatState == RequestState.zakatLoading) {
+          } else if (state.zakatState == RequestState.zakatError) {
+            print('errorrrr loaded');
+          } else if (state.zakatState == RequestState.zakatLoaded) {
+            cartItems = state.zakatList;
+          } else if (state.zakatState == RequestState.deleteLoading) {
+          } else if (state.zakatState == RequestState.deleteError) {
+          } else if (state.zakatState == RequestState.deleteDone) {
+            print('done deleted');
+          }
+        }, builder: (context, state) {
+          return Column(
+            children: [
+              SizedBox(
+                height: 10.h,
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Text(
-                            AppStrings.total,
-                            style: AppTypography.kBold18.copyWith(
-                              color: AppColors.cWhite,
-                              fontFamily: AppFonts.qabasFontFamily,
+              Expanded(
+                  child: cartItems.isNotEmpty
+                      ? SingleChildScrollView(
+                          child: ListView.separated(
+                              itemCount: cartItems.length,
+                              shrinkWrap: true,
+                              scrollDirection: Axis.vertical,
+                              physics: const NeverScrollableScrollPhysics(),
+                              separatorBuilder:
+                                  (BuildContext context, int index) => SizedBox(
+                                        height: 20.h,
+                                      ),
+                              itemBuilder: (BuildContext context, int index) {
+                                DeleteZakatRequest deleteZakatRequest =
+                                    (DeleteZakatRequest(
+                                        id: cartItems[index].id));
+                                DeleteZakatProductsRequest
+                                    deleteZakatProductsRequest =
+                                    (DeleteZakatProductsRequest(
+                                        id: cartItems[index].id));
+                                return CartItemView(
+                                  membersCount: cartItems[index].membersCount,
+                                  zakatValue: cartItems[index].zakatValue,
+                                  total: cartItems[index].zakatValue,
+                                  remain: cartItems[index].remainValue,
+                                  deleteCart: () async {
+                                    await ZakatCubit.get(context)
+                                        .deleteZakat(deleteZakatRequest);
+
+                                    // ignore: use_build_context_synchronously
+                                    await ZakatCubit.get(context)
+                                        .deleteZakatProducts(
+                                            deleteZakatProductsRequest);
+
+                                    await getAllZakat();
+                                    setState(() {});
+                                  },
+                                  editCart: () {},
+                                );
+                              }),
+                        )
+                      : const Center(
+                          child: Text(
+                            AppStrings.noCarts,
+                            style:
+                                TextStyle(fontFamily: AppFonts.qabasFontFamily),
+                          ),
+                        )),
+              SizedBox(
+                height: 5.h,
+              ),
+              Container(
+                height: 150.h,
+                width: MediaQuery.sizeOf(context).width * 0.75,
+                padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 10.w),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(AppConstants.radius),
+                  color: AppColors.cButton,
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              AppStrings.total,
+                              style: AppTypography.kBold18.copyWith(
+                                color: AppColors.cWhite,
+                                fontFamily: AppFonts.qabasFontFamily,
+                              ),
                             ),
-                          ),
-                          Row(
-                            children: [
-                              Text(
-                                '0',
-                                style: AppTypography.kLight16.copyWith(
-                                    fontFamily: AppFonts.boldFontFamily,
-                                    color: AppColors.cBlack),
-                              ),
-                              SizedBox(
-                                width: 5.w,
-                              ),
-                              Text(
-                                'ج.م',
-                                style: AppTypography.kLight16.copyWith(
-                                    fontFamily: AppFonts.boldFontFamily,
-                                    color: AppColors.cWhite),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Text(
-                            AppStrings.remain,
-                            style: AppTypography.kBold18.copyWith(
-                              color: AppColors.cWhite,
-                              fontFamily: AppFonts.qabasFontFamily,
+                            Row(
+                              children: [
+                                Text(
+                                  getTotal().toString(),
+                                  style: AppTypography.kLight16.copyWith(
+                                      fontFamily: AppFonts.boldFontFamily,
+                                      color: AppColors.cBlack),
+                                ),
+                                SizedBox(
+                                  width: 5.w,
+                                ),
+                                Text(
+                                  'ج.م',
+                                  style: AppTypography.kLight16.copyWith(
+                                      fontFamily: AppFonts.boldFontFamily,
+                                      color: AppColors.cWhite),
+                                ),
+                              ],
                             ),
-                          ),
-                          Row(
-                            children: [
-                              Text(
-                                '22',
-                                style: AppTypography.kLight16.copyWith(
-                                    fontFamily: AppFonts.boldFontFamily,
-                                    color: AppColors.cBlack),
-                              ),
-                              SizedBox(
-                                width: 5.w,
-                              ),
-                              Text(
-                                'ج.م',
-                                style: AppTypography.kLight16.copyWith(
-                                    fontFamily: AppFonts.boldFontFamily,
-                                    color: AppColors.cWhite),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  Container(
-                      width: 80.w,
-                      height: 50.w,
-                      decoration: BoxDecoration(
-                        border:
-                            Border.all(width: 2.w, color: AppColors.cPrimary),
-                        borderRadius:
-                            BorderRadius.circular(AppConstants.radius),
-                        color: AppColors.cWhite,
-                        shape: BoxShape.rectangle,
-                      ),
-                      child: Center(
-                        child: Text(
-                          AppStrings.deleteAll,
-                          style: AppTypography.kLight14.copyWith(
-                            fontFamily: AppFonts.qabasFontFamily,
-                            color: AppColors.cButton,
-                          ),
+                          ],
                         ),
-                      ))
-                ],
-              ),
-            )
-          ],
-        ),
+                        Row(
+                          children: [
+                            Text(
+                              AppStrings.remain,
+                              style: AppTypography.kBold18.copyWith(
+                                color: AppColors.cWhite,
+                                fontFamily: AppFonts.qabasFontFamily,
+                              ),
+                            ),
+                            Row(
+                              children: [
+                                Text(
+                                  getRemain().toString(),
+                                  style: AppTypography.kLight16.copyWith(
+                                      fontFamily: AppFonts.boldFontFamily,
+                                      color: AppColors.cBlack),
+                                ),
+                                SizedBox(
+                                  width: 5.w,
+                                ),
+                                Text(
+                                  'ج.م',
+                                  style: AppTypography.kLight16.copyWith(
+                                      fontFamily: AppFonts.boldFontFamily,
+                                      color: AppColors.cWhite),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    Container(
+                        width: 80.w,
+                        height: 50.w,
+                        decoration: BoxDecoration(
+                          border:
+                              Border.all(width: 2.w, color: AppColors.cPrimary),
+                          borderRadius:
+                              BorderRadius.circular(AppConstants.radius),
+                          color: AppColors.cWhite,
+                          shape: BoxShape.rectangle,
+                        ),
+                        child: Center(
+                          child: Text(
+                            AppStrings.deleteAll,
+                            style: AppTypography.kLight14.copyWith(
+                              fontFamily: AppFonts.qabasFontFamily,
+                              color: AppColors.cButton,
+                            ),
+                          ),
+                        ))
+                  ],
+                ),
+              )
+            ],
+          );
+        }),
       ),
     );
   }

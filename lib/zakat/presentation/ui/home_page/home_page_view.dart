@@ -53,8 +53,8 @@ class _HomePageViewState extends State<HomePageView> {
         child: SafeArea(
             child: Scaffold(
           body: BlocProvider(
-            create: (context) => sl<ZakatCubit>(),
-            child: contentBody(context)),
+              create: (context) => sl<ZakatCubit>(),
+              child: contentBody(context)),
         )),
       ),
     );

@@ -28,7 +28,8 @@ class AddProductView extends StatefulWidget {
 }
 
 class _AddProductViewState extends State<AddProductView> {
-  int itemQuantity = 0;
+  int _itemQuantity = 0;
+
   @override
   Widget build(BuildContext context) {
     return FadeInUp(
@@ -117,9 +118,9 @@ class _AddProductViewState extends State<AddProductView> {
                       GestureDetector(
                         onTap: () {
                           setState(() {
-                            itemQuantity++;
+                            _itemQuantity++;
                           });
-                          widget.increaseQunatity(itemQuantity);
+                          widget.increaseQunatity(_itemQuantity);
                         },
                         child: Container(
                           width: 30.w,
@@ -138,18 +139,18 @@ class _AddProductViewState extends State<AddProductView> {
                         ),
                       ),
                       Text(
-                        itemQuantity.toString(),
+                        _itemQuantity.toString(),
                         style: AppTypography.kLight14
                             .copyWith(fontFamily: AppFonts.boldFontFamily),
                       ),
                       GestureDetector(
                         onTap: () {
                           setState(() {
-                            if (itemQuantity != 0) {
-                              itemQuantity--;
+                            if (_itemQuantity != 0) {
+                              _itemQuantity--;
                             }
                           });
-                          widget.decreaseQunatity(itemQuantity);
+                          widget.decreaseQunatity(_itemQuantity);
                         },
                         child: Container(
                           width: 30.w,

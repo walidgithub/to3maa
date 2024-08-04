@@ -1,13 +1,14 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_laravel/core/utils/enums.dart';
 import 'package:flutter_laravel/zakat/domain/responses/products_respose.dart';
+import 'package:flutter_laravel/zakat/domain/responses/zakat_products_by_kilos_response.dart';
 import 'package:flutter_laravel/zakat/domain/responses/zakat_products_respose.dart';
 import 'package:flutter_laravel/zakat/domain/responses/zakat_respose.dart';
 
 class ZakatState extends Equatable {
   final List<ProductsResponse> productsList;
   final List<ZakatResponse> zakatList;
-  final List<ZakatProductsResponse> zakatProductsByKiloList;
+  final List<ZakatProductsByKilosResponse> zakatProductsByKiloList;
   final List<ZakatProductsResponse> zakatProductsByZakatIdList;
   final int zakatId;
   final int zakatProductId;
@@ -30,7 +31,7 @@ class ZakatState extends Equatable {
   ZakatState copyWith({
     List<ProductsResponse>? productsList,
     List<ZakatResponse>? zakatList,
-    List<ZakatProductsResponse>? zakatProductsByKiloList,
+    List<ZakatProductsByKilosResponse>? zakatProductsByKiloList,
     List<ZakatProductsResponse>? zakatProductsByZakatIdList,
     int? zakatId,
     int? zakatProductId,

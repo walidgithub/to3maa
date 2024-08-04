@@ -170,7 +170,7 @@ class ZakatCubit extends Cubit<ZakatState> {
     emit(state.copyWith(
         zakatState: RequestState.deleteLoading, zakatMessage: '', zakatId: 0));
 
-    final result = await deleteProductUseCase(deleteZakatRequest);
+    final result = await deleteZakatUseCase(deleteZakatRequest);
 
     result.fold(
         (l) => emit(state.copyWith(
@@ -188,7 +188,7 @@ class ZakatCubit extends Cubit<ZakatState> {
         zakatMessage: '',
         zakatProductId: 0));
 
-    final result = await deleteProductUseCase(deleteZakatProductsRequest);
+    final result = await deleteZakatProductsUseCase(deleteZakatProductsRequest);
 
     result.fold(
         (l) => emit(state.copyWith(
@@ -225,7 +225,6 @@ class ZakatCubit extends Cubit<ZakatState> {
         zakatList: []));
 
     final result = await getAllZakatUseCase(const NoParameters());
-
     result.fold(
         (l) => emit(state.copyWith(
             zakatState: RequestState.zakatError, zakatMessage: l.message)),

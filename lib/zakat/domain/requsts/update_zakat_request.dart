@@ -2,9 +2,9 @@ import 'package:equatable/equatable.dart';
 
 class UpdateZakatRequest extends Equatable {
   final int id;
-  final String membersCount;
-  final int zakatValue;
-  final int remainValue;
+  final int membersCount;
+  final String zakatValue;
+  final String remainValue;
 
   const UpdateZakatRequest({
     required this.id,

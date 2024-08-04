@@ -1,25 +1,21 @@
 import 'package:equatable/equatable.dart';
 
-class ZakatProductsResponse extends Equatable {
-  final int? id;
+class ZakatProductsByKilosResponse extends Equatable {
   final String productName;
   final String productPrice;
   final String productDesc;
   final String productImage;
-  final int? productQuantity;
-  final int? zakatId;
+  final int? sumProductQuantity;
 
-  const ZakatProductsResponse({
-    this.id,
+  const ZakatProductsByKilosResponse({
     required this.productName,
     required this.productPrice,
     required this.productDesc,
     required this.productImage,
-    this.productQuantity,
-    this.zakatId,
+    this.sumProductQuantity,
   });
 
   @override
   List<Object?> get props =>
-      [id, productName, productPrice, productDesc, productImage, productQuantity, zakatId];
+      [productName, productPrice, productDesc, productImage, sumProductQuantity];
 }

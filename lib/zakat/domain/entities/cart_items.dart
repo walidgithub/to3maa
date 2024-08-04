@@ -1,3 +1,5 @@
+import 'package:flutter_laravel/zakat/domain/responses/zakat_respose.dart';
+
 class CartItems {
   int? membersCount;
   int? zakatValue;
@@ -10,4 +12,4 @@ class CartItems {
       required this.remain});
 }
 
-List<CartItems> cartItems = [];
+List<ZakatResponse> cartItems = [];

@@ -6,6 +6,7 @@ import 'package:flutter_laravel/zakat/domain/entities/product_image.dart';
 import 'package:flutter_laravel/zakat/domain/entities/products.dart';
 import 'package:flutter_laravel/zakat/domain/requsts/delete_product_request.dart';
 import 'package:flutter_laravel/zakat/domain/requsts/insert_product_request.dart';
+import 'package:flutter_laravel/zakat/domain/requsts/update_product_request.dart';
 import 'package:flutter_laravel/zakat/presentation/shared/constant/app_assets.dart';
 import 'package:flutter_laravel/zakat/presentation/shared/constant/app_constants.dart';
 import 'package:flutter_laravel/zakat/presentation/shared/constant/app_fonts.dart';
@@ -33,6 +34,12 @@ class _ProductsViewState extends State<ProductsView> {
   final TextEditingController _productPriceController = TextEditingController();
   final TextEditingController _productDescController = TextEditingController();
 
+  int editProductId = 0;
+  String editProductPrice = '';
+  String editProductName = '';
+  String editProductDesc = '';
+  String editProductImage = '';
+
   List<ProductImages> productImages = [
     ProductImages(imagePath: AppAssets.package, activeImage: true),
     ProductImages(imagePath: AppAssets.dates, activeImage: false),
@@ -53,8 +60,8 @@ class _ProductsViewState extends State<ProductsView> {
     super.initState();
   }
 
-  void getAllProducts() async {
-    ZakatCubit.get(context).getAllProducts();
+  Future<void> getAllProducts() async {
+    await ZakatCubit.get(context).getAllProducts();
   }
 
   void clearValues() {
@@ -66,7 +73,6 @@ class _ProductsViewState extends State<ProductsView> {
     }
     productImages[0].activeImage = true;
     productImage = productImages[0].imagePath!;
-    getAllProducts();
   }
 
   @override
@@ -119,36 +125,78 @@ class _ProductsViewState extends State<ProductsView> {
               } else if (state.zakatState == RequestState.deleteError) {
               } else if (state.zakatState == RequestState.deleteDone) {
                 print('done deleted');
+              } else if (state.zakatState == RequestState.updateLoading) {
+              } else if (state.zakatState == RequestState.updateError) {
+              } else if (state.zakatState == RequestState.updateDone) {
+                print('done updated');
               }
             }, builder: (context, state) {
-              return SingleChildScrollView(
-                child: ListView.separated(
-                    itemCount: products.length,
-                    shrinkWrap: true,
-                    scrollDirection: Axis.vertical,
-                    physics: const NeverScrollableScrollPhysics(),
-                    separatorBuilder: (BuildContext context, int index) =>
-                        SizedBox(
-                          height: 20.h,
-                        ),
-                    itemBuilder: (BuildContext context, int index) {
-                      DeleteProductRequest deleteProductRequest =
-                          (DeleteProductRequest(id: products[index].id));
-                      return ProductView(
-                        productName: products[index].productName,
-                        productImage: products[index].productImage,
-                        productPrice: products[index].productPrice,
-                        productDesc: products[index].productDesc,
-                        deleteProduct: () async {
-                          await ZakatCubit.get(context)
-                              .deleteProduct(deleteProductRequest);
+              return products.isNotEmpty
+                  ? SingleChildScrollView(
+                      child: ListView.separated(
+                          itemCount: products.length,
+                          shrinkWrap: true,
+                          scrollDirection: Axis.vertical,
+                          physics: const NeverScrollableScrollPhysics(),
+                          separatorBuilder: (BuildContext context, int index) =>
+                              SizedBox(
+                                height: 20.h,
+                              ),
+                          itemBuilder: (BuildContext context, int index) {
+                            DeleteProductRequest deleteProductRequest =
+                                (DeleteProductRequest(id: products[index].id));
 
-                          getAllProducts();
-                          setState(() {});
-                        },
-                      );
-                    }),
-              );
+                            return ProductView(
+                              productName: products[index].productName!,
+                              productImage: products[index].productImage!,
+                              productPrice: products[index].productPrice!,
+                              productDesc: products[index].productDesc!,
+                              deleteProduct: () async {
+                                await ZakatCubit.get(context)
+                                    .deleteProduct(deleteProductRequest);
+                                await getAllProducts();
+                                setState(() {});
+                              },
+                              editProduct: () {
+                                editProductId = products[index].id;
+                                editProductPrice =
+                                    products[index].productPrice!;
+                                editProductName = products[index].productName!;
+                                editProductDesc = products[index].productDesc!;
+                                editProductImage =
+                                    products[index].productImage!;
+                                productImage = products[index].productImage!;
+                                setState(() {
+                                  addNew = true;
+                                });
+                              },
+                              editPrice: (String productPrice) async {
+                                UpdateProductRequest updateProductRequest =
+                                    (UpdateProductRequest(
+                                        id: products[index].id,
+                                        productPrice: productPrice,
+                                        productDesc:
+                                            products[index].productDesc,
+                                        productName:
+                                            products[index].productName,
+                                        productImage:
+                                            products[index].productImage));
+
+                                await ZakatCubit.get(context)
+                                    .updateProduct(updateProductRequest);
+
+                                await getAllProducts();
+                                setState(() {});
+                              },
+                            );
+                          }),
+                    )
+                  : const Center(
+                      child: Text(
+                        AppStrings.noProducts,
+                        style: TextStyle(fontFamily: AppFonts.qabasFontFamily),
+                      ),
+                    );
             })));
   }
 
@@ -178,7 +226,9 @@ class _ProductsViewState extends State<ProductsView> {
             title: FadeInLeft(
               duration: Duration(milliseconds: AppConstants.animation),
               child: Text(
-                AppStrings.addNew,
+                editProductName == ""
+                    ? AppStrings.addNew
+                    : AppStrings.editProduct,
                 style: AppTypography.kLight20
                     .copyWith(fontFamily: AppFonts.boldFontFamily),
               ),
@@ -192,6 +242,16 @@ class _ProductsViewState extends State<ProductsView> {
                 print('errorrrr');
               } else if (state.zakatState == RequestState.insertDone) {
                 print('done');
+              } else if (state.zakatState == RequestState.productsLoading) {
+              } else if (state.zakatState == RequestState.productsError) {
+                print('errorrrr loaded');
+              } else if (state.zakatState == RequestState.productsLoaded) {
+                products = state.productsList;
+                print('loaded');
+              } else if (state.zakatState == RequestState.updateLoading) {
+              } else if (state.zakatState == RequestState.updateError) {
+              } else if (state.zakatState == RequestState.updateDone) {
+                print('done updated');
               }
             },
             builder: (context, state) {
@@ -211,7 +271,7 @@ class _ProductsViewState extends State<ProductsView> {
                   textFieldWidget(
                       _productPriceController,
                       AppStrings.productPrice,
-                      TextInputType.text,
+                      TextInputType.number,
                       (String textVal) {}),
                   SizedBox(
                     height: AppConstants.heightBetweenElements,
@@ -258,17 +318,47 @@ class _ProductsViewState extends State<ProductsView> {
                   ),
                   GestureDetector(
                     onTap: () async {
-                      InsertProductRequest insertProductRequest =
-                          InsertProductRequest(
-                              productDesc: _productDescController.text,
-                              productImage: productImage,
-                              productName: _productNameController.text,
-                              productPrice: _productPriceController.text);
+                      if (editProductName == '') {
+                        if (_productNameController.text == "" ||
+                            double.parse(_productPriceController.text) == 0) {
+                          return;
+                        }
 
-                      await ZakatCubit.get(context)
-                          .insertProduct(insertProductRequest);
+                        UpdateProductRequest updateProductRequest =
+                            (UpdateProductRequest(
+                                id: editProductId,
+                                productPrice: _productPriceController.text,
+                                productDesc: _productDescController.text,
+                                productName: _productNameController.text,
+                                productImage: productImage));
+
+                        await ZakatCubit.get(context)
+                            .updateProduct(updateProductRequest);
+
+                        editProductId = 0;
+                        editProductPrice = '';
+                        editProductName = '';
+                        editProductDesc = '';
+                        editProductImage = '';
+                      } else {
+                        if (_productNameController.text == "" ||
+                            double.parse(_productPriceController.text) == 0) {
+                          return;
+                        }
+                        InsertProductRequest insertProductRequest =
+                            InsertProductRequest(
+                                productDesc: _productDescController.text,
+                                productImage: productImage,
+                                productName: _productNameController.text,
+                                productPrice: _productPriceController.text);
+
+                        await ZakatCubit.get(context)
+                            .insertProduct(insertProductRequest);
+                      }
 
                       clearValues();
+                      await getAllProducts();
+
                       setState(() {
                         addNew = false;
                       });

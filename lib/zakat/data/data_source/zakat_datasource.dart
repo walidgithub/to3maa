@@ -10,6 +10,7 @@ import 'package:flutter_laravel/zakat/domain/requsts/update_product_request.dart
 import 'package:flutter_laravel/zakat/domain/requsts/update_zakat_products_request.dart';
 import 'package:flutter_laravel/zakat/domain/requsts/update_zakat_request.dart';
 import 'package:flutter_laravel/zakat/domain/responses/products_respose.dart';
+import 'package:flutter_laravel/zakat/domain/responses/zakat_products_by_kilos_response.dart';
 import 'package:flutter_laravel/zakat/domain/responses/zakat_products_respose.dart';
 import 'package:flutter_laravel/zakat/domain/responses/zakat_respose.dart';
 
@@ -33,7 +34,7 @@ abstract class BaseDataSource {
   Future<List<ZakatResponse>> getAllZakat();
   Future<List<ZakatProductsResponse>> getZakatProductsByZatatId(
       GetZakatProductsByZatatIdRequest getZakatProductsByZatatIdRequest);
-  Future<List<ZakatProductsResponse>> getAllZakatProductsByKilos();
+  Future<List<ZakatProductsByKilosResponse>> getAllZakatProductsByKilos();
 }
 
 class ZakatDataSource extends BaseDataSource {
@@ -97,7 +98,7 @@ class ZakatDataSource extends BaseDataSource {
   }
 
   @override
-  Future<List<ZakatProductsResponse>> getAllZakatProductsByKilos() async {
+  Future<List<ZakatProductsByKilosResponse>> getAllZakatProductsByKilos() async {
     final res = await _dbHelper.getAllZakatProductsByKilos();
     try {
       return res;

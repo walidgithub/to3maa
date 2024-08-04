@@ -13,6 +13,8 @@ class ProductView extends StatefulWidget {
   final String productPrice;
   final String productDesc;
   final Function deleteProduct;
+  final Function editProduct;
+  final Function editPrice;
   const ProductView({
     super.key,
     required this.productImage,
@@ -20,6 +22,8 @@ class ProductView extends StatefulWidget {
     required this.productPrice,
     required this.productDesc,
     required this.deleteProduct,
+    required this.editProduct,
+    required this.editPrice,
   });
 
   @override
@@ -112,19 +116,24 @@ class _ProductViewState extends State<ProductView> {
                     width: 100.w,
                     child: Row(
                       children: [
-                        Container(
-                          width: 30.w,
-                          height: 30.w,
-                          decoration: BoxDecoration(
-                            border:
-                                Border.all(width: 2.w, color: AppColors.cWhite),
-                            borderRadius: BorderRadius.circular(4.w),
-                            color: AppColors.cPrimary,
-                            shape: BoxShape.rectangle,
-                          ),
-                          child: Icon(
-                            Icons.edit,
-                            size: 16.w,
+                        GestureDetector(
+                          onTap: () {
+                            widget.editProduct();
+                          },
+                          child: Container(
+                            width: 30.w,
+                            height: 30.w,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                  width: 2.w, color: AppColors.cWhite),
+                              borderRadius: BorderRadius.circular(4.w),
+                              color: AppColors.cPrimary,
+                              shape: BoxShape.rectangle,
+                            ),
+                            child: Icon(
+                              Icons.edit,
+                              size: 16.w,
+                            ),
                           ),
                         ),
                         SizedBox(
@@ -192,26 +201,32 @@ class _ProductViewState extends State<ProductView> {
                   SizedBox(
                     width: 10.w,
                   ),
-                  Container(
-                      width: 50.w,
-                      height: 30.w,
-                      decoration: BoxDecoration(
-                        border:
-                            Border.all(width: 2.w, color: AppColors.cPrimary),
-                        borderRadius:
-                            BorderRadius.circular(AppConstants.radius),
-                        color: AppColors.cWhite,
-                        shape: BoxShape.rectangle,
-                      ),
-                      child: Center(
-                        child: Text(
-                          AppStrings.save,
-                          style: AppTypography.kLight11.copyWith(
-                            fontFamily: AppFonts.qabasFontFamily,
-                            color: AppColors.cButton,
-                          ),
+                  GestureDetector(
+                    onTap: () {
+                      widget.editPrice(_editController.text);
+                      _editController.text = '';
+                    },
+                    child: Container(
+                        width: 50.w,
+                        height: 30.w,
+                        decoration: BoxDecoration(
+                          border:
+                              Border.all(width: 2.w, color: AppColors.cPrimary),
+                          borderRadius:
+                              BorderRadius.circular(AppConstants.radius),
+                          color: AppColors.cWhite,
+                          shape: BoxShape.rectangle,
                         ),
-                      ))
+                        child: Center(
+                          child: Text(
+                            AppStrings.save,
+                            style: AppTypography.kLight11.copyWith(
+                              fontFamily: AppFonts.qabasFontFamily,
+                              color: AppColors.cButton,
+                            ),
+                          ),
+                        )),
+                  )
                 ],
               ),
             )

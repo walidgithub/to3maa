@@ -6,6 +6,7 @@ import 'package:flutter_laravel/core/utils/enums.dart';
 import 'package:flutter_laravel/zakat/domain/entities/products.dart';
 import 'package:flutter_laravel/zakat/domain/requsts/insert_zakat_products_request.dart';
 import 'package:flutter_laravel/zakat/domain/requsts/insert_zakat_request.dart';
+import 'package:flutter_laravel/zakat/domain/responses/products_respose.dart';
 import 'package:flutter_laravel/zakat/presentation/shared/constant/app_constants.dart';
 import 'package:flutter_laravel/zakat/presentation/shared/constant/app_fonts.dart';
 import 'package:flutter_laravel/zakat/presentation/shared/constant/app_strings.dart';
@@ -41,16 +42,20 @@ class _AddZakatViewState extends State<AddZakatView> {
   void clearData() {
     _membersCountController.text = '';
     _zakatValueController.text = '';
+    remian = 0;
+    allValue = 0;
+    allProductsValue = 0;
   }
 
-  void getAllProducts() async {
+  Future<void> getAllProducts() async {
     await ZakatCubit.get(context).getAllProducts();
   }
 
   double calcRemian() {
     double allProductsValue = 0.0;
     for (var x in products) {
-      double productTotal = double.parse(x.productPrice) * (x.productQuantity ?? 0);
+      double productTotal =
+          double.parse(x.productPrice!) * (x.productQuantity ?? 0);
       allProductsValue = allProductsValue + productTotal;
     }
 
@@ -83,6 +88,9 @@ class _AddZakatViewState extends State<AddZakatView> {
               print('errorrrr loaded');
             } else if (state.zakatState == RequestState.productsLoaded) {
               products = state.productsList;
+              for (var x in products) {
+                x.productQuantity = 0;
+              }
               print('loaded');
             } else if (state.zakatState == RequestState.insertLoading) {
             } else if (state.zakatState == RequestState.insertError) {
@@ -114,33 +122,48 @@ class _AddZakatViewState extends State<AddZakatView> {
                   height: 5.h,
                 ),
                 Expanded(
-                    child: SingleChildScrollView(
-                  child: ListView.separated(
-                      itemCount: products.length,
-                      shrinkWrap: true,
-                      scrollDirection: Axis.vertical,
-                      physics: const NeverScrollableScrollPhysics(),
-                      separatorBuilder: (BuildContext context, int index) =>
-                          SizedBox(
-                            height: 20.h,
-                          ),
-                      itemBuilder: (BuildContext context, int index) {
-                        return AddProductView(
-                          productName: products[index].productName,
-                          productImage: products[index].productImage,
-                          productPrice: products[index].productPrice,
-                          productDesc: products[index].productDesc,
-                          increaseQunatity: (int quantity) {
-                            products[index].productQuantity = quantity;
-                            remian = allValue - calcRemian();
-                          },
-                          decreaseQunatity: (int quantity) {
-                            products[index].productQuantity = quantity;
-                            remian = allValue - calcRemian();
-                          },
-                        );
-                      }),
-                )),
+                    child: products.isNotEmpty
+                        ? SingleChildScrollView(
+                            child: ListView.separated(
+                                itemCount: products.length,
+                                shrinkWrap: true,
+                                scrollDirection: Axis.vertical,
+                                physics: const NeverScrollableScrollPhysics(),
+                                separatorBuilder:
+                                    (BuildContext context, int index) =>
+                                        SizedBox(
+                                          height: 20.h,
+                                        ),
+                                itemBuilder: (BuildContext context, int index) {
+                                  return AddProductView(
+                                    productName: products[index].productName!,
+                                    productImage: products[index].productImage!,
+                                    productPrice: products[index].productPrice!,
+                                    productDesc: products[index].productDesc!,
+                                    increaseQunatity: (int quantity) {
+                                      setState(() {
+                                        products[index].productQuantity =
+                                            quantity;
+                                        remian = allValue - calcRemian();
+                                      });
+                                    },
+                                    decreaseQunatity: (int quantity) {
+                                      setState(() {
+                                        products[index].productQuantity =
+                                            quantity;
+                                        remian = allValue - calcRemian();
+                                      });
+                                    },
+                                  );
+                                }),
+                          )
+                        : const Center(
+                            child: Text(
+                              AppStrings.noProducts,
+                              style: TextStyle(
+                                  fontFamily: AppFonts.qabasFontFamily),
+                            ),
+                          )),
                 SizedBox(
                   height: 5.h,
                 ),
@@ -158,7 +181,7 @@ class _AddZakatViewState extends State<AddZakatView> {
                     children: [
                       Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        // crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Row(
                             children: [
@@ -222,12 +245,15 @@ class _AddZakatViewState extends State<AddZakatView> {
                           ),
                           GestureDetector(
                             onTap: () async {
+                              if (_membersCountController.text == '' ||
+                                  _zakatValueController.text == '') {
+                                return;
+                              }
                               InsertZakatRequest insertZakatRequest =
                                   InsertZakatRequest(
                                       membersCount:
                                           _membersCountController.text,
-                                      zakatValue: 
-                                          _zakatValueController.text,
+                                      zakatValue: _zakatValueController.text,
                                       remainValue: remian.toString());
 
                               await ZakatCubit.get(context)
@@ -239,18 +265,22 @@ class _AddZakatViewState extends State<AddZakatView> {
                                     InsertZakatProductsRequest(
                                         productDesc: x.productDesc,
                                         productImage: x.productImage,
-                                        productName: x.productImage,
+                                        productName: x.productName,
                                         productPrice: x.productPrice,
                                         productQuantity: x.productQuantity,
-                                        zakatId: DbHelper.insertedNewRecord);
+                                        zakatId: DbHelper.insertedNewZakat);
 
                                 // ignore: use_build_context_synchronously
                                 await ZakatCubit.get(context)
                                     .insertZakatProducts(
                                         insertZakatProductsRequest);
+
+                                x.productQuantity = 0;
                               }
 
-                              clearData();
+                              setState(() {
+                                clearData();
+                              });
                             },
                             child: Container(
                                 width: 70.w,
