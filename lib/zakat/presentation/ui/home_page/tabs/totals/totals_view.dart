@@ -1,17 +1,17 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_laravel/core/utils/enums.dart';
-import 'package:flutter_laravel/zakat/domain/responses/zakat_products_by_kilos_response.dart';
-import 'package:flutter_laravel/zakat/presentation/shared/constant/app_constants.dart';
-import 'package:flutter_laravel/zakat/presentation/shared/constant/app_fonts.dart';
-import 'package:flutter_laravel/zakat/presentation/shared/constant/app_strings.dart';
-import 'package:flutter_laravel/zakat/presentation/shared/constant/app_typography.dart';
-import 'package:flutter_laravel/zakat/presentation/shared/style/app_colors.dart';
-import 'package:flutter_laravel/zakat/presentation/ui/home_page/cubit/zakat_cubit.dart';
-import 'package:flutter_laravel/zakat/presentation/ui/home_page/cubit/zakat_states.dart';
-import 'package:flutter_laravel/zakat/presentation/ui/home_page/tabs/totals/totals_products_view.dart';
-import 'package:flutter_laravel/zakat/presentation/ui_components/loading_dialog.dart';
+import 'package:to3maa/core/utils/enums.dart';
+import 'package:to3maa/zakat/domain/responses/zakat_products_by_kilos_response.dart';
+import 'package:to3maa/zakat/presentation/shared/constant/app_constants.dart';
+import 'package:to3maa/zakat/presentation/shared/constant/app_fonts.dart';
+import 'package:to3maa/zakat/presentation/shared/constant/app_strings.dart';
+import 'package:to3maa/zakat/presentation/shared/constant/app_typography.dart';
+import 'package:to3maa/zakat/presentation/shared/style/app_colors.dart';
+import 'package:to3maa/zakat/presentation/ui/home_page/cubit/zakat_cubit.dart';
+import 'package:to3maa/zakat/presentation/ui/home_page/cubit/zakat_states.dart';
+import 'package:to3maa/zakat/presentation/ui/home_page/tabs/totals/totals_products_view.dart';
+import 'package:to3maa/zakat/presentation/ui_components/loading_dialog.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TotalsView extends StatefulWidget {

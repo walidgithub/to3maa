@@ -1,4 +1,4 @@
-package com.example.flutter_laravel
+package com.to3maa.zakat
 
 import io.flutter.embedding.android.FlutterActivity
 

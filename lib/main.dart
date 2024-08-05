@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_laravel/zakat/presentation/di/di.dart';
-import 'package:flutter_laravel/zakat/presentation/router/app_router.dart';
-import 'package:flutter_laravel/zakat/presentation/shared/constant/app_strings.dart';
-import 'package:flutter_laravel/zakat/presentation/shared/style/app_theme.dart';
+import 'package:to3maa/zakat/presentation/di/di.dart';
+import 'package:to3maa/zakat/presentation/router/app_router.dart';
+import 'package:to3maa/zakat/presentation/shared/constant/app_strings.dart';
+import 'package:to3maa/zakat/presentation/shared/style/app_theme.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'zakat/presentation/shared/constant/app_constants.dart';

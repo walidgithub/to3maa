@@ -1,4 +1,4 @@
-import 'package:flutter_laravel/zakat/domain/responses/zakat_respose.dart';
+import 'package:to3maa/zakat/domain/responses/zakat_respose.dart';
 
 class ZakatModel extends ZakatResponse {
   const ZakatModel({

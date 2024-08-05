@@ -1,11 +1,11 @@
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:flutter_laravel/zakat/presentation/shared/constant/app_strings.dart';
-import 'package:flutter_laravel/zakat/presentation/shared/style/app_colors.dart';
+import 'package:to3maa/zakat/presentation/shared/constant/app_strings.dart';
+import 'package:to3maa/zakat/presentation/shared/style/app_colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 void showLoading() {
   EasyLoading.instance
-    ..loadingStyle =EasyLoadingStyle.custom
+    ..loadingStyle = EasyLoadingStyle.custom
     ..backgroundColor = AppColors.cPrimary
     ..indicatorColor = AppColors.cWhite
     ..textColor = AppColors.cWhite
@@ -13,7 +13,7 @@ void showLoading() {
     ..indicatorType = EasyLoadingIndicatorType.wave
     ..radius = 10.0.w
     ..dismissOnTap = false
-  ..userInteractions = false;
+    ..userInteractions = false;
   EasyLoading.show(
     maskType: EasyLoadingMaskType.black,
     status: AppStrings.loading,

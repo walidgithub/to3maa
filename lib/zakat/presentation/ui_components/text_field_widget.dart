@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_laravel/zakat/presentation/shared/constant/app_fonts.dart';
-import 'package:flutter_laravel/zakat/presentation/shared/style/app_colors.dart';
+import 'package:to3maa/zakat/presentation/shared/constant/app_fonts.dart';
+import 'package:to3maa/zakat/presentation/shared/style/app_colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 Widget textFieldWidget(TextEditingController textController, String labelText,

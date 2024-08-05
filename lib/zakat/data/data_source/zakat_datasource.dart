@@ -1,16 +1,16 @@
-import 'package:flutter_laravel/core/local_db/db_helper.dart';
-import 'package:flutter_laravel/zakat/domain/requsts/delete_product_request.dart';
-import 'package:flutter_laravel/zakat/domain/requsts/delete_zakat_products_request.dart';
-import 'package:flutter_laravel/zakat/domain/requsts/delete_zakat_request.dart';
-import 'package:flutter_laravel/zakat/domain/requsts/get_zakat_products_by_zakat_id_request.dart';
-import 'package:flutter_laravel/zakat/domain/requsts/insert_product_request.dart';
-import 'package:flutter_laravel/zakat/domain/requsts/insert_zakat_products_request.dart';
-import 'package:flutter_laravel/zakat/domain/requsts/insert_zakat_request.dart';
-import 'package:flutter_laravel/zakat/domain/requsts/update_product_request.dart';
-import 'package:flutter_laravel/zakat/domain/responses/products_respose.dart';
-import 'package:flutter_laravel/zakat/domain/responses/zakat_products_by_kilos_response.dart';
-import 'package:flutter_laravel/zakat/domain/responses/zakat_products_respose.dart';
-import 'package:flutter_laravel/zakat/domain/responses/zakat_respose.dart';
+import 'package:to3maa/core/local_db/db_helper.dart';
+import 'package:to3maa/zakat/domain/requsts/delete_product_request.dart';
+import 'package:to3maa/zakat/domain/requsts/delete_zakat_products_request.dart';
+import 'package:to3maa/zakat/domain/requsts/delete_zakat_request.dart';
+import 'package:to3maa/zakat/domain/requsts/get_zakat_products_by_zakat_id_request.dart';
+import 'package:to3maa/zakat/domain/requsts/insert_product_request.dart';
+import 'package:to3maa/zakat/domain/requsts/insert_zakat_products_request.dart';
+import 'package:to3maa/zakat/domain/requsts/insert_zakat_request.dart';
+import 'package:to3maa/zakat/domain/requsts/update_product_request.dart';
+import 'package:to3maa/zakat/domain/responses/products_respose.dart';
+import 'package:to3maa/zakat/domain/responses/zakat_products_by_kilos_response.dart';
+import 'package:to3maa/zakat/domain/responses/zakat_products_respose.dart';
+import 'package:to3maa/zakat/domain/responses/zakat_respose.dart';
 
 abstract class BaseDataSource {
   Future<int> insertZakatData(InsertZakatRequest insertZakatRequest);
@@ -24,7 +24,7 @@ abstract class BaseDataSource {
   Future<int> deleteAllZakatData();
   Future<int> deleteZakatProductsData(
       DeleteZakatProductsRequest deletetZakatProductsRequest);
-      Future<int> deleteAllZakatProductsData();
+  Future<int> deleteAllZakatProductsData();
   Future<int> deleteProductData(DeleteProductRequest deletetProductRequest);
 
   Future<List<ProductsResponse>> getAllProducts();
@@ -61,11 +61,10 @@ class ZakatDataSource extends BaseDataSource {
       throw e.toString();
     }
   }
-  
+
   @override
   Future<int> deleteAllZakatProductsData() async {
-    final res =
-        await _dbHelper.deleteAllZakatProductsData();
+    final res = await _dbHelper.deleteAllZakatProductsData();
     try {
       return res;
     } catch (e) {
@@ -116,7 +115,8 @@ class ZakatDataSource extends BaseDataSource {
   }
 
   @override
-  Future<List<ZakatProductsByKilosResponse>> getAllZakatProductsByKilos() async {
+  Future<List<ZakatProductsByKilosResponse>>
+      getAllZakatProductsByKilos() async {
     final res = await _dbHelper.getAllZakatProductsByKilos();
     try {
       return res;

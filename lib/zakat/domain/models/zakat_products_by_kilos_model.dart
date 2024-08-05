@@ -1,6 +1,4 @@
-
-
-import 'package:flutter_laravel/zakat/domain/responses/zakat_products_by_kilos_response.dart';
+import 'package:to3maa/zakat/domain/responses/zakat_products_by_kilos_response.dart';
 
 class ZakatProductsByKilosModel extends ZakatProductsByKilosResponse {
   const ZakatProductsByKilosModel({

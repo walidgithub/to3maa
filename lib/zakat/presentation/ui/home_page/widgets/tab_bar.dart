@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_laravel/zakat/presentation/shared/constant/app_fonts.dart';
-import 'package:flutter_laravel/zakat/presentation/shared/constant/app_typography.dart';
-import 'package:flutter_laravel/zakat/presentation/shared/style/app_colors.dart';
+import 'package:to3maa/zakat/presentation/shared/constant/app_fonts.dart';
+import 'package:to3maa/zakat/presentation/shared/constant/app_typography.dart';
+import 'package:to3maa/zakat/presentation/shared/style/app_colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:badges/badges.dart' as badges;
@@ -12,14 +12,14 @@ class TabBarWidget extends StatelessWidget {
   final String icon;
   final int index;
   final int badgeVal;
-  const TabBarWidget(
-      {super.key,
-      required this.activeTab,
-      required this.title,
-      required this.icon,
-      required this.index,
-      required this.badgeVal,
-      });
+  const TabBarWidget({
+    super.key,
+    required this.activeTab,
+    required this.title,
+    required this.icon,
+    required this.index,
+    required this.badgeVal,
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -1,16 +1,18 @@
 import 'package:dartz/dartz.dart';
-import 'package:flutter_laravel/core/error/failure.dart';
-import 'package:flutter_laravel/zakat/domain/repository/base_repository.dart';
-import 'package:flutter_laravel/zakat/domain/responses/zakat_respose.dart';
-import 'package:flutter_laravel/zakat/domain/use_cases/base_usecase/base_usecase.dart';
+import 'package:to3maa/core/error/failure.dart';
+import 'package:to3maa/zakat/domain/repository/base_repository.dart';
+import 'package:to3maa/zakat/domain/responses/zakat_respose.dart';
+import 'package:to3maa/zakat/domain/use_cases/base_usecase/base_usecase.dart';
 
-class GetAllZakatUseCase extends BaseUsecase<List<ZakatResponse>, NoParameters> {
+class GetAllZakatUseCase
+    extends BaseUsecase<List<ZakatResponse>, NoParameters> {
   final BaseRepository baseRepository;
 
   GetAllZakatUseCase(this.baseRepository);
 
   @override
-  Future<Either<Failure, List<ZakatResponse>>> call(NoParameters parameters) async {
+  Future<Either<Failure, List<ZakatResponse>>> call(
+      NoParameters parameters) async {
     return await baseRepository.getAllZakat();
   }
 }

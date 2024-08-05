@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_laravel/zakat/presentation/shared/constant/app_strings.dart';
+import 'package:to3maa/zakat/presentation/shared/constant/app_strings.dart';
 
 Future<bool> onBackButtonPressed(BuildContext context) async {
   bool exitApp = await showDialog(

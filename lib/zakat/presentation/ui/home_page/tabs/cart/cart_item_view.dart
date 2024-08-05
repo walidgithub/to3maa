@@ -1,10 +1,10 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_laravel/zakat/presentation/shared/constant/app_constants.dart';
-import 'package:flutter_laravel/zakat/presentation/shared/constant/app_fonts.dart';
-import 'package:flutter_laravel/zakat/presentation/shared/constant/app_strings.dart';
-import 'package:flutter_laravel/zakat/presentation/shared/constant/app_typography.dart';
-import 'package:flutter_laravel/zakat/presentation/shared/style/app_colors.dart';
+import 'package:to3maa/zakat/presentation/shared/constant/app_constants.dart';
+import 'package:to3maa/zakat/presentation/shared/constant/app_fonts.dart';
+import 'package:to3maa/zakat/presentation/shared/constant/app_strings.dart';
+import 'package:to3maa/zakat/presentation/shared/constant/app_typography.dart';
+import 'package:to3maa/zakat/presentation/shared/style/app_colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CartItemView extends StatefulWidget {

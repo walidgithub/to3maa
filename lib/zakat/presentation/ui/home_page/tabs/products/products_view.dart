@@ -1,23 +1,23 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_laravel/core/utils/enums.dart';
-import 'package:flutter_laravel/zakat/domain/entities/product_image.dart';
-import 'package:flutter_laravel/zakat/domain/requsts/delete_product_request.dart';
-import 'package:flutter_laravel/zakat/domain/requsts/insert_product_request.dart';
-import 'package:flutter_laravel/zakat/domain/requsts/update_product_request.dart';
-import 'package:flutter_laravel/zakat/presentation/shared/constant/app_assets.dart';
-import 'package:flutter_laravel/zakat/presentation/shared/constant/app_constants.dart';
-import 'package:flutter_laravel/zakat/presentation/shared/constant/app_fonts.dart';
-import 'package:flutter_laravel/zakat/presentation/shared/constant/app_strings.dart';
-import 'package:flutter_laravel/zakat/presentation/shared/constant/app_typography.dart';
-import 'package:flutter_laravel/zakat/presentation/shared/style/app_colors.dart';
-import 'package:flutter_laravel/zakat/presentation/ui/home_page/cubit/zakat_cubit.dart';
-import 'package:flutter_laravel/zakat/presentation/ui/home_page/cubit/zakat_states.dart';
-import 'package:flutter_laravel/zakat/presentation/ui/home_page/tabs/products/product_image_view.dart';
-import 'package:flutter_laravel/zakat/presentation/ui/home_page/tabs/products/product_view.dart';
-import 'package:flutter_laravel/zakat/presentation/ui_components/loading_dialog.dart';
-import 'package:flutter_laravel/zakat/presentation/ui_components/text_field_widget.dart';
+import 'package:to3maa/core/utils/enums.dart';
+import 'package:to3maa/zakat/domain/entities/product_image.dart';
+import 'package:to3maa/zakat/domain/requsts/delete_product_request.dart';
+import 'package:to3maa/zakat/domain/requsts/insert_product_request.dart';
+import 'package:to3maa/zakat/domain/requsts/update_product_request.dart';
+import 'package:to3maa/zakat/presentation/shared/constant/app_assets.dart';
+import 'package:to3maa/zakat/presentation/shared/constant/app_constants.dart';
+import 'package:to3maa/zakat/presentation/shared/constant/app_fonts.dart';
+import 'package:to3maa/zakat/presentation/shared/constant/app_strings.dart';
+import 'package:to3maa/zakat/presentation/shared/constant/app_typography.dart';
+import 'package:to3maa/zakat/presentation/shared/style/app_colors.dart';
+import 'package:to3maa/zakat/presentation/ui/home_page/cubit/zakat_cubit.dart';
+import 'package:to3maa/zakat/presentation/ui/home_page/cubit/zakat_states.dart';
+import 'package:to3maa/zakat/presentation/ui/home_page/tabs/products/product_image_view.dart';
+import 'package:to3maa/zakat/presentation/ui/home_page/tabs/products/product_view.dart';
+import 'package:to3maa/zakat/presentation/ui_components/loading_dialog.dart';
+import 'package:to3maa/zakat/presentation/ui_components/text_field_widget.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ProductsView extends StatefulWidget {
@@ -162,13 +162,18 @@ class _ProductsViewState extends State<ProductsView> {
                               ),
                           itemBuilder: (BuildContext context, int index) {
                             DeleteProductRequest deleteProductRequest =
-                                (DeleteProductRequest(id: state.productsList[index].id));
+                                (DeleteProductRequest(
+                                    id: state.productsList[index].id));
 
                             return ProductView(
-                              productName: state.productsList[index].productName!,
-                              productImage: state.productsList[index].productImage!,
-                              productPrice: state.productsList[index].productPrice!,
-                              productDesc: state.productsList[index].productDesc!,
+                              productName:
+                                  state.productsList[index].productName!,
+                              productImage:
+                                  state.productsList[index].productImage!,
+                              productPrice:
+                                  state.productsList[index].productPrice!,
+                              productDesc:
+                                  state.productsList[index].productDesc!,
                               deleteProduct: () async {
                                 await ZakatCubit.get(context)
                                     .deleteProduct(deleteProductRequest);
@@ -184,7 +189,8 @@ class _ProductsViewState extends State<ProductsView> {
                                 _productDescController.text =
                                     state.productsList[index].productDesc!;
 
-                                productImage = state.productsList[index].productImage!;
+                                productImage =
+                                    state.productsList[index].productImage!;
 
                                 for (var n in productImages) {
                                   n.activeImage = false;
@@ -193,7 +199,8 @@ class _ProductsViewState extends State<ProductsView> {
                                 int getImageIndex = productImages.indexWhere(
                                     (element) =>
                                         element.imagePath ==
-                                        state.productsList[index].productImage!);
+                                        state
+                                            .productsList[index].productImage!);
                                 productImages[getImageIndex].activeImage = true;
 
                                 editProduct = true;
@@ -206,12 +213,12 @@ class _ProductsViewState extends State<ProductsView> {
                                     (UpdateProductRequest(
                                         id: state.productsList[index].id,
                                         productPrice: productPrice,
-                                        productDesc:
-                                            state.productsList[index].productDesc,
-                                        productName:
-                                            state.productsList[index].productName,
-                                        productImage:
-                                            state.productsList[index].productImage));
+                                        productDesc: state
+                                            .productsList[index].productDesc,
+                                        productName: state
+                                            .productsList[index].productName,
+                                        productImage: state
+                                            .productsList[index].productImage));
 
                                 await ZakatCubit.get(context)
                                     .updateProduct(updateProductRequest);

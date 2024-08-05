@@ -1,15 +1,15 @@
-import 'package:flutter_laravel/zakat/domain/models/products_model.dart';
-import 'package:flutter_laravel/zakat/domain/models/zakat_model.dart';
-import 'package:flutter_laravel/zakat/domain/models/zakat_products_by_kilos_model.dart';
-import 'package:flutter_laravel/zakat/domain/models/zakat_products_model.dart';
-import 'package:flutter_laravel/zakat/domain/requsts/delete_product_request.dart';
-import 'package:flutter_laravel/zakat/domain/requsts/delete_zakat_products_request.dart';
-import 'package:flutter_laravel/zakat/domain/requsts/delete_zakat_request.dart';
-import 'package:flutter_laravel/zakat/domain/requsts/get_zakat_products_by_zakat_id_request.dart';
-import 'package:flutter_laravel/zakat/domain/requsts/insert_product_request.dart';
-import 'package:flutter_laravel/zakat/domain/requsts/insert_zakat_products_request.dart';
-import 'package:flutter_laravel/zakat/domain/requsts/insert_zakat_request.dart';
-import 'package:flutter_laravel/zakat/domain/requsts/update_product_request.dart';
+import 'package:to3maa/zakat/domain/models/products_model.dart';
+import 'package:to3maa/zakat/domain/models/zakat_model.dart';
+import 'package:to3maa/zakat/domain/models/zakat_products_by_kilos_model.dart';
+import 'package:to3maa/zakat/domain/models/zakat_products_model.dart';
+import 'package:to3maa/zakat/domain/requsts/delete_product_request.dart';
+import 'package:to3maa/zakat/domain/requsts/delete_zakat_products_request.dart';
+import 'package:to3maa/zakat/domain/requsts/delete_zakat_request.dart';
+import 'package:to3maa/zakat/domain/requsts/get_zakat_products_by_zakat_id_request.dart';
+import 'package:to3maa/zakat/domain/requsts/insert_product_request.dart';
+import 'package:to3maa/zakat/domain/requsts/insert_zakat_products_request.dart';
+import 'package:to3maa/zakat/domain/requsts/insert_zakat_request.dart';
+import 'package:to3maa/zakat/domain/requsts/update_product_request.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -118,8 +118,7 @@ class DbHelper {
 
     final db = _db!.database;
 
-    return db
-        .delete('zakat');
+    return db.delete('zakat');
   }
 
   Future<int> deleteAllZakatProductsData() async {
@@ -129,8 +128,7 @@ class DbHelper {
 
     final db = _db!.database;
 
-    return db
-        .delete('zakatProducts');
+    return db.delete('zakatProducts');
   }
 
   Future<int> deleteProductData(
