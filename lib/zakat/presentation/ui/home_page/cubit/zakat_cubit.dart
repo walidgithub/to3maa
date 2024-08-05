@@ -58,8 +58,6 @@ class ZakatCubit extends Cubit<ZakatState> {
     this.updateProductUseCase,
   ) : super(const ZakatState());
 
-  List<ProductsResponse> allProducts = [];
-
   static ZakatCubit get(context) => BlocProvider.of(context);
 
   // insert data ------------------------------------------------------
@@ -288,7 +286,4 @@ class ZakatCubit extends Cubit<ZakatState> {
               zakatState: RequestState.getZakatProductsByZakatIdLoaded,
             )));
   }
-
-  // -------------------------------------------------------
-  void fff() {}
 }

@@ -3,11 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_laravel/core/utils/enums.dart';
 import 'package:flutter_laravel/zakat/domain/entities/product_image.dart';
-import 'package:flutter_laravel/zakat/domain/entities/products.dart';
 import 'package:flutter_laravel/zakat/domain/requsts/delete_product_request.dart';
 import 'package:flutter_laravel/zakat/domain/requsts/insert_product_request.dart';
 import 'package:flutter_laravel/zakat/domain/requsts/update_product_request.dart';
-import 'package:flutter_laravel/zakat/domain/responses/products_respose.dart';
 import 'package:flutter_laravel/zakat/presentation/shared/constant/app_assets.dart';
 import 'package:flutter_laravel/zakat/presentation/shared/constant/app_constants.dart';
 import 'package:flutter_laravel/zakat/presentation/shared/constant/app_fonts.dart';
@@ -36,7 +34,7 @@ class _ProductsViewState extends State<ProductsView> {
   final TextEditingController _productPriceController = TextEditingController();
   final TextEditingController _productDescController = TextEditingController();
 
-  List<ProductsResponse> products = [];
+  // List<ProductsResponse> products = [];
 
   int editProductId = 0;
   bool editProduct = false;
@@ -44,12 +42,14 @@ class _ProductsViewState extends State<ProductsView> {
   List<ProductImages> productImages = [
     ProductImages(imagePath: AppAssets.package, activeImage: true),
     ProductImages(imagePath: AppAssets.dates, activeImage: false),
-    ProductImages(imagePath: AppAssets.parley, activeImage: false),
+    ProductImages(imagePath: AppAssets.lentils, activeImage: false),
     ProductImages(imagePath: AppAssets.raisins, activeImage: false),
     ProductImages(imagePath: AppAssets.rice, activeImage: false),
     ProductImages(imagePath: AppAssets.wheat, activeImage: false),
-    ProductImages(imagePath: AppAssets.raisins, activeImage: false),
-    ProductImages(imagePath: AppAssets.rice, activeImage: false),
+    ProductImages(imagePath: AppAssets.lobia, activeImage: false),
+    ProductImages(imagePath: AppAssets.pasta, activeImage: false),
+    ProductImages(imagePath: AppAssets.beans, activeImage: false),
+    ProductImages(imagePath: AppAssets.favaBeans, activeImage: false),
   ];
 
   String productImage = '';
@@ -57,7 +57,6 @@ class _ProductsViewState extends State<ProductsView> {
   @override
   void initState() {
     productImage = productImages[0].imagePath!;
-    products = ZakatCubit.get(context).allProducts;
     getAllProducts();
     super.initState();
   }
@@ -122,7 +121,7 @@ class _ProductsViewState extends State<ProductsView> {
               } else if (state.zakatState == RequestState.productsError) {
                 hideLoading();
               } else if (state.zakatState == RequestState.productsLoaded) {
-                products = state.productsList;
+                // products = state.productsList;
                 hideLoading();
               } else if (state.zakatState == RequestState.deleteLoading) {
                 showLoading();
@@ -150,10 +149,10 @@ class _ProductsViewState extends State<ProductsView> {
                 ScaffoldMessenger.of(context).showSnackBar(snackBar);
               }
             }, builder: (context, state) {
-              return products.isNotEmpty
+              return state.productsList.isNotEmpty
                   ? SingleChildScrollView(
                       child: ListView.separated(
-                          itemCount: products.length,
+                          itemCount: state.productsList.length,
                           shrinkWrap: true,
                           scrollDirection: Axis.vertical,
                           physics: const NeverScrollableScrollPhysics(),
@@ -163,13 +162,13 @@ class _ProductsViewState extends State<ProductsView> {
                               ),
                           itemBuilder: (BuildContext context, int index) {
                             DeleteProductRequest deleteProductRequest =
-                                (DeleteProductRequest(id: products[index].id));
+                                (DeleteProductRequest(id: state.productsList[index].id));
 
                             return ProductView(
-                              productName: products[index].productName!,
-                              productImage: products[index].productImage!,
-                              productPrice: products[index].productPrice!,
-                              productDesc: products[index].productDesc!,
+                              productName: state.productsList[index].productName!,
+                              productImage: state.productsList[index].productImage!,
+                              productPrice: state.productsList[index].productPrice!,
+                              productDesc: state.productsList[index].productDesc!,
                               deleteProduct: () async {
                                 await ZakatCubit.get(context)
                                     .deleteProduct(deleteProductRequest);
@@ -177,15 +176,15 @@ class _ProductsViewState extends State<ProductsView> {
                                 setState(() {});
                               },
                               editProduct: () {
-                                editProductId = products[index].id;
+                                editProductId = state.productsList[index].id;
                                 _productPriceController.text =
-                                    products[index].productPrice!;
+                                    state.productsList[index].productPrice!;
                                 _productNameController.text =
-                                    products[index].productName!;
+                                    state.productsList[index].productName!;
                                 _productDescController.text =
-                                    products[index].productDesc!;
+                                    state.productsList[index].productDesc!;
 
-                                productImage = products[index].productImage!;
+                                productImage = state.productsList[index].productImage!;
 
                                 for (var n in productImages) {
                                   n.activeImage = false;
@@ -194,7 +193,7 @@ class _ProductsViewState extends State<ProductsView> {
                                 int getImageIndex = productImages.indexWhere(
                                     (element) =>
                                         element.imagePath ==
-                                        products[index].productImage!);
+                                        state.productsList[index].productImage!);
                                 productImages[getImageIndex].activeImage = true;
 
                                 editProduct = true;
@@ -205,14 +204,14 @@ class _ProductsViewState extends State<ProductsView> {
                               editPrice: (String productPrice) async {
                                 UpdateProductRequest updateProductRequest =
                                     (UpdateProductRequest(
-                                        id: products[index].id,
+                                        id: state.productsList[index].id,
                                         productPrice: productPrice,
                                         productDesc:
-                                            products[index].productDesc,
+                                            state.productsList[index].productDesc,
                                         productName:
-                                            products[index].productName,
+                                            state.productsList[index].productName,
                                         productImage:
-                                            products[index].productImage));
+                                            state.productsList[index].productImage));
 
                                 await ZakatCubit.get(context)
                                     .updateProduct(updateProductRequest);
@@ -286,7 +285,6 @@ class _ProductsViewState extends State<ProductsView> {
               } else if (state.zakatState == RequestState.productsError) {
                 hideLoading();
               } else if (state.zakatState == RequestState.productsLoaded) {
-                products = state.productsList;
                 hideLoading();
               } else if (state.zakatState == RequestState.updateLoading) {
                 showLoading();

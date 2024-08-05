@@ -7,9 +7,13 @@ class AppAssets {
   static const String totals = '$imagePath/totals.svg';
   static const String back = '$imagePath/back.svg';
   static const String dates = '$imagePath/dates.png';
-  static const String parley = '$imagePath/parley.png';
   static const String raisins = '$imagePath/raisins.png';
   static const String rice = '$imagePath/rice.png';
   static const String wheat = '$imagePath/wheat.png';
   static const String package = '$imagePath/package.png';
+  static const String pasta = '$imagePath/pasta.png';
+  static const String beans = '$imagePath/beans.png';
+  static const String lobia = '$imagePath/lobia.png';
+  static const String favaBeans = '$imagePath/lobia.png';
+  static const String lentils = '$imagePath/lentils.png';
 }

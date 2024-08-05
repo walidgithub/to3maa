@@ -61,7 +61,7 @@ class MyApp extends StatelessWidget {
         builder: (context, child) {
           return MaterialApp(
               debugShowCheckedModeBanner: false,
-              title: 'Zakat',
+              title: AppStrings.appName,
               onGenerateRoute: RouteGenerator.getRoute,
               initialRoute: Routes.homeRoute,
               theme: AppTheme.lightTheme);

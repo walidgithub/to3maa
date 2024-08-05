@@ -4,11 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_laravel/core/local_db/db_helper.dart';
 import 'package:flutter_laravel/core/utils/enums.dart';
 import 'package:flutter_laravel/zakat/domain/entities/cart_items.dart';
-import 'package:flutter_laravel/zakat/domain/entities/products.dart';
 import 'package:flutter_laravel/zakat/domain/entities/suggested_items.dart';
 import 'package:flutter_laravel/zakat/domain/requsts/insert_zakat_products_request.dart';
 import 'package:flutter_laravel/zakat/domain/requsts/insert_zakat_request.dart';
-import 'package:flutter_laravel/zakat/domain/responses/products_respose.dart';
 import 'package:flutter_laravel/zakat/presentation/shared/constant/app_constants.dart';
 import 'package:flutter_laravel/zakat/presentation/shared/constant/app_fonts.dart';
 import 'package:flutter_laravel/zakat/presentation/shared/constant/app_strings.dart';
@@ -33,11 +31,8 @@ class _AddZakatViewState extends State<AddZakatView> {
   final TextEditingController _membersCountController = TextEditingController();
   final TextEditingController _zakatValueController = TextEditingController();
 
-List<ProductsResponse> products = [];
-
   @override
   void initState() {
-    products = ZakatCubit.get(context).allProducts;
     getAllProducts();
     getAllZakat();
     super.initState();
@@ -59,8 +54,6 @@ List<ProductsResponse> products = [];
 
   bool suggested = false;
 
-  
-
   List<SuggestedItems> suggestedItems = [];
 
   Future<void> getAllProducts() async {
@@ -71,7 +64,7 @@ List<ProductsResponse> products = [];
     await ZakatCubit.get(context).getAllZakat();
   }
 
-  double calcRemain() {
+  double calcRemain(var products) {
     double allProductsValue = 0.0;
     for (var x in products) {
       double productTotal =
@@ -81,7 +74,7 @@ List<ProductsResponse> products = [];
     return allProductsValue;
   }
 
-  void getSuggested(int membersCount, int zakatValue) {
+  void getSuggested(int membersCount, int zakatValue, var products) {
     if (membersCount > 0 && zakatValue > 0) {
       double valPerMember = zakatValue / membersCount;
       suggestedItems.clear();
@@ -132,8 +125,7 @@ List<ProductsResponse> products = [];
             } else if (state.zakatState == RequestState.productsError) {
               hideLoading();
             } else if (state.zakatState == RequestState.productsLoaded) {
-              products = state.productsList;
-              for (var x in products) {
+              for (var x in state.productsList) {
                 x.productQuantity = 0;
               }
               hideLoading();
@@ -162,8 +154,10 @@ List<ProductsResponse> products = [];
                     _membersCountController,
                     AppStrings.membersCount,
                     TextInputType.number, (String textVal) {
-                  getSuggested(int.parse(_membersCountController.text),
-                      int.parse(_zakatValueController.text));
+                  getSuggested(
+                      int.parse(_membersCountController.text),
+                      int.parse(_zakatValueController.text),
+                      state.productsList);
                 }),
                 SizedBox(
                   height: AppConstants.heightBetweenElements,
@@ -172,10 +166,12 @@ List<ProductsResponse> products = [];
                     TextInputType.number, (String textVal) {
                   setState(() {
                     allValue = double.parse(textVal);
-                    remian = allValue - calcRemain();
+                    remian = allValue - calcRemain(state.productsList);
                   });
-                  getSuggested(int.parse(_membersCountController.text),
-                      int.parse(_zakatValueController.text));
+                  getSuggested(
+                      int.parse(_membersCountController.text),
+                      int.parse(_zakatValueController.text),
+                      state.productsList);
                 }),
                 suggested
                     ? SizedBox(
@@ -209,9 +205,8 @@ List<ProductsResponse> products = [];
                                 selected: suggestedItems[index].selected!,
                                 id: suggestedItems[index].imageId!,
                                 addSuggested: (int id) {
-                                  print('hereeeeeeee222333');
                                   setState(() {
-                                    for (var x in products) {
+                                    for (var x in state.productsList) {
                                       x.productQuantity = 0;
                                     }
                                     for (var n in suggestedItems) {
@@ -219,7 +214,6 @@ List<ProductsResponse> products = [];
                                     }
                                     suggestedItems[index].selected = true;
                                   });
-                                  print(products);
                                 },
                               );
                             }),
@@ -229,10 +223,10 @@ List<ProductsResponse> products = [];
                   height: 5.h,
                 ),
                 Expanded(
-                    child: products.isNotEmpty
+                    child: state.productsList.isNotEmpty
                         ? SingleChildScrollView(
                             child: ListView.separated(
-                                itemCount: products.length,
+                                itemCount: state.productsList.length,
                                 shrinkWrap: true,
                                 scrollDirection: Axis.vertical,
                                 physics: const NeverScrollableScrollPhysics(),
@@ -243,22 +237,28 @@ List<ProductsResponse> products = [];
                                         ),
                                 itemBuilder: (BuildContext context, int index) {
                                   return AddProductView(
-                                    productName: products[index].productName!,
-                                    productImage: products[index].productImage!,
-                                    productPrice: products[index].productPrice!,
-                                    productDesc: products[index].productDesc!,
+                                    productName:
+                                        state.productsList[index].productName!,
+                                    productImage:
+                                        state.productsList[index].productImage!,
+                                    productPrice:
+                                        state.productsList[index].productPrice!,
+                                    productDesc:
+                                        state.productsList[index].productDesc!,
                                     increaseQunatity: (int quantity) {
                                       setState(() {
-                                        products[index].productQuantity =
-                                            quantity;
-                                        remian = allValue - calcRemain();
+                                        state.productsList[index]
+                                            .productQuantity = quantity;
+                                        remian = allValue -
+                                            calcRemain(state.productsList);
                                       });
                                     },
                                     decreaseQunatity: (int quantity) {
                                       setState(() {
-                                        products[index].productQuantity =
-                                            quantity;
-                                        remian = allValue - calcRemain();
+                                        state.productsList[index]
+                                            .productQuantity = quantity;
+                                        remian = allValue -
+                                            calcRemain(state.productsList);
                                       });
                                     },
                                   );
@@ -367,7 +367,7 @@ List<ProductsResponse> products = [];
                               await ZakatCubit.get(context)
                                   .insertZakat(insertZakatRequest);
 
-                              for (var x in products) {
+                              for (var x in state.productsList) {
                                 InsertZakatProductsRequest
                                     insertZakatProductsRequest =
                                     InsertZakatProductsRequest(
