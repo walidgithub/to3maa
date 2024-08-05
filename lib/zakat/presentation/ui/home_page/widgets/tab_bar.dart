@@ -11,12 +11,15 @@ class TabBarWidget extends StatelessWidget {
   final String title;
   final String icon;
   final int index;
+  final int badgeVal;
   const TabBarWidget(
       {super.key,
       required this.activeTab,
       required this.title,
       required this.icon,
-      required this.index});
+      required this.index,
+      required this.badgeVal,
+      });
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +37,7 @@ class TabBarWidget extends StatelessWidget {
                 ? badges.Badge(
                     position: badges.BadgePosition.topEnd(top: -10, end: -12),
                     badgeContent: Text(
-                      '4',
+                      badgeVal.toString(),
                       style: AppTypography.kBold14.copyWith(
                           color: AppColors.cWhite,
                           fontFamily: AppFonts.boldFontFamily),

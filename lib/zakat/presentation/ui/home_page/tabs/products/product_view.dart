@@ -54,10 +54,12 @@ class _ProductViewState extends State<ProductView> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    widget.productName,
-                    style: AppTypography.kLight20
-                        .copyWith(fontFamily: AppFonts.boldFontFamily),
+                  SizedBox(
+                    width: MediaQuery.sizeOf(context).width * 0.30,
+                    child: Text(widget.productName,
+                        style: AppTypography.kLight20
+                            .copyWith(fontFamily: AppFonts.boldFontFamily),
+                        overflow: TextOverflow.ellipsis),
                   ),
                   Row(
                     children: [
@@ -78,11 +80,13 @@ class _ProductViewState extends State<ProductView> {
                       ),
                     ],
                   ),
-                  Text(
-                    widget.productDesc,
-                    style: AppTypography.kLight14.copyWith(
-                        fontFamily: AppFonts.boldFontFamily,
-                        color: AppColors.cGray),
+                  SizedBox(
+                    width: MediaQuery.sizeOf(context).width * 0.30,
+                    child: Text(widget.productDesc,
+                        style: AppTypography.kLight14.copyWith(
+                            fontFamily: AppFonts.boldFontFamily,
+                            color: AppColors.cGray),
+                        overflow: TextOverflow.ellipsis),
                   )
                 ],
               ),
@@ -203,7 +207,7 @@ class _ProductViewState extends State<ProductView> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      widget.editPrice(_editController.text);
+                      widget.editPrice(_editController.text.trim());
                       _editController.text = '';
                     },
                     child: Container(

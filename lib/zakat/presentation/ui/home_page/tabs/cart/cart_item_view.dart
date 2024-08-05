@@ -13,7 +13,6 @@ class CartItemView extends StatefulWidget {
   final String total;
   final String remain;
   final Function deleteCart;
-  final Function editCart;
   const CartItemView({
     super.key,
     required this.membersCount,
@@ -21,7 +20,6 @@ class CartItemView extends StatefulWidget {
     required this.total,
     required this.remain,
     required this.deleteCart,
-    required this.editCart,
   });
 
   @override
@@ -138,29 +136,6 @@ class _CartItemViewState extends State<CartItemView> {
                         ),
                         Row(
                           children: [
-                            GestureDetector(
-                              onTap: () {
-                                widget.editCart();
-                              },
-                              child: Container(
-                                width: 30.w,
-                                height: 30.w,
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                      width: 2.w, color: AppColors.cWhite),
-                                  borderRadius: BorderRadius.circular(4.w),
-                                  color: AppColors.cPrimary,
-                                  shape: BoxShape.rectangle,
-                                ),
-                                child: Icon(
-                                  Icons.edit,
-                                  size: 16.w,
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              width: 20.h,
-                            ),
                             GestureDetector(
                               onTap: () {
                                 widget.deleteCart();

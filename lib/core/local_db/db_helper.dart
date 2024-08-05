@@ -10,8 +10,6 @@ import 'package:flutter_laravel/zakat/domain/requsts/insert_product_request.dart
 import 'package:flutter_laravel/zakat/domain/requsts/insert_zakat_products_request.dart';
 import 'package:flutter_laravel/zakat/domain/requsts/insert_zakat_request.dart';
 import 'package:flutter_laravel/zakat/domain/requsts/update_product_request.dart';
-import 'package:flutter_laravel/zakat/domain/requsts/update_zakat_products_request.dart';
-import 'package:flutter_laravel/zakat/domain/requsts/update_zakat_request.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -78,27 +76,6 @@ class DbHelper {
   }
 
   // update ------------------------------------------
-  Future<int> updateZakatData(UpdateZakatRequest updateZakatRequest) async {
-    if (_db == null) {
-      await initDB(dbdName);
-    }
-
-    final db = _db!.database;
-    return db.update('zakat', updateZakatRequest.toJson(),
-        where: 'id = ?', whereArgs: [updateZakatRequest.id]);
-  }
-
-  Future<int> updateZakatProductsData(
-      UpdateZakatProductsRequest updateZakatProductsRequest) async {
-    if (_db == null) {
-      await initDB(dbdName);
-    }
-
-    final db = _db!.database;
-    return db.update('zakatProducts', updateZakatProductsRequest.toJson(),
-        where: 'id = ?', whereArgs: [updateZakatProductsRequest.id]);
-  }
-
   Future<int> updateProductData(
       UpdateProductRequest updateProductRequest) async {
     if (_db == null) {
@@ -132,6 +109,28 @@ class DbHelper {
 
     return db.delete('zakatProducts',
         where: 'zakatId = ?', whereArgs: [deleteZakatProductsRequest.id]);
+  }
+
+  Future<int> deleteAllZakatData() async {
+    if (_db == null) {
+      await initDB(dbdName);
+    }
+
+    final db = _db!.database;
+
+    return db
+        .delete('zakat');
+  }
+
+  Future<int> deleteAllZakatProductsData() async {
+    if (_db == null) {
+      await initDB(dbdName);
+    }
+
+    final db = _db!.database;
+
+    return db
+        .delete('zakatProducts');
   }
 
   Future<int> deleteProductData(

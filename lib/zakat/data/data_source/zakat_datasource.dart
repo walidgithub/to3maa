@@ -7,8 +7,6 @@ import 'package:flutter_laravel/zakat/domain/requsts/insert_product_request.dart
 import 'package:flutter_laravel/zakat/domain/requsts/insert_zakat_products_request.dart';
 import 'package:flutter_laravel/zakat/domain/requsts/insert_zakat_request.dart';
 import 'package:flutter_laravel/zakat/domain/requsts/update_product_request.dart';
-import 'package:flutter_laravel/zakat/domain/requsts/update_zakat_products_request.dart';
-import 'package:flutter_laravel/zakat/domain/requsts/update_zakat_request.dart';
 import 'package:flutter_laravel/zakat/domain/responses/products_respose.dart';
 import 'package:flutter_laravel/zakat/domain/responses/zakat_products_by_kilos_response.dart';
 import 'package:flutter_laravel/zakat/domain/responses/zakat_products_respose.dart';
@@ -20,14 +18,13 @@ abstract class BaseDataSource {
       InsertZakatProductsRequest insertZakatProductsRequest);
   Future<int> insertProductData(InsertProductRequest insertProductRequest);
 
-  Future<int> updateZakatData(UpdateZakatRequest updateZakatRequest);
-  Future<int> updateZakatProductsData(
-      UpdateZakatProductsRequest updateZakatProductsRequest);
   Future<int> updateProductData(UpdateProductRequest updateProductRequest);
 
   Future<int> deleteZakatData(DeleteZakatRequest deletetZakatRequest);
+  Future<int> deleteAllZakatData();
   Future<int> deleteZakatProductsData(
       DeleteZakatProductsRequest deletetZakatProductsRequest);
+      Future<int> deleteAllZakatProductsData();
   Future<int> deleteProductData(DeleteProductRequest deletetProductRequest);
 
   Future<List<ProductsResponse>> getAllProducts();
@@ -48,6 +45,27 @@ class ZakatDataSource extends BaseDataSource {
   Future<int> deleteProductData(
       DeleteProductRequest deletetProductRequest) async {
     final res = await _dbHelper.deleteProductData(deletetProductRequest);
+    try {
+      return res;
+    } catch (e) {
+      throw e.toString();
+    }
+  }
+
+  @override
+  Future<int> deleteAllZakatData() async {
+    final res = await _dbHelper.deleteAllZakatData();
+    try {
+      return res;
+    } catch (e) {
+      throw e.toString();
+    }
+  }
+  
+  @override
+  Future<int> deleteAllZakatProductsData() async {
+    final res =
+        await _dbHelper.deleteAllZakatProductsData();
     try {
       return res;
     } catch (e) {
@@ -156,28 +174,6 @@ class ZakatDataSource extends BaseDataSource {
   Future<int> updateProductData(
       UpdateProductRequest updateProductRequest) async {
     final res = await _dbHelper.updateProductData(updateProductRequest);
-    try {
-      return res;
-    } catch (e) {
-      throw e.toString();
-    }
-  }
-
-  @override
-  Future<int> updateZakatData(UpdateZakatRequest updateZakatRequest) async {
-    final res = await _dbHelper.updateZakatData(updateZakatRequest);
-    try {
-      return res;
-    } catch (e) {
-      throw e.toString();
-    }
-  }
-
-  @override
-  Future<int> updateZakatProductsData(
-      UpdateZakatProductsRequest updateZakatProductsRequest) async {
-    final res =
-        await _dbHelper.updateZakatProductsData(updateZakatProductsRequest);
     try {
       return res;
     } catch (e) {

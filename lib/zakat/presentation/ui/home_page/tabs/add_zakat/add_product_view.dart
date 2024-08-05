@@ -52,10 +52,14 @@ class _AddProductViewState extends State<AddProductView> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    widget.productName,
-                    style: AppTypography.kLight20
-                        .copyWith(fontFamily: AppFonts.boldFontFamily),
+                  SizedBox(
+                    width: MediaQuery.sizeOf(context).width * 0.30,
+                    child: Text(
+                      widget.productName,
+                      style: AppTypography.kLight20
+                          .copyWith(fontFamily: AppFonts.boldFontFamily),
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
                   Row(
                     children: [
@@ -76,11 +80,15 @@ class _AddProductViewState extends State<AddProductView> {
                       ),
                     ],
                   ),
-                  Text(
-                    widget.productDesc,
-                    style: AppTypography.kLight14.copyWith(
-                        fontFamily: AppFonts.boldFontFamily,
-                        color: AppColors.cGray),
+                  SizedBox(
+                    width: MediaQuery.sizeOf(context).width * 0.30,
+                    child: Text(
+                      widget.productDesc,
+                      style: AppTypography.kLight14.copyWith(
+                          fontFamily: AppFonts.boldFontFamily,
+                          color: AppColors.cGray),
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   )
                 ],
               ),

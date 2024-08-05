@@ -8,8 +8,6 @@ import 'package:flutter_laravel/zakat/domain/requsts/insert_product_request.dart
 import 'package:flutter_laravel/zakat/domain/requsts/insert_zakat_products_request.dart';
 import 'package:flutter_laravel/zakat/domain/requsts/insert_zakat_request.dart';
 import 'package:flutter_laravel/zakat/domain/requsts/update_product_request.dart';
-import 'package:flutter_laravel/zakat/domain/requsts/update_zakat_products_request.dart';
-import 'package:flutter_laravel/zakat/domain/requsts/update_zakat_request.dart';
 import 'package:flutter_laravel/zakat/domain/responses/products_respose.dart';
 import 'package:flutter_laravel/zakat/domain/responses/zakat_products_by_kilos_response.dart';
 import 'package:flutter_laravel/zakat/domain/responses/zakat_products_respose.dart';
@@ -23,17 +21,15 @@ abstract class BaseRepository {
   Future<Either<Failure, int>> insertProductData(
       InsertProductRequest insertProductRequest);
 
-  Future<Either<Failure, int>> updateZakatData(
-      UpdateZakatRequest updateZakatRequest);
-  Future<Either<Failure, int>> updateZakatProductsData(
-      UpdateZakatProductsRequest updateZakatProductsRequest);
   Future<Either<Failure, int>> updateProductData(
       UpdateProductRequest updateProductRequest);
 
   Future<Either<Failure, int>> deletetZakatData(
       DeleteZakatRequest deletetZakatRequest);
+      Future<Either<Failure, int>> deletetAllZakatData();
   Future<Either<Failure, int>> deletetZakatProductsData(
       DeleteZakatProductsRequest deletetZakatProductsRequest);
+      Future<Either<Failure, int>> deletetAllZakatProductsData();
   Future<Either<Failure, int>> deletetProductData(
       DeleteProductRequest deletetProductRequest);
 

@@ -6,6 +6,9 @@ class AppStrings {
   static const String addNew = "أضــف جــديــد";
   static const String editProduct = "تــعــديــل";
   static const String cart = "الـعـربـة";
+  static const String successDelete = "تـم الـحـذف بـنـجـاح";
+  static const String successAdd = "تـمـت الإضـافـة بـنـجـاح";
+  static const String successUpdate = "تـم الـتـعـديـل بـنـجـاح";
 
   static const String member = "الإســم";
   static const String zakatValue = "قــيـمـة الـزكــاة";
@@ -35,9 +38,11 @@ class AppStrings {
   static const String someThingWentWrong = "some thing went wrong";
 
   static const String yes = 'نعم';
+  static const String loading = 'تـحـمـيـل';
   static const String no = 'لا';
   static const String warning = 'تحذير';
   static const String closeApp = 'هل تريد الخروج من التطبيق؟';
+  static const String deleteAllData = 'هل تريد حـذف كـل مـا فـى الـعـربـة؟';
 
   // error handler
   static const String success = "success";

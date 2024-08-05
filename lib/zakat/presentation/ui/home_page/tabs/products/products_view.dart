@@ -7,6 +7,7 @@ import 'package:flutter_laravel/zakat/domain/entities/products.dart';
 import 'package:flutter_laravel/zakat/domain/requsts/delete_product_request.dart';
 import 'package:flutter_laravel/zakat/domain/requsts/insert_product_request.dart';
 import 'package:flutter_laravel/zakat/domain/requsts/update_product_request.dart';
+import 'package:flutter_laravel/zakat/domain/responses/products_respose.dart';
 import 'package:flutter_laravel/zakat/presentation/shared/constant/app_assets.dart';
 import 'package:flutter_laravel/zakat/presentation/shared/constant/app_constants.dart';
 import 'package:flutter_laravel/zakat/presentation/shared/constant/app_fonts.dart';
@@ -17,6 +18,7 @@ import 'package:flutter_laravel/zakat/presentation/ui/home_page/cubit/zakat_cubi
 import 'package:flutter_laravel/zakat/presentation/ui/home_page/cubit/zakat_states.dart';
 import 'package:flutter_laravel/zakat/presentation/ui/home_page/tabs/products/product_image_view.dart';
 import 'package:flutter_laravel/zakat/presentation/ui/home_page/tabs/products/product_view.dart';
+import 'package:flutter_laravel/zakat/presentation/ui_components/loading_dialog.dart';
 import 'package:flutter_laravel/zakat/presentation/ui_components/text_field_widget.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -34,11 +36,10 @@ class _ProductsViewState extends State<ProductsView> {
   final TextEditingController _productPriceController = TextEditingController();
   final TextEditingController _productDescController = TextEditingController();
 
+  List<ProductsResponse> products = [];
+
   int editProductId = 0;
-  String editProductPrice = '';
-  String editProductName = '';
-  String editProductDesc = '';
-  String editProductImage = '';
+  bool editProduct = false;
 
   List<ProductImages> productImages = [
     ProductImages(imagePath: AppAssets.package, activeImage: true),
@@ -56,6 +57,7 @@ class _ProductsViewState extends State<ProductsView> {
   @override
   void initState() {
     productImage = productImages[0].imagePath!;
+    products = ZakatCubit.get(context).allProducts;
     getAllProducts();
     super.initState();
   }
@@ -116,19 +118,36 @@ class _ProductsViewState extends State<ProductsView> {
             body: BlocConsumer<ZakatCubit, ZakatState>(
                 listener: (context, state) async {
               if (state.zakatState == RequestState.productsLoading) {
+                showLoading();
               } else if (state.zakatState == RequestState.productsError) {
-                print('errorrrr loaded');
+                hideLoading();
               } else if (state.zakatState == RequestState.productsLoaded) {
                 products = state.productsList;
-                print('loaded');
+                hideLoading();
               } else if (state.zakatState == RequestState.deleteLoading) {
+                showLoading();
               } else if (state.zakatState == RequestState.deleteError) {
+                hideLoading();
               } else if (state.zakatState == RequestState.deleteDone) {
-                print('done deleted');
+                hideLoading();
+                final snackBar = SnackBar(
+                  duration:
+                      Duration(milliseconds: AppConstants.durationOfSnackBar),
+                  content: const Text(AppStrings.successDelete),
+                );
+                ScaffoldMessenger.of(context).showSnackBar(snackBar);
               } else if (state.zakatState == RequestState.updateLoading) {
+                showLoading();
               } else if (state.zakatState == RequestState.updateError) {
+                hideLoading();
               } else if (state.zakatState == RequestState.updateDone) {
-                print('done updated');
+                hideLoading();
+                final snackBar = SnackBar(
+                  duration:
+                      Duration(milliseconds: AppConstants.durationOfSnackBar),
+                  content: const Text(AppStrings.successUpdate),
+                );
+                ScaffoldMessenger.of(context).showSnackBar(snackBar);
               }
             }, builder: (context, state) {
               return products.isNotEmpty
@@ -159,13 +178,26 @@ class _ProductsViewState extends State<ProductsView> {
                               },
                               editProduct: () {
                                 editProductId = products[index].id;
-                                editProductPrice =
+                                _productPriceController.text =
                                     products[index].productPrice!;
-                                editProductName = products[index].productName!;
-                                editProductDesc = products[index].productDesc!;
-                                editProductImage =
-                                    products[index].productImage!;
+                                _productNameController.text =
+                                    products[index].productName!;
+                                _productDescController.text =
+                                    products[index].productDesc!;
+
                                 productImage = products[index].productImage!;
+
+                                for (var n in productImages) {
+                                  n.activeImage = false;
+                                }
+
+                                int getImageIndex = productImages.indexWhere(
+                                    (element) =>
+                                        element.imagePath ==
+                                        products[index].productImage!);
+                                productImages[getImageIndex].activeImage = true;
+
+                                editProduct = true;
                                 setState(() {
                                   addNew = true;
                                 });
@@ -213,7 +245,9 @@ class _ProductsViewState extends State<ProductsView> {
                   iconSize: 30.w,
                   icon: const Icon(Icons.arrow_back),
                   onPressed: () {
+                    clearValues();
                     setState(() {
+                      editProduct = false;
                       addNew = false;
                     });
                   },
@@ -226,9 +260,7 @@ class _ProductsViewState extends State<ProductsView> {
             title: FadeInLeft(
               duration: Duration(milliseconds: AppConstants.animation),
               child: Text(
-                editProductName == ""
-                    ? AppStrings.addNew
-                    : AppStrings.editProduct,
+                !editProduct ? AppStrings.addNew : AppStrings.editProduct,
                 style: AppTypography.kLight20
                     .copyWith(fontFamily: AppFonts.boldFontFamily),
               ),
@@ -238,20 +270,36 @@ class _ProductsViewState extends State<ProductsView> {
           body: BlocConsumer<ZakatCubit, ZakatState>(
             listener: (context, state) async {
               if (state.zakatState == RequestState.insertLoading) {
+                showLoading();
               } else if (state.zakatState == RequestState.insertError) {
-                print('errorrrr');
+                hideLoading();
               } else if (state.zakatState == RequestState.insertDone) {
-                print('done');
+                hideLoading();
+                final snackBar = SnackBar(
+                  duration:
+                      Duration(milliseconds: AppConstants.durationOfSnackBar),
+                  content: const Text(AppStrings.successAdd),
+                );
+                ScaffoldMessenger.of(context).showSnackBar(snackBar);
               } else if (state.zakatState == RequestState.productsLoading) {
+                showLoading();
               } else if (state.zakatState == RequestState.productsError) {
-                print('errorrrr loaded');
+                hideLoading();
               } else if (state.zakatState == RequestState.productsLoaded) {
                 products = state.productsList;
-                print('loaded');
+                hideLoading();
               } else if (state.zakatState == RequestState.updateLoading) {
+                showLoading();
               } else if (state.zakatState == RequestState.updateError) {
+                hideLoading();
               } else if (state.zakatState == RequestState.updateDone) {
-                print('done updated');
+                hideLoading();
+                final snackBar = SnackBar(
+                  duration:
+                      Duration(milliseconds: AppConstants.durationOfSnackBar),
+                  content: const Text(AppStrings.successUpdate),
+                );
+                ScaffoldMessenger.of(context).showSnackBar(snackBar);
               }
             },
             builder: (context, state) {
@@ -318,39 +366,44 @@ class _ProductsViewState extends State<ProductsView> {
                   ),
                   GestureDetector(
                     onTap: () async {
-                      if (editProductName == '') {
-                        if (_productNameController.text == "" ||
-                            double.parse(_productPriceController.text) == 0) {
+                      if (editProduct) {
+                        if (_productNameController.text.trim() == "" ||
+                            double.parse(_productPriceController.text.trim()) ==
+                                0) {
                           return;
                         }
 
                         UpdateProductRequest updateProductRequest =
                             (UpdateProductRequest(
                                 id: editProductId,
-                                productPrice: _productPriceController.text,
-                                productDesc: _productDescController.text,
-                                productName: _productNameController.text,
+                                productPrice:
+                                    _productPriceController.text.trim(),
+                                productDesc: _productDescController.text.trim(),
+                                productName: _productNameController.text.trim(),
                                 productImage: productImage));
 
                         await ZakatCubit.get(context)
                             .updateProduct(updateProductRequest);
 
                         editProductId = 0;
-                        editProductPrice = '';
-                        editProductName = '';
-                        editProductDesc = '';
-                        editProductImage = '';
+                        _productPriceController.text = '';
+                        _productNameController.text = '';
+                        _productDescController.text = '';
+                        editProduct = false;
+                        print('doneeeeeeee');
                       } else {
-                        if (_productNameController.text == "" ||
-                            double.parse(_productPriceController.text) == 0) {
+                        if (_productNameController.text.trim() == "" ||
+                            double.parse(_productPriceController.text.trim()) ==
+                                0) {
                           return;
                         }
                         InsertProductRequest insertProductRequest =
                             InsertProductRequest(
-                                productDesc: _productDescController.text,
+                                productDesc: _productDescController.text.trim(),
                                 productImage: productImage,
-                                productName: _productNameController.text,
-                                productPrice: _productPriceController.text);
+                                productName: _productNameController.text.trim(),
+                                productPrice:
+                                    _productPriceController.text.trim());
 
                         await ZakatCubit.get(context)
                             .insertProduct(insertProductRequest);

@@ -11,8 +11,6 @@ import 'package:flutter_laravel/zakat/domain/requsts/insert_product_request.dart
 import 'package:flutter_laravel/zakat/domain/requsts/insert_zakat_products_request.dart';
 import 'package:flutter_laravel/zakat/domain/requsts/insert_zakat_request.dart';
 import 'package:flutter_laravel/zakat/domain/requsts/update_product_request.dart';
-import 'package:flutter_laravel/zakat/domain/requsts/update_zakat_products_request.dart';
-import 'package:flutter_laravel/zakat/domain/requsts/update_zakat_request.dart';
 import 'package:flutter_laravel/zakat/domain/responses/products_respose.dart';
 import 'package:flutter_laravel/zakat/domain/responses/zakat_products_by_kilos_response.dart';
 import 'package:flutter_laravel/zakat/domain/responses/zakat_products_respose.dart';
@@ -49,11 +47,32 @@ class ZakatRepository extends BaseRepository {
   }
 
   @override
+  Future<Either<Failure, int>> deletetAllZakatData() async {
+    try {
+      final result = await _baseDataSource.deleteAllZakatData();
+      return Right(result);
+    } catch (error) {
+      return Left(ErrorHandler.handle(error).failure);
+    }
+  }
+
+  @override
   Future<Either<Failure, int>> deletetZakatProductsData(
       DeleteZakatProductsRequest deletetZakatProductsRequest) async {
     try {
       final result = await _baseDataSource
           .deleteZakatProductsData(deletetZakatProductsRequest);
+      return Right(result);
+    } catch (error) {
+      return Left(ErrorHandler.handle(error).failure);
+    }
+  }
+
+  @override
+  Future<Either<Failure, int>> deletetAllZakatProductsData() async {
+    try {
+      final result = await _baseDataSource
+          .deleteAllZakatProductsData();
       return Right(result);
     } catch (error) {
       return Left(ErrorHandler.handle(error).failure);
@@ -146,29 +165,6 @@ class ZakatRepository extends BaseRepository {
     try {
       final result =
           await _baseDataSource.updateProductData(updateProductRequest);
-      return Right(result);
-    } catch (error) {
-      return Left(ErrorHandler.handle(error).failure);
-    }
-  }
-
-  @override
-  Future<Either<Failure, int>> updateZakatData(
-      UpdateZakatRequest updateZakatRequest) async {
-    try {
-      final result = await _baseDataSource.updateZakatData(updateZakatRequest);
-      return Right(result);
-    } catch (error) {
-      return Left(ErrorHandler.handle(error).failure);
-    }
-  }
-
-  @override
-  Future<Either<Failure, int>> updateZakatProductsData(
-      UpdateZakatProductsRequest updateZakatProductsRequest) async {
-    try {
-      final result = await _baseDataSource
-          .updateZakatProductsData(updateZakatProductsRequest);
       return Right(result);
     } catch (error) {
       return Left(ErrorHandler.handle(error).failure);

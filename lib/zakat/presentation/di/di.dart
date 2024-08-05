@@ -2,6 +2,8 @@ import 'package:flutter_laravel/core/local_db/db_helper.dart';
 import 'package:flutter_laravel/zakat/data/data_source/zakat_datasource.dart';
 import 'package:flutter_laravel/zakat/data/repository/zakat_repository.dart';
 import 'package:flutter_laravel/zakat/domain/repository/base_repository.dart';
+import 'package:flutter_laravel/zakat/domain/use_cases/zakat_usecase/delete_all_zakat_products_usecase.dart';
+import 'package:flutter_laravel/zakat/domain/use_cases/zakat_usecase/delete_all_zakat_usecase.dart';
 import 'package:flutter_laravel/zakat/domain/use_cases/zakat_usecase/delete_product_usecase.dart';
 import 'package:flutter_laravel/zakat/domain/use_cases/zakat_usecase/delete_zakat_products_usecase.dart';
 import 'package:flutter_laravel/zakat/domain/use_cases/zakat_usecase/delete_zakat_usecase.dart';
@@ -13,8 +15,6 @@ import 'package:flutter_laravel/zakat/domain/use_cases/zakat_usecase/insert_prod
 import 'package:flutter_laravel/zakat/domain/use_cases/zakat_usecase/insert_zakat_products_usecase.dart';
 import 'package:flutter_laravel/zakat/domain/use_cases/zakat_usecase/insert_zakat_usecase.dart';
 import 'package:flutter_laravel/zakat/domain/use_cases/zakat_usecase/update_product_usecase.dart';
-import 'package:flutter_laravel/zakat/domain/use_cases/zakat_usecase/update_zakat_products_usecase.dart';
-import 'package:flutter_laravel/zakat/domain/use_cases/zakat_usecase/update_zakat_usecase.dart';
 import 'package:flutter_laravel/zakat/presentation/ui/home_page/cubit/zakat_cubit.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -45,8 +45,14 @@ class ServiceLocator {
     sl.registerLazySingleton<DeleteZakatProductsUseCase>(
         () => DeleteZakatProductsUseCase(sl()));
 
+        sl.registerLazySingleton<DeleteAllZakatProductsUseCase>(
+        () => DeleteAllZakatProductsUseCase(sl()));
+
     sl.registerLazySingleton<DeleteZakatUseCase>(
         () => DeleteZakatUseCase(sl()));
+
+        sl.registerLazySingleton<DeleteAllZakatUseCase>(
+        () => DeleteAllZakatUseCase(sl()));
 
     sl.registerLazySingleton<GetAllProductsUseCase>(
         () => GetAllProductsUseCase(sl()));
@@ -71,12 +77,6 @@ class ServiceLocator {
 
     sl.registerLazySingleton<UpdateProductUseCase>(
         () => UpdateProductUseCase(sl()));
-
-    sl.registerLazySingleton<UpdateZakatProductsUseCase>(
-        () => UpdateZakatProductsUseCase(sl()));
-
-    sl.registerLazySingleton<UpdateZakatUseCase>(
-        () => UpdateZakatUseCase(sl()));
 
     // Repositories
     sl.registerLazySingleton<BaseRepository>(() => ZakatRepository(sl()));

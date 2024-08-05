@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_laravel/zakat/presentation/shared/constant/app_fonts.dart';
 import 'package:flutter_laravel/zakat/presentation/shared/style/app_colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,6 +9,9 @@ Widget textFieldWidget(TextEditingController textController, String labelText,
   return TextField(
       // autofocus: true,
       onChanged: onChanged,
+      inputFormatters: [
+        LengthLimitingTextInputFormatter(50),
+      ],
       keyboardType: textInputType,
       controller: textController,
       style: TextStyle(fontSize: 15.sp, fontFamily: AppFonts.boldFontFamily),

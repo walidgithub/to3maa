@@ -11,6 +11,7 @@ import 'package:flutter_laravel/zakat/presentation/shared/style/app_colors.dart'
 import 'package:flutter_laravel/zakat/presentation/ui/home_page/cubit/zakat_cubit.dart';
 import 'package:flutter_laravel/zakat/presentation/ui/home_page/cubit/zakat_states.dart';
 import 'package:flutter_laravel/zakat/presentation/ui/home_page/tabs/totals/totals_products_view.dart';
+import 'package:flutter_laravel/zakat/presentation/ui_components/loading_dialog.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TotalsView extends StatefulWidget {
@@ -56,12 +57,14 @@ class _TotalsViewState extends State<TotalsView> {
               listener: (context, state) async {
             if (state.zakatState ==
                 RequestState.getZakatProductsByKilosLoading) {
+              showLoading();
             } else if (state.zakatState ==
                 RequestState.getZakatProductsByKilosError) {
-              print('errorrrr loaded');
+              hideLoading();
             } else if (state.zakatState ==
                 RequestState.getZakatProductsByKilosLoaded) {
               zakatByKilos = state.zakatProductsByKiloList;
+              hideLoading();
             }
           }, builder: (context, state) {
             return zakatByKilos.isNotEmpty

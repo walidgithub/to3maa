@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,6 +15,7 @@ import 'package:flutter_laravel/zakat/presentation/shared/style/app_colors.dart'
 import 'package:flutter_laravel/zakat/presentation/ui/home_page/cubit/zakat_cubit.dart';
 import 'package:flutter_laravel/zakat/presentation/ui/home_page/cubit/zakat_states.dart';
 import 'package:flutter_laravel/zakat/presentation/ui/home_page/tabs/cart/cart_item_view.dart';
+import 'package:flutter_laravel/zakat/presentation/ui_components/loading_dialog.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CartView extends StatefulWidget {
@@ -31,6 +34,11 @@ class _CartViewState extends State<CartView> {
 
   Future<void> getAllZakat() async {
     await ZakatCubit.get(context).getAllZakat();
+  }
+
+  Future<void> deleteAll() async {
+    await ZakatCubit.get(context).deleteAllZakat();
+    await ZakatCubit.get(context).deleteAllZakatProducts();
   }
 
   double getTotal() {
@@ -71,14 +79,18 @@ class _CartViewState extends State<CartView> {
         body: BlocConsumer<ZakatCubit, ZakatState>(
             listener: (context, state) async {
           if (state.zakatState == RequestState.zakatLoading) {
+            showLoading();
           } else if (state.zakatState == RequestState.zakatError) {
-            print('errorrrr loaded');
+            hideLoading();
           } else if (state.zakatState == RequestState.zakatLoaded) {
             cartItems = state.zakatList;
+            hideLoading();
           } else if (state.zakatState == RequestState.deleteLoading) {
+            showLoading();
           } else if (state.zakatState == RequestState.deleteError) {
+            hideLoading();
           } else if (state.zakatState == RequestState.deleteDone) {
-            print('done deleted');
+            hideLoading();
           }
         }, builder: (context, state) {
           return Column(
@@ -120,10 +132,20 @@ class _CartViewState extends State<CartView> {
                                         .deleteZakatProducts(
                                             deleteZakatProductsRequest);
 
+                                    final snackBar = SnackBar(
+                                      duration: Duration(
+                                          milliseconds:
+                                              AppConstants.durationOfSnackBar),
+                                      content:
+                                          const Text(AppStrings.successDelete),
+                                    );
+                                    // ignore: use_build_context_synchronously
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(snackBar);
+
                                     await getAllZakat();
                                     setState(() {});
                                   },
-                                  editCart: () {},
                                 );
                               }),
                         )
@@ -214,26 +236,69 @@ class _CartViewState extends State<CartView> {
                         ),
                       ],
                     ),
-                    Container(
-                        width: 80.w,
-                        height: 50.w,
-                        decoration: BoxDecoration(
-                          border:
-                              Border.all(width: 2.w, color: AppColors.cPrimary),
-                          borderRadius:
-                              BorderRadius.circular(AppConstants.radius),
-                          color: AppColors.cWhite,
-                          shape: BoxShape.rectangle,
-                        ),
-                        child: Center(
-                          child: Text(
-                            AppStrings.deleteAll,
-                            style: AppTypography.kLight14.copyWith(
-                              fontFamily: AppFonts.qabasFontFamily,
-                              color: AppColors.cButton,
-                            ),
+                    GestureDetector(
+                      onTap: () async {
+                        cartItems.isNotEmpty
+                            ? await showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return Directionality(
+                                    textDirection: TextDirection.rtl,
+                                    child: AlertDialog(
+                                      title: const Text(AppStrings.warning),
+                                      content:
+                                          const Text(AppStrings.deleteAllData),
+                                      actions: [
+                                        TextButton(
+                                            onPressed: () async {
+                                              await deleteAll();
+                                              await getAllZakat();
+                                              final snackBar = SnackBar(
+                                                duration: Duration(
+                                                    milliseconds: AppConstants
+                                                        .durationOfSnackBar),
+                                                content: const Text(
+                                                    AppStrings.successDelete),
+                                              );
+                                              // ignore: use_build_context_synchronously
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(snackBar);
+                                              // ignore: use_build_context_synchronously
+                                              Navigator.of(context).pop(false);
+                                            },
+                                            child: const Text(AppStrings.yes)),
+                                        TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop(false);
+                                            },
+                                            child: const Text(AppStrings.no)),
+                                      ],
+                                    ),
+                                  );
+                                })
+                            : null;
+                      },
+                      child: Container(
+                          width: 80.w,
+                          height: 50.w,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                                width: 2.w, color: AppColors.cPrimary),
+                            borderRadius:
+                                BorderRadius.circular(AppConstants.radius),
+                            color: AppColors.cWhite,
+                            shape: BoxShape.rectangle,
                           ),
-                        ))
+                          child: Center(
+                            child: Text(
+                              AppStrings.deleteAll,
+                              style: AppTypography.kLight14.copyWith(
+                                fontFamily: AppFonts.qabasFontFamily,
+                                color: AppColors.cButton,
+                              ),
+                            ),
+                          )),
+                    )
                   ],
                 ),
               )

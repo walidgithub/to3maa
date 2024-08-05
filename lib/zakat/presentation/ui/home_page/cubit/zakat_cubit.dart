@@ -9,9 +9,10 @@ import 'package:flutter_laravel/zakat/domain/requsts/insert_product_request.dart
 import 'package:flutter_laravel/zakat/domain/requsts/insert_zakat_products_request.dart';
 import 'package:flutter_laravel/zakat/domain/requsts/insert_zakat_request.dart';
 import 'package:flutter_laravel/zakat/domain/requsts/update_product_request.dart';
-import 'package:flutter_laravel/zakat/domain/requsts/update_zakat_products_request.dart';
-import 'package:flutter_laravel/zakat/domain/requsts/update_zakat_request.dart';
+import 'package:flutter_laravel/zakat/domain/responses/products_respose.dart';
 import 'package:flutter_laravel/zakat/domain/use_cases/base_usecase/base_usecase.dart';
+import 'package:flutter_laravel/zakat/domain/use_cases/zakat_usecase/delete_all_zakat_products_usecase.dart';
+import 'package:flutter_laravel/zakat/domain/use_cases/zakat_usecase/delete_all_zakat_usecase.dart';
 import 'package:flutter_laravel/zakat/domain/use_cases/zakat_usecase/delete_product_usecase.dart';
 import 'package:flutter_laravel/zakat/domain/use_cases/zakat_usecase/delete_zakat_products_usecase.dart';
 import 'package:flutter_laravel/zakat/domain/use_cases/zakat_usecase/delete_zakat_usecase.dart';
@@ -23,15 +24,15 @@ import 'package:flutter_laravel/zakat/domain/use_cases/zakat_usecase/insert_prod
 import 'package:flutter_laravel/zakat/domain/use_cases/zakat_usecase/insert_zakat_products_usecase.dart';
 import 'package:flutter_laravel/zakat/domain/use_cases/zakat_usecase/insert_zakat_usecase.dart';
 import 'package:flutter_laravel/zakat/domain/use_cases/zakat_usecase/update_product_usecase.dart';
-import 'package:flutter_laravel/zakat/domain/use_cases/zakat_usecase/update_zakat_products_usecase.dart';
-import 'package:flutter_laravel/zakat/domain/use_cases/zakat_usecase/update_zakat_usecase.dart';
 import 'package:flutter_laravel/zakat/presentation/ui/home_page/cubit/zakat_states.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ZakatCubit extends Cubit<ZakatState> {
   final DeleteProductUseCase deleteProductUseCase;
   final DeleteZakatProductsUseCase deleteZakatProductsUseCase;
+  final DeleteAllZakatProductsUseCase deleteAllZakatProductsUseCase;
   final DeleteZakatUseCase deleteZakatUseCase;
+  final DeleteAllZakatUseCase deleteAllZakatUseCase;
   final GetAllProductsUseCase getAllProductsUseCase;
   final GetAllZakatUseCase getAllZakatUseCase;
   final GetZakatProductsByKilosUseCase getZakatProductsByKilosUseCase;
@@ -40,13 +41,13 @@ class ZakatCubit extends Cubit<ZakatState> {
   final InsertZakatProductsUseCase insertZakatProductsUseCase;
   final InsertZakatUseCase insertZakatUseCase;
   final UpdateProductUseCase updateProductUseCase;
-  final UpdateZakatProductsUseCase updateZakatProductsUseCase;
-  final UpdateZakatUseCase updateZakatUseCase;
 
   ZakatCubit(
     this.deleteProductUseCase,
     this.deleteZakatProductsUseCase,
+    this.deleteAllZakatProductsUseCase,
     this.deleteZakatUseCase,
+    this.deleteAllZakatUseCase,
     this.getAllProductsUseCase,
     this.getAllZakatUseCase,
     this.getZakatProductsByKilosUseCase,
@@ -55,9 +56,9 @@ class ZakatCubit extends Cubit<ZakatState> {
     this.insertZakatProductsUseCase,
     this.insertZakatUseCase,
     this.updateProductUseCase,
-    this.updateZakatProductsUseCase,
-    this.updateZakatUseCase,
   ) : super(const ZakatState());
+
+  List<ProductsResponse> allProducts = [];
 
   static ZakatCubit get(context) => BlocProvider.of(context);
 
@@ -114,39 +115,6 @@ class ZakatCubit extends Cubit<ZakatState> {
   }
 
   // update data ------------------------------------------------------
-  FutureOr<void> updateZakat(UpdateZakatRequest updateZakatRequest) async {
-    emit(state.copyWith(
-        zakatState: RequestState.updateLoading, zakatMessage: '', zakatId: 0));
-
-    final result = await updateProductUseCase(updateZakatRequest);
-
-    result.fold(
-        (l) => emit(state.copyWith(
-            zakatState: RequestState.updateError, zakatMessage: l.message)),
-        (r) => emit(state.copyWith(
-              zakatId: r,
-              zakatState: RequestState.updateDone,
-            )));
-  }
-
-  FutureOr<void> updateZakatProducts(
-      UpdateZakatProductsRequest updateZakatProductsRequest) async {
-    emit(state.copyWith(
-        zakatState: RequestState.updateLoading,
-        zakatMessage: '',
-        zakatProductId: 0));
-
-    final result = await updateProductUseCase(updateZakatProductsRequest);
-
-    result.fold(
-        (l) => emit(state.copyWith(
-            zakatState: RequestState.updateError, zakatMessage: l.message)),
-        (r) => emit(state.copyWith(
-              zakatProductId: r,
-              zakatState: RequestState.updateDone,
-            )));
-  }
-
   FutureOr<void> updateProduct(
       UpdateProductRequest updateProductRequest) async {
     emit(state.copyWith(
@@ -181,6 +149,21 @@ class ZakatCubit extends Cubit<ZakatState> {
             )));
   }
 
+  FutureOr<void> deleteAllZakat() async {
+    emit(state.copyWith(
+        zakatState: RequestState.deleteLoading, zakatMessage: '', zakatId: 0));
+
+    final result = await deleteAllZakatUseCase(const NoParameters());
+
+    result.fold(
+        (l) => emit(state.copyWith(
+            zakatState: RequestState.deleteError, zakatMessage: l.message)),
+        (r) => emit(state.copyWith(
+              zakatId: r,
+              zakatState: RequestState.deleteDone,
+            )));
+  }
+
   FutureOr<void> deleteZakatProducts(
       DeleteZakatProductsRequest deleteZakatProductsRequest) async {
     emit(state.copyWith(
@@ -189,6 +172,23 @@ class ZakatCubit extends Cubit<ZakatState> {
         zakatProductId: 0));
 
     final result = await deleteZakatProductsUseCase(deleteZakatProductsRequest);
+
+    result.fold(
+        (l) => emit(state.copyWith(
+            zakatState: RequestState.deleteError, zakatMessage: l.message)),
+        (r) => emit(state.copyWith(
+              zakatProductId: r,
+              zakatState: RequestState.deleteDone,
+            )));
+  }
+
+  FutureOr<void> deleteAllZakatProducts() async {
+    emit(state.copyWith(
+        zakatState: RequestState.deleteLoading,
+        zakatMessage: '',
+        zakatProductId: 0));
+
+    final result = await deleteAllZakatProductsUseCase(const NoParameters());
 
     result.fold(
         (l) => emit(state.copyWith(
@@ -288,4 +288,7 @@ class ZakatCubit extends Cubit<ZakatState> {
               zakatState: RequestState.getZakatProductsByZakatIdLoaded,
             )));
   }
+
+  // -------------------------------------------------------
+  void fff() {}
 }
