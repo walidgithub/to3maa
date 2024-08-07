@@ -156,9 +156,7 @@ class _AddZakatViewState extends State<AddZakatView> {
             } else if (state.zakatState == RequestState.zakatLoaded) {
               cartItems = state.zakatList;
               hideLoading();
-            } else if (state.zakatState == RequestState.updateLoading) {
-            } else if (state.zakatState == RequestState.updateError) {
-            } else if (state.zakatState == RequestState.updateDone) {}
+            }
           }, builder: (context, state) {
             return Column(
               children: [

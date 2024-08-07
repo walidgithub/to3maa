@@ -459,6 +459,7 @@ class _ProductsViewState extends State<ProductsView> {
                                 productDesc: _productDescController.text.trim(),
                                 productImage: productImage,
                                 productName: _productNameController.text.trim(),
+                                productQuantity: 0,
                                 productPrice:
                                     _productPriceController.text.trim());
 
