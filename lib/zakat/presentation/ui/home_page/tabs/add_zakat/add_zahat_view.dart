@@ -1,4 +1,4 @@
-import 'package:To3maa/zakat/domain/requsts/reset_product_quantity_request.dart';
+import 'package:To3maa/zakat/domain/requests/reset_product_quantity_request.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,9 +6,9 @@ import 'package:To3maa/core/local_db/db_helper.dart';
 import 'package:To3maa/core/utils/enums.dart';
 import 'package:To3maa/zakat/domain/entities/cart_items.dart';
 import 'package:To3maa/zakat/domain/entities/suggested_items.dart';
-import 'package:To3maa/zakat/domain/requsts/insert_zakat_products_request.dart';
-import 'package:To3maa/zakat/domain/requsts/insert_zakat_request.dart';
-import 'package:To3maa/zakat/domain/requsts/update_product_quantity_request.dart';
+import 'package:To3maa/zakat/domain/requests/insert_zakat_products_request.dart';
+import 'package:To3maa/zakat/domain/requests/insert_zakat_request.dart';
+import 'package:To3maa/zakat/domain/requests/update_product_quantity_request.dart';
 import 'package:To3maa/zakat/presentation/shared/constant/app_constants.dart';
 import 'package:To3maa/zakat/presentation/shared/constant/app_fonts.dart';
 import 'package:To3maa/zakat/presentation/shared/constant/app_strings.dart';
