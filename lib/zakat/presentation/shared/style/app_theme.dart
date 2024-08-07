@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:to3maa/zakat/presentation/shared/constant/app_constants.dart';
-import 'package:to3maa/zakat/presentation/shared/style/app_colors.dart';
+import 'package:To3maa/zakat/presentation/shared/constant/app_constants.dart';
+import 'package:To3maa/zakat/presentation/shared/style/app_colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../constant/app_typography.dart';

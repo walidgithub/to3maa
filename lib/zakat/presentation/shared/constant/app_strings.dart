@@ -19,11 +19,16 @@ class AppStrings {
   static const String productName = "اسـم الـصـنـف";
   static const String productPrice = "سـعـر الصـنـف";
 
+  static const String package = "";
   static const String rice = "أرز";
   static const String dates = "تــمـر";
-  static const String parley = "شـعـيـر";
+  static const String pasta = "مكرونة";
   static const String raisins = "زبـيـب";
   static const String wheat = "دقـيـق";
+  static const String beans = "فـاصـولـيـا";
+  static const String favaBeans = "فــول";
+  static const String lobia = "لـوبـيـا";
+  static const String lentils = "عــدس";
 
   static const String total = "الإجمالى: ";
   static const String remain = "المتبقى: ";

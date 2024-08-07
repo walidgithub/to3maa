@@ -1,4 +1,4 @@
-import 'package:to3maa/zakat/domain/responses/zakat_products_by_kilos_response.dart';
+import 'package:To3maa/zakat/domain/responses/zakat_products_by_kilos_response.dart';
 
 class ZakatProductsByKilosModel extends ZakatProductsByKilosResponse {
   const ZakatProductsByKilosModel({

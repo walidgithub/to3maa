@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "to3maa" "\0"
+            VALUE "FileDescription", "To3maa" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "to3maa" "\0"
+            VALUE "InternalName", "To3maa" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2024 com.example. All rights reserved." "\0"
-            VALUE "OriginalFilename", "to3maa.exe" "\0"
-            VALUE "ProductName", "to3maa" "\0"
+            VALUE "OriginalFilename", "To3maa.exe" "\0"
+            VALUE "ProductName", "To3maa" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

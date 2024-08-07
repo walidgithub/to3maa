@@ -1,9 +1,9 @@
 import 'package:equatable/equatable.dart';
-import 'package:to3maa/core/utils/enums.dart';
-import 'package:to3maa/zakat/domain/responses/products_respose.dart';
-import 'package:to3maa/zakat/domain/responses/zakat_products_by_kilos_response.dart';
-import 'package:to3maa/zakat/domain/responses/zakat_products_respose.dart';
-import 'package:to3maa/zakat/domain/responses/zakat_respose.dart';
+import 'package:To3maa/core/utils/enums.dart';
+import 'package:To3maa/zakat/domain/responses/products_respose.dart';
+import 'package:To3maa/zakat/domain/responses/zakat_products_by_kilos_response.dart';
+import 'package:To3maa/zakat/domain/responses/zakat_products_respose.dart';
+import 'package:To3maa/zakat/domain/responses/zakat_respose.dart';
 
 class ZakatState extends Equatable {
   final List<ProductsResponse> productsList;

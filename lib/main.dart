@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:to3maa/zakat/presentation/di/di.dart';
-import 'package:to3maa/zakat/presentation/router/app_router.dart';
-import 'package:to3maa/zakat/presentation/shared/constant/app_strings.dart';
-import 'package:to3maa/zakat/presentation/shared/style/app_theme.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:To3maa/zakat/presentation/di/di.dart';
+import 'package:To3maa/zakat/presentation/router/app_router.dart';
+import 'package:To3maa/zakat/presentation/shared/constant/app_strings.dart';
+import 'package:To3maa/zakat/presentation/shared/style/app_theme.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'zakat/presentation/shared/constant/app_constants.dart';
@@ -22,6 +23,7 @@ void main() async {
     DeviceOrientation.portraitDown,
   ]);
 
+  // runApp(DevicePreview(builder: (context) => const MyApp()));
   runApp(const MyApp());
 
   // ErrorWidget.builder = (FlutterErrorDetails details) => Scaffold(
@@ -62,6 +64,7 @@ class MyApp extends StatelessWidget {
           return MaterialApp(
               debugShowCheckedModeBanner: false,
               title: AppStrings.appName,
+              builder: EasyLoading.init(),
               onGenerateRoute: RouteGenerator.getRoute,
               initialRoute: Routes.homeRoute,
               theme: AppTheme.lightTheme);

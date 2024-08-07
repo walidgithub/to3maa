@@ -1,17 +1,17 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:to3maa/core/utils/enums.dart';
-import 'package:to3maa/zakat/domain/responses/zakat_products_by_kilos_response.dart';
-import 'package:to3maa/zakat/presentation/shared/constant/app_constants.dart';
-import 'package:to3maa/zakat/presentation/shared/constant/app_fonts.dart';
-import 'package:to3maa/zakat/presentation/shared/constant/app_strings.dart';
-import 'package:to3maa/zakat/presentation/shared/constant/app_typography.dart';
-import 'package:to3maa/zakat/presentation/shared/style/app_colors.dart';
-import 'package:to3maa/zakat/presentation/ui/home_page/cubit/zakat_cubit.dart';
-import 'package:to3maa/zakat/presentation/ui/home_page/cubit/zakat_states.dart';
-import 'package:to3maa/zakat/presentation/ui/home_page/tabs/totals/totals_products_view.dart';
-import 'package:to3maa/zakat/presentation/ui_components/loading_dialog.dart';
+import 'package:To3maa/core/utils/enums.dart';
+import 'package:To3maa/zakat/domain/responses/zakat_products_by_kilos_response.dart';
+import 'package:To3maa/zakat/presentation/shared/constant/app_constants.dart';
+import 'package:To3maa/zakat/presentation/shared/constant/app_fonts.dart';
+import 'package:To3maa/zakat/presentation/shared/constant/app_strings.dart';
+import 'package:To3maa/zakat/presentation/shared/constant/app_typography.dart';
+import 'package:To3maa/zakat/presentation/shared/style/app_colors.dart';
+import 'package:To3maa/zakat/presentation/ui/home_page/cubit/zakat_cubit.dart';
+import 'package:To3maa/zakat/presentation/ui/home_page/cubit/zakat_states.dart';
+import 'package:To3maa/zakat/presentation/ui/home_page/tabs/totals/totals_products_view.dart';
+import 'package:To3maa/zakat/presentation/ui_components/loading_dialog.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TotalsView extends StatefulWidget {
@@ -95,6 +95,9 @@ class _TotalsViewState extends State<TotalsView> {
                                       sumProductQuantity: zakatByKilos[index]
                                           .sumProductQuantity!);
                                 })),
+                      ),
+                      SizedBox(
+                        height: 30.h,
                       ),
                     ],
                   )

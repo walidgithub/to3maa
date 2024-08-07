@@ -1,17 +1,18 @@
 import 'package:dartz/dartz.dart';
-import 'package:to3maa/core/error/failure.dart';
-import 'package:to3maa/zakat/domain/requsts/delete_product_request.dart';
-import 'package:to3maa/zakat/domain/requsts/delete_zakat_products_request.dart';
-import 'package:to3maa/zakat/domain/requsts/delete_zakat_request.dart';
-import 'package:to3maa/zakat/domain/requsts/get_zakat_products_by_zakat_id_request.dart';
-import 'package:to3maa/zakat/domain/requsts/insert_product_request.dart';
-import 'package:to3maa/zakat/domain/requsts/insert_zakat_products_request.dart';
-import 'package:to3maa/zakat/domain/requsts/insert_zakat_request.dart';
-import 'package:to3maa/zakat/domain/requsts/update_product_request.dart';
-import 'package:to3maa/zakat/domain/responses/products_respose.dart';
-import 'package:to3maa/zakat/domain/responses/zakat_products_by_kilos_response.dart';
-import 'package:to3maa/zakat/domain/responses/zakat_products_respose.dart';
-import 'package:to3maa/zakat/domain/responses/zakat_respose.dart';
+import 'package:To3maa/core/error/failure.dart';
+import 'package:To3maa/zakat/domain/requsts/delete_product_request.dart';
+import 'package:To3maa/zakat/domain/requsts/delete_zakat_products_request.dart';
+import 'package:To3maa/zakat/domain/requsts/delete_zakat_request.dart';
+import 'package:To3maa/zakat/domain/requsts/get_zakat_products_by_zakat_id_request.dart';
+import 'package:To3maa/zakat/domain/requsts/insert_product_request.dart';
+import 'package:To3maa/zakat/domain/requsts/insert_zakat_products_request.dart';
+import 'package:To3maa/zakat/domain/requsts/insert_zakat_request.dart';
+import 'package:To3maa/zakat/domain/requsts/update_product_quantity_request.dart';
+import 'package:To3maa/zakat/domain/requsts/update_product_request.dart';
+import 'package:To3maa/zakat/domain/responses/products_respose.dart';
+import 'package:To3maa/zakat/domain/responses/zakat_products_by_kilos_response.dart';
+import 'package:To3maa/zakat/domain/responses/zakat_products_respose.dart';
+import 'package:To3maa/zakat/domain/responses/zakat_respose.dart';
 
 abstract class BaseRepository {
   Future<Either<Failure, int>> insertZakatData(
@@ -23,6 +24,8 @@ abstract class BaseRepository {
 
   Future<Either<Failure, int>> updateProductData(
       UpdateProductRequest updateProductRequest);
+  Future<Either<Failure, int>> updateProductQuantityData(
+      UpdateProductQuantityRequest updateProductQuantityRequest);
 
   Future<Either<Failure, int>> deletetZakatData(
       DeleteZakatRequest deletetZakatRequest);

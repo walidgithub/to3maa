@@ -1,20 +1,21 @@
 import 'package:dartz/dartz.dart';
-import 'package:to3maa/core/error/error_handler.dart';
-import 'package:to3maa/core/error/failure.dart';
-import 'package:to3maa/zakat/data/data_source/zakat_datasource.dart';
-import 'package:to3maa/zakat/domain/repository/base_repository.dart';
-import 'package:to3maa/zakat/domain/requsts/delete_product_request.dart';
-import 'package:to3maa/zakat/domain/requsts/delete_zakat_products_request.dart';
-import 'package:to3maa/zakat/domain/requsts/delete_zakat_request.dart';
-import 'package:to3maa/zakat/domain/requsts/get_zakat_products_by_zakat_id_request.dart';
-import 'package:to3maa/zakat/domain/requsts/insert_product_request.dart';
-import 'package:to3maa/zakat/domain/requsts/insert_zakat_products_request.dart';
-import 'package:to3maa/zakat/domain/requsts/insert_zakat_request.dart';
-import 'package:to3maa/zakat/domain/requsts/update_product_request.dart';
-import 'package:to3maa/zakat/domain/responses/products_respose.dart';
-import 'package:to3maa/zakat/domain/responses/zakat_products_by_kilos_response.dart';
-import 'package:to3maa/zakat/domain/responses/zakat_products_respose.dart';
-import 'package:to3maa/zakat/domain/responses/zakat_respose.dart';
+import 'package:To3maa/core/error/error_handler.dart';
+import 'package:To3maa/core/error/failure.dart';
+import 'package:To3maa/zakat/data/data_source/zakat_datasource.dart';
+import 'package:To3maa/zakat/domain/repository/base_repository.dart';
+import 'package:To3maa/zakat/domain/requsts/delete_product_request.dart';
+import 'package:To3maa/zakat/domain/requsts/delete_zakat_products_request.dart';
+import 'package:To3maa/zakat/domain/requsts/delete_zakat_request.dart';
+import 'package:To3maa/zakat/domain/requsts/get_zakat_products_by_zakat_id_request.dart';
+import 'package:To3maa/zakat/domain/requsts/insert_product_request.dart';
+import 'package:To3maa/zakat/domain/requsts/insert_zakat_products_request.dart';
+import 'package:To3maa/zakat/domain/requsts/insert_zakat_request.dart';
+import 'package:To3maa/zakat/domain/requsts/update_product_quantity_request.dart';
+import 'package:To3maa/zakat/domain/requsts/update_product_request.dart';
+import 'package:To3maa/zakat/domain/responses/products_respose.dart';
+import 'package:To3maa/zakat/domain/responses/zakat_products_by_kilos_response.dart';
+import 'package:To3maa/zakat/domain/responses/zakat_products_respose.dart';
+import 'package:To3maa/zakat/domain/responses/zakat_respose.dart';
 
 class ZakatRepository extends BaseRepository {
   final BaseDataSource _baseDataSource;
@@ -164,6 +165,18 @@ class ZakatRepository extends BaseRepository {
     try {
       final result =
           await _baseDataSource.updateProductData(updateProductRequest);
+      return Right(result);
+    } catch (error) {
+      return Left(ErrorHandler.handle(error).failure);
+    }
+  }
+
+  @override
+  Future<Either<Failure, int>> updateProductQuantityData(
+      UpdateProductQuantityRequest updateProductQuantityRequest) async {
+    try {
+      final result = await _baseDataSource
+          .updateProductQuantityData(updateProductQuantityRequest);
       return Right(result);
     } catch (error) {
       return Left(ErrorHandler.handle(error).failure);

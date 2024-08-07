@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:to3maa/zakat/presentation/ui/home_page/home_page_view.dart';
+import 'package:To3maa/zakat/presentation/ui/home_page/home_page_view.dart';
 
 class Routes {
   static const String homeRoute = "/home";

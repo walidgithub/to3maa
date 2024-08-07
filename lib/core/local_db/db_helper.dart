@@ -1,22 +1,23 @@
-import 'package:to3maa/zakat/domain/models/products_model.dart';
-import 'package:to3maa/zakat/domain/models/zakat_model.dart';
-import 'package:to3maa/zakat/domain/models/zakat_products_by_kilos_model.dart';
-import 'package:to3maa/zakat/domain/models/zakat_products_model.dart';
-import 'package:to3maa/zakat/domain/requsts/delete_product_request.dart';
-import 'package:to3maa/zakat/domain/requsts/delete_zakat_products_request.dart';
-import 'package:to3maa/zakat/domain/requsts/delete_zakat_request.dart';
-import 'package:to3maa/zakat/domain/requsts/get_zakat_products_by_zakat_id_request.dart';
-import 'package:to3maa/zakat/domain/requsts/insert_product_request.dart';
-import 'package:to3maa/zakat/domain/requsts/insert_zakat_products_request.dart';
-import 'package:to3maa/zakat/domain/requsts/insert_zakat_request.dart';
-import 'package:to3maa/zakat/domain/requsts/update_product_request.dart';
+import 'package:To3maa/zakat/domain/models/products_model.dart';
+import 'package:To3maa/zakat/domain/models/zakat_model.dart';
+import 'package:To3maa/zakat/domain/models/zakat_products_by_kilos_model.dart';
+import 'package:To3maa/zakat/domain/models/zakat_products_model.dart';
+import 'package:To3maa/zakat/domain/requsts/delete_product_request.dart';
+import 'package:To3maa/zakat/domain/requsts/delete_zakat_products_request.dart';
+import 'package:To3maa/zakat/domain/requsts/delete_zakat_request.dart';
+import 'package:To3maa/zakat/domain/requsts/get_zakat_products_by_zakat_id_request.dart';
+import 'package:To3maa/zakat/domain/requsts/insert_product_request.dart';
+import 'package:To3maa/zakat/domain/requsts/insert_zakat_products_request.dart';
+import 'package:To3maa/zakat/domain/requsts/insert_zakat_request.dart';
+import 'package:To3maa/zakat/domain/requsts/update_product_quantity_request.dart';
+import 'package:To3maa/zakat/domain/requsts/update_product_request.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 class DbHelper {
   Database? _db;
 
-  String dbdName = 'zakat_test6.db';
+  String dbdName = 'To3maa.db';
 
   static int? insertedNewProduct;
   static int? insertedNewZakat;
@@ -34,7 +35,8 @@ class DbHelper {
     final dbPath = await getDatabasesPath();
     final path = join(dbPath, filePath);
     return await openDatabase(path, version: 1, onCreate: createDB);
-    // return await openDatabase(path, version: 1, onCreate: createDB,onUpgrade: onUpgrade);
+    // return await openDatabase(path,
+    //     version: 2, onCreate: createDB, onUpgrade: onUpgrade);
   }
 
   Future createDB(Database db, int version) async {
@@ -45,12 +47,13 @@ class DbHelper {
         'create table zakatProducts(id integer primary key autoincrement, productName varchar(255), productPrice varchar(10), productDesc varchar(255), productImage varchar(255), productQuantity integer, zakatId integer)');
 
     await db.execute(
-        'create table productsData(id integer primary key autoincrement, productName varchar(255), productPrice varchar(10), productDesc varchar(255), productImage varchar(255))');
+        'create table productsData(id integer primary key autoincrement, productName varchar(255), productPrice varchar(10), productDesc varchar(255), productImage varchar(255), productQuantity integer)');
   }
 
   // Future onUpgrade(Database db, int oldVersion, int newVersion) async {
   //   if (oldVersion < newVersion) {
-  //     await db.execute('alter table saved_posts RENAME COLUMN secondCategory TO subCategory');
+  //     await db.execute(
+  //         'alter table productsData ADD COLUMN productQuantity integer');
   //   }
   // }
 
@@ -85,6 +88,17 @@ class DbHelper {
     final db = _db!.database;
     return db.update('productsData', updateProductRequest.toJson(),
         where: 'id = ?', whereArgs: [updateProductRequest.id]);
+  }
+
+  Future<int> updateProductQuantityData(
+      UpdateProductQuantityRequest updateProductQuantityRequest) async {
+    if (_db == null) {
+      await initDB(dbdName);
+    }
+
+    final db = _db!.database;
+    return db.update('productsData', updateProductQuantityRequest.toJson(),
+        where: 'id = ?', whereArgs: [updateProductQuantityRequest.id]);
   }
 
   // delete ---------------------------------------------

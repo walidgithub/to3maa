@@ -14,6 +14,6 @@ class AppAssets {
   static const String pasta = '$imagePath/pasta.png';
   static const String beans = '$imagePath/beans.png';
   static const String lobia = '$imagePath/lobia.png';
-  static const String favaBeans = '$imagePath/lobia.png';
+  static const String favaBeans = '$imagePath/favaBeans.png';
   static const String lentils = '$imagePath/lentils.png';
 }

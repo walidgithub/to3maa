@@ -1,23 +1,24 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:to3maa/core/local_db/db_helper.dart';
-import 'package:to3maa/core/utils/enums.dart';
-import 'package:to3maa/zakat/domain/entities/cart_items.dart';
-import 'package:to3maa/zakat/domain/entities/suggested_items.dart';
-import 'package:to3maa/zakat/domain/requsts/insert_zakat_products_request.dart';
-import 'package:to3maa/zakat/domain/requsts/insert_zakat_request.dart';
-import 'package:to3maa/zakat/presentation/shared/constant/app_constants.dart';
-import 'package:to3maa/zakat/presentation/shared/constant/app_fonts.dart';
-import 'package:to3maa/zakat/presentation/shared/constant/app_strings.dart';
-import 'package:to3maa/zakat/presentation/shared/constant/app_typography.dart';
-import 'package:to3maa/zakat/presentation/shared/style/app_colors.dart';
-import 'package:to3maa/zakat/presentation/ui/home_page/cubit/zakat_cubit.dart';
-import 'package:to3maa/zakat/presentation/ui/home_page/cubit/zakat_states.dart';
-import 'package:to3maa/zakat/presentation/ui/home_page/tabs/add_zakat/add_product_view.dart';
-import 'package:to3maa/zakat/presentation/ui/home_page/tabs/add_zakat/suggested_view.dart';
-import 'package:to3maa/zakat/presentation/ui_components/loading_dialog.dart';
-import 'package:to3maa/zakat/presentation/ui_components/text_field_widget.dart';
+import 'package:To3maa/core/local_db/db_helper.dart';
+import 'package:To3maa/core/utils/enums.dart';
+import 'package:To3maa/zakat/domain/entities/cart_items.dart';
+import 'package:To3maa/zakat/domain/entities/suggested_items.dart';
+import 'package:To3maa/zakat/domain/requsts/insert_zakat_products_request.dart';
+import 'package:To3maa/zakat/domain/requsts/insert_zakat_request.dart';
+import 'package:To3maa/zakat/domain/requsts/update_product_quantity_request.dart';
+import 'package:To3maa/zakat/presentation/shared/constant/app_constants.dart';
+import 'package:To3maa/zakat/presentation/shared/constant/app_fonts.dart';
+import 'package:To3maa/zakat/presentation/shared/constant/app_strings.dart';
+import 'package:To3maa/zakat/presentation/shared/constant/app_typography.dart';
+import 'package:To3maa/zakat/presentation/shared/style/app_colors.dart';
+import 'package:To3maa/zakat/presentation/ui/home_page/cubit/zakat_cubit.dart';
+import 'package:To3maa/zakat/presentation/ui/home_page/cubit/zakat_states.dart';
+import 'package:To3maa/zakat/presentation/ui/home_page/tabs/add_zakat/add_product_view.dart';
+import 'package:To3maa/zakat/presentation/ui/home_page/tabs/add_zakat/suggested_view.dart';
+import 'package:To3maa/zakat/presentation/ui_components/loading_dialog.dart';
+import 'package:To3maa/zakat/presentation/ui_components/text_field_widget.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AddZakatView extends StatefulWidget {
@@ -50,6 +51,7 @@ class _AddZakatViewState extends State<AddZakatView> {
     allProductsValue = 0;
     suggestedItems.clear();
     suggested = false;
+    getAllProducts();
   }
 
   bool suggested = false;
@@ -81,7 +83,10 @@ class _AddZakatViewState extends State<AddZakatView> {
       for (var x in products) {
         if (valPerMember >= double.parse(x.productPrice!)) {
           suggestedItems.add(SuggestedItems(
-              imageId: x.id, imagePath: x.productImage, selected: false));
+              imageId: x.id,
+              imagePath: x.productImage,
+              selected: false,
+              imageName: x.productName));
         }
       }
       setState(() {
@@ -125,9 +130,10 @@ class _AddZakatViewState extends State<AddZakatView> {
             } else if (state.zakatState == RequestState.productsError) {
               hideLoading();
             } else if (state.zakatState == RequestState.productsLoaded) {
-              for (var x in state.productsList) {
-                x.productQuantity = 0;
-              }
+              // for (var x in state.productsList) {
+              //   x.productQuantity = 0;
+              // }
+              // remian = allValue - calcRemain(state.productsList);
               hideLoading();
             } else if (state.zakatState == RequestState.insertLoading) {
               showLoading();
@@ -143,6 +149,17 @@ class _AddZakatViewState extends State<AddZakatView> {
             } else if (state.zakatState == RequestState.zakatLoaded) {
               cartItems = state.zakatList;
               hideLoading();
+            } else if (state.zakatState == RequestState.updateLoading) {
+              // showLoading();
+            } else if (state.zakatState == RequestState.updateError) {
+              // hideLoading();
+            } else if (state.zakatState == RequestState.updateDone) {
+              getAllProducts();
+              // hideLoading();
+
+              print('updatedddddddd');
+
+              remian = allValue - calcRemain(state.productsList);
             }
           }, builder: (context, state) {
             return Column(
@@ -202,18 +219,48 @@ class _AddZakatViewState extends State<AddZakatView> {
                             itemBuilder: (BuildContext context, int index) {
                               return SuggestedView(
                                 imagePath: suggestedItems[index].imagePath!,
+                                imageName: suggestedItems[index].imageName!,
                                 selected: suggestedItems[index].selected!,
                                 id: suggestedItems[index].imageId!,
-                                addSuggested: (int id) {
-                                  setState(() {
-                                    for (var x in state.productsList) {
-                                      x.productQuantity = 0;
-                                    }
-                                    for (var n in suggestedItems) {
-                                      n.selected = false;
-                                    }
-                                    suggestedItems[index].selected = true;
-                                  });
+                                addSuggested: (int id) async {
+                                  // setState(() async {
+                                  for (var n in suggestedItems) {
+                                    n.selected = false;
+                                  }
+                                  suggestedItems[index].selected = true;
+
+                                  print('starttttttt');
+
+                                  UpdateProductQuantityRequest
+                                      updateProductQuantityRequest =
+                                      (UpdateProductQuantityRequest(
+                                          id: state.productsList[index].id,
+                                          productQuantity: int.parse(
+                                              _membersCountController.text)));
+
+                                  await ZakatCubit.get(context)
+                                      .updateProductQuantity(
+                                          updateProductQuantityRequest);
+
+                                  // ---------------------------
+                                  // for (var x in state.productsList) {
+                                  //   x.productQuantity = 0;
+                                  // }
+
+                                  // int productIndex = state.productsList
+                                  //     .indexWhere((element) =>
+                                  //         element.id ==
+                                  //         suggestedItems[index].imageId!);
+
+                                  // state.productsList[productIndex]
+                                  //         .productQuantity =
+                                  //     int.parse(_membersCountController.text);
+
+                                  remian =
+                                      allValue - calcRemain(state.productsList);
+
+                                  // calcRemain(state.productsList);
+                                  // });
                                 },
                               );
                             }),
@@ -245,21 +292,51 @@ class _AddZakatViewState extends State<AddZakatView> {
                                         state.productsList[index].productPrice!,
                                     productDesc:
                                         state.productsList[index].productDesc!,
-                                    increaseQunatity: (int quantity) {
-                                      setState(() {
-                                        state.productsList[index]
-                                            .productQuantity = quantity;
-                                        remian = allValue -
-                                            calcRemain(state.productsList);
-                                      });
+                                    increaseQunatity: (int quantity) async {
+                                      UpdateProductQuantityRequest
+                                          updateProductQuantityRequest =
+                                          (UpdateProductQuantityRequest(
+                                              id: state.productsList[index].id,
+                                              productQuantity: quantity));
+
+                                      await ZakatCubit.get(context)
+                                          .updateProductQuantity(
+                                              updateProductQuantityRequest);
+
+                                      remian = allValue -
+                                          calcRemain(state.productsList);
+
+                                      print(remian);
+                                      print(allValue);
+                                      print(state.productsList);
+                                      print('remiannnnnnnn');
+
+                                      // calcRemain(state.productsList);
+
+                                      // setState(() {
+                                      // state.productsList[index]
+                                      //     .productQuantity = quantity;
+                                      // });
                                     },
-                                    decreaseQunatity: (int quantity) {
-                                      setState(() {
-                                        state.productsList[index]
-                                            .productQuantity = quantity;
-                                        remian = allValue -
-                                            calcRemain(state.productsList);
-                                      });
+                                    decreaseQunatity: (int quantity) async {
+                                      UpdateProductQuantityRequest
+                                          updateProductQuantityRequest =
+                                          (UpdateProductQuantityRequest(
+                                              id: state.productsList[index].id,
+                                              productQuantity: quantity));
+
+                                      await ZakatCubit.get(context)
+                                          .updateProductQuantity(
+                                              updateProductQuantityRequest);
+
+                                      remian = allValue -
+                                          calcRemain(state.productsList);
+
+                                      // calcRemain(state.productsList);
+                                      // setState(() {
+                                      // state.productsList[index]
+                                      //     .productQuantity = quantity;
+                                      // });
                                     },
                                   );
                                 }),
@@ -352,6 +429,9 @@ class _AddZakatViewState extends State<AddZakatView> {
                           ),
                           GestureDetector(
                             onTap: () async {
+                              if (remian >= allValue) {
+                                return;
+                              }
                               if (_membersCountController.text.trim() == '' ||
                                   _zakatValueController.text.trim() == '') {
                                 return;
@@ -397,6 +477,7 @@ class _AddZakatViewState extends State<AddZakatView> {
                                   .showSnackBar(snackBar);
 
                               setState(() {
+                                // state.productsList.clear();
                                 clearData();
                               });
                             },
@@ -425,7 +506,10 @@ class _AddZakatViewState extends State<AddZakatView> {
                       ),
                     ],
                   ),
-                )
+                ),
+                SizedBox(
+                  height: 30.h,
+                ),
               ],
             );
           })),

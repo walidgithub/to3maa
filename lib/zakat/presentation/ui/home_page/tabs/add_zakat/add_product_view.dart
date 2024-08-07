@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:to3maa/zakat/presentation/shared/constant/app_constants.dart';
-import 'package:to3maa/zakat/presentation/shared/constant/app_fonts.dart';
-import 'package:to3maa/zakat/presentation/shared/constant/app_typography.dart';
-import 'package:to3maa/zakat/presentation/shared/style/app_colors.dart';
+import 'package:To3maa/zakat/presentation/shared/constant/app_constants.dart';
+import 'package:To3maa/zakat/presentation/shared/constant/app_fonts.dart';
+import 'package:To3maa/zakat/presentation/shared/constant/app_typography.dart';
+import 'package:To3maa/zakat/presentation/shared/style/app_colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:animate_do/animate_do.dart';
 
@@ -125,9 +125,7 @@ class _AddProductViewState extends State<AddProductView> {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          setState(() {
-                            _itemQuantity++;
-                          });
+                          _itemQuantity++;
                           widget.increaseQunatity(_itemQuantity);
                         },
                         child: Container(
@@ -153,11 +151,9 @@ class _AddProductViewState extends State<AddProductView> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          setState(() {
-                            if (_itemQuantity != 0) {
-                              _itemQuantity--;
-                            }
-                          });
+                          if (_itemQuantity != 0) {
+                            _itemQuantity--;
+                          }
                           widget.decreaseQunatity(_itemQuantity);
                         },
                         child: Container(
