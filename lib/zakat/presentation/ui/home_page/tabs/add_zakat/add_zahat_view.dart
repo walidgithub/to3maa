@@ -1,3 +1,4 @@
+import 'package:To3maa/zakat/domain/requsts/reset_product_quantity_request.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -36,21 +37,30 @@ class _AddZakatViewState extends State<AddZakatView> {
   void initState() {
     getAllProducts();
     getAllZakat();
+    resetQuantity();
     super.initState();
   }
 
-  double remian = 0.0;
+  Future<void> resetQuantity() async {
+    ResetProductQuantityRequest resetProductQuantityRequest =
+        (const ResetProductQuantityRequest(productQuantity: 0));
+    await ZakatCubit.get(context)
+        .resetProductQuantity(resetProductQuantityRequest);
+  }
+
+  double remain = 0.0;
   double allValue = 0.0;
   double allProductsValue = 0.0;
 
   void clearData() {
     _membersCountController.text = '';
     _zakatValueController.text = '';
-    remian = 0;
+    remain = 0;
     allValue = 0;
     allProductsValue = 0;
     suggestedItems.clear();
     suggested = false;
+    resetQuantity();
     getAllProducts();
   }
 
@@ -130,10 +140,7 @@ class _AddZakatViewState extends State<AddZakatView> {
             } else if (state.zakatState == RequestState.productsError) {
               hideLoading();
             } else if (state.zakatState == RequestState.productsLoaded) {
-              // for (var x in state.productsList) {
-              //   x.productQuantity = 0;
-              // }
-              // remian = allValue - calcRemain(state.productsList);
+              remain = allValue - calcRemain(state.productsList);
               hideLoading();
             } else if (state.zakatState == RequestState.insertLoading) {
               showLoading();
@@ -150,17 +157,8 @@ class _AddZakatViewState extends State<AddZakatView> {
               cartItems = state.zakatList;
               hideLoading();
             } else if (state.zakatState == RequestState.updateLoading) {
-              // showLoading();
             } else if (state.zakatState == RequestState.updateError) {
-              // hideLoading();
-            } else if (state.zakatState == RequestState.updateDone) {
-              getAllProducts();
-              // hideLoading();
-
-              print('updatedddddddd');
-
-              remian = allValue - calcRemain(state.productsList);
-            }
+            } else if (state.zakatState == RequestState.updateDone) {}
           }, builder: (context, state) {
             return Column(
               children: [
@@ -183,7 +181,7 @@ class _AddZakatViewState extends State<AddZakatView> {
                     TextInputType.number, (String textVal) {
                   setState(() {
                     allValue = double.parse(textVal);
-                    remian = allValue - calcRemain(state.productsList);
+                    remain = allValue - calcRemain(state.productsList);
                   });
                   getSuggested(
                       int.parse(_membersCountController.text),
@@ -223,13 +221,14 @@ class _AddZakatViewState extends State<AddZakatView> {
                                 selected: suggestedItems[index].selected!,
                                 id: suggestedItems[index].imageId!,
                                 addSuggested: (int id) async {
-                                  // setState(() async {
-                                  for (var n in suggestedItems) {
-                                    n.selected = false;
-                                  }
-                                  suggestedItems[index].selected = true;
+                                  setState(() {
+                                    for (var n in suggestedItems) {
+                                      n.selected = false;
+                                    }
+                                    suggestedItems[index].selected = true;
+                                  });
 
-                                  print('starttttttt');
+                                  await resetQuantity();
 
                                   UpdateProductQuantityRequest
                                       updateProductQuantityRequest =
@@ -242,25 +241,7 @@ class _AddZakatViewState extends State<AddZakatView> {
                                       .updateProductQuantity(
                                           updateProductQuantityRequest);
 
-                                  // ---------------------------
-                                  // for (var x in state.productsList) {
-                                  //   x.productQuantity = 0;
-                                  // }
-
-                                  // int productIndex = state.productsList
-                                  //     .indexWhere((element) =>
-                                  //         element.id ==
-                                  //         suggestedItems[index].imageId!);
-
-                                  // state.productsList[productIndex]
-                                  //         .productQuantity =
-                                  //     int.parse(_membersCountController.text);
-
-                                  remian =
-                                      allValue - calcRemain(state.productsList);
-
-                                  // calcRemain(state.productsList);
-                                  // });
+                                  await getAllProducts();
                                 },
                               );
                             }),
@@ -292,6 +273,8 @@ class _AddZakatViewState extends State<AddZakatView> {
                                         state.productsList[index].productPrice!,
                                     productDesc:
                                         state.productsList[index].productDesc!,
+                                    productQuantity: state
+                                        .productsList[index].productQuantity!,
                                     increaseQunatity: (int quantity) async {
                                       UpdateProductQuantityRequest
                                           updateProductQuantityRequest =
@@ -303,20 +286,12 @@ class _AddZakatViewState extends State<AddZakatView> {
                                           .updateProductQuantity(
                                               updateProductQuantityRequest);
 
-                                      remian = allValue -
-                                          calcRemain(state.productsList);
-
-                                      print(remian);
-                                      print(allValue);
-                                      print(state.productsList);
-                                      print('remiannnnnnnn');
-
-                                      // calcRemain(state.productsList);
-
-                                      // setState(() {
-                                      // state.productsList[index]
-                                      //     .productQuantity = quantity;
-                                      // });
+                                      setState(() {
+                                        state.productsList[index]
+                                            .productQuantity = quantity;
+                                        remain = allValue -
+                                            calcRemain(state.productsList);
+                                      });
                                     },
                                     decreaseQunatity: (int quantity) async {
                                       UpdateProductQuantityRequest
@@ -329,14 +304,12 @@ class _AddZakatViewState extends State<AddZakatView> {
                                           .updateProductQuantity(
                                               updateProductQuantityRequest);
 
-                                      remian = allValue -
-                                          calcRemain(state.productsList);
-
-                                      // calcRemain(state.productsList);
-                                      // setState(() {
-                                      // state.productsList[index]
-                                      //     .productQuantity = quantity;
-                                      // });
+                                      setState(() {
+                                        state.productsList[index]
+                                            .productQuantity = quantity;
+                                        remain = allValue -
+                                            calcRemain(state.productsList);
+                                      });
                                     },
                                   );
                                 }),
@@ -365,7 +338,6 @@ class _AddZakatViewState extends State<AddZakatView> {
                     children: [
                       Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        // crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Row(
                             children: [
@@ -409,7 +381,7 @@ class _AddZakatViewState extends State<AddZakatView> {
                               Row(
                                 children: [
                                   Text(
-                                    remian.toString(),
+                                    remain.toString(),
                                     style: AppTypography.kLight16.copyWith(
                                         fontFamily: AppFonts.boldFontFamily,
                                         color: AppColors.cBlack),
@@ -429,7 +401,7 @@ class _AddZakatViewState extends State<AddZakatView> {
                           ),
                           GestureDetector(
                             onTap: () async {
-                              if (remian >= allValue) {
+                              if (remain >= allValue) {
                                 return;
                               }
                               if (_membersCountController.text.trim() == '' ||
@@ -442,7 +414,7 @@ class _AddZakatViewState extends State<AddZakatView> {
                                           _membersCountController.text.trim(),
                                       zakatValue:
                                           _zakatValueController.text.trim(),
-                                      remainValue: remian.toString());
+                                      remainValue: remain.toString());
 
                               await ZakatCubit.get(context)
                                   .insertZakat(insertZakatRequest);
@@ -477,7 +449,6 @@ class _AddZakatViewState extends State<AddZakatView> {
                                   .showSnackBar(snackBar);
 
                               setState(() {
-                                // state.productsList.clear();
                                 clearData();
                               });
                             },

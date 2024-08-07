@@ -245,7 +245,7 @@ class _CartViewState extends State<CartView> {
                                   return Directionality(
                                     textDirection: TextDirection.rtl,
                                     child: AlertDialog(
-                                      title: const Text(AppStrings.warning),
+                                      title: Text(AppStrings.warning,style: AppTypography.kBold18),
                                       content:
                                           const Text(AppStrings.deleteAllData),
                                       actions: [
@@ -257,8 +257,8 @@ class _CartViewState extends State<CartView> {
                                                 duration: Duration(
                                                     milliseconds: AppConstants
                                                         .durationOfSnackBar),
-                                                content: const Text(
-                                                    AppStrings.successDelete),
+                                                content: Text(
+                                                    AppStrings.successDelete,style: AppTypography.kBold16),
                                               );
                                               // ignore: use_build_context_synchronously
                                               ScaffoldMessenger.of(context)
@@ -266,12 +266,12 @@ class _CartViewState extends State<CartView> {
                                               // ignore: use_build_context_synchronously
                                               Navigator.of(context).pop(false);
                                             },
-                                            child: const Text(AppStrings.yes)),
+                                            child: Text(AppStrings.yes,style: AppTypography.kLight14)),
                                         TextButton(
                                             onPressed: () {
                                               Navigator.of(context).pop(false);
                                             },
-                                            child: const Text(AppStrings.no)),
+                                            child: Text(AppStrings.no,style: AppTypography.kLight14)),
                                       ],
                                     ),
                                   );

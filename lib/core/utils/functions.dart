@@ -1,3 +1,4 @@
+import 'package:To3maa/zakat/presentation/shared/constant/app_typography.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:To3maa/zakat/presentation/shared/constant/app_strings.dart';
@@ -9,19 +10,19 @@ Future<bool> onBackButtonPressed(BuildContext context) async {
         return Directionality(
           textDirection: TextDirection.rtl,
           child: AlertDialog(
-            title: const Text(AppStrings.warning),
-            content: const Text(AppStrings.closeApp),
+            title: Text(AppStrings.warning,style: AppTypography.kBold18,),
+            content: Text(AppStrings.closeApp,style: AppTypography.kBold16),
             actions: [
               TextButton(
                   onPressed: () {
                     SystemNavigator.pop();
                   },
-                  child: const Text(AppStrings.yes)),
+                  child: Text(AppStrings.yes,style: AppTypography.kLight14)),
               TextButton(
                   onPressed: () {
                     Navigator.of(context).pop(false);
                   },
-                  child: const Text(AppStrings.no)),
+                  child: Text(AppStrings.no,style: AppTypography.kLight14)),
             ],
           ),
         );

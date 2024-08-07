@@ -6,7 +6,7 @@ import 'package:To3maa/zakat/presentation/router/app_router.dart';
 import 'package:To3maa/zakat/presentation/shared/constant/app_strings.dart';
 import 'package:To3maa/zakat/presentation/shared/style/app_theme.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
+import 'package:device_preview/device_preview.dart';
 import 'zakat/presentation/shared/constant/app_constants.dart';
 import 'zakat/presentation/shared/style/app_colors.dart';
 
@@ -23,32 +23,32 @@ void main() async {
     DeviceOrientation.portraitDown,
   ]);
 
-  // runApp(DevicePreview(builder: (context) => const MyApp()));
-  runApp(const MyApp());
+  runApp(DevicePreview(builder: (context) => const MyApp()));
+  // runApp(const MyApp());
 
-  // ErrorWidget.builder = (FlutterErrorDetails details) => Scaffold(
-  //       body: SafeArea(
-  //         child: Scaffold(
-  //           body: Center(
-  //             child: Column(
-  //               children: [
-  //                 const Text(
-  //                   AppStrings.someThingWentWrong,
-  //                   style: TextStyle(color: AppColors.cPrimary),
-  //                 ),
-  //                 SizedBox(
-  //                   height: AppConstants.heightBetweenElements,
-  //                 ),
-  //                 Text(
-  //                   details.exceptionAsString(),
-  //                   style: const TextStyle(color: AppColors.cPrimary),
-  //                 ),
-  //               ],
-  //             ),
-  //           ),
-  //         ),
-  //       ),
-  //     );
+  ErrorWidget.builder = (FlutterErrorDetails details) => Scaffold(
+        body: SafeArea(
+          child: Scaffold(
+            body: Center(
+              child: Column(
+                children: [
+                  const Text(
+                    AppStrings.someThingWentWrong,
+                    style: TextStyle(color: AppColors.cPrimary),
+                  ),
+                  SizedBox(
+                    height: AppConstants.heightBetweenElements,
+                  ),
+                  Text(
+                    details.exceptionAsString(),
+                    style: const TextStyle(color: AppColors.cPrimary),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      );
 }
 
 class MyApp extends StatelessWidget {

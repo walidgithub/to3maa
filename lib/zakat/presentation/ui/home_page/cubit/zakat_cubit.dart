@@ -8,6 +8,7 @@ import 'package:To3maa/zakat/domain/requsts/get_zakat_products_by_zakat_id_reque
 import 'package:To3maa/zakat/domain/requsts/insert_product_request.dart';
 import 'package:To3maa/zakat/domain/requsts/insert_zakat_products_request.dart';
 import 'package:To3maa/zakat/domain/requsts/insert_zakat_request.dart';
+import 'package:To3maa/zakat/domain/requsts/reset_product_quantity_request.dart';
 import 'package:To3maa/zakat/domain/requsts/update_product_quantity_request.dart';
 import 'package:To3maa/zakat/domain/requsts/update_product_request.dart';
 import 'package:To3maa/zakat/domain/use_cases/base_usecase/base_usecase.dart';
@@ -23,6 +24,7 @@ import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/get_zakat_products_b
 import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/insert_product_usecase.dart';
 import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/insert_zakat_products_usecase.dart';
 import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/insert_zakat_usecase.dart';
+import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/reset_product_quantity_usecase.dart';
 import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/update_product_quantity_usecase.dart';
 import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/update_product_usecase.dart';
 import 'package:To3maa/zakat/presentation/ui/home_page/cubit/zakat_states.dart';
@@ -43,6 +45,7 @@ class ZakatCubit extends Cubit<ZakatState> {
   final InsertZakatUseCase insertZakatUseCase;
   final UpdateProductUseCase updateProductUseCase;
   final UpdateProductQuantityUseCase updateProductQuantityUseCase;
+  final ResetProductQuantityUseCase resetProductQuantityUseCase;
 
   ZakatCubit(
     this.deleteProductUseCase,
@@ -59,6 +62,7 @@ class ZakatCubit extends Cubit<ZakatState> {
     this.insertZakatUseCase,
     this.updateProductUseCase,
     this.updateProductQuantityUseCase,
+    this.resetProductQuantityUseCase,
   ) : super(const ZakatState());
 
   static ZakatCubit get(context) => BlocProvider.of(context);
@@ -143,6 +147,25 @@ class ZakatCubit extends Cubit<ZakatState> {
 
     final result =
         await updateProductQuantityUseCase(updateProductQuantityRequest);
+
+    result.fold(
+        (l) => emit(state.copyWith(
+            zakatState: RequestState.updateError, zakatMessage: l.message)),
+        (r) => emit(state.copyWith(
+              productId: r,
+              zakatState: RequestState.updateDone,
+            )));
+  }
+
+  FutureOr<void> resetProductQuantity(
+      ResetProductQuantityRequest resetProductQuantityRequest) async {
+    emit(state.copyWith(
+        zakatState: RequestState.updateLoading,
+        zakatMessage: '',
+        productId: 0));
+
+    final result =
+        await resetProductQuantityUseCase(resetProductQuantityRequest);
 
     result.fold(
         (l) => emit(state.copyWith(

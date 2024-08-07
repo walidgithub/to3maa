@@ -1,3 +1,4 @@
+import 'package:To3maa/zakat/domain/requsts/reset_product_quantity_request.dart';
 import 'package:dartz/dartz.dart';
 import 'package:To3maa/core/error/error_handler.dart';
 import 'package:To3maa/core/error/failure.dart';
@@ -177,6 +178,18 @@ class ZakatRepository extends BaseRepository {
     try {
       final result = await _baseDataSource
           .updateProductQuantityData(updateProductQuantityRequest);
+      return Right(result);
+    } catch (error) {
+      return Left(ErrorHandler.handle(error).failure);
+    }
+  }
+
+  @override
+  Future<Either<Failure, int>> resetProductQuantityData(
+      ResetProductQuantityRequest resetProductQuantityRequest) async {
+    try {
+      final result = await _baseDataSource
+          .resetProductQuantityData(resetProductQuantityRequest);
       return Right(result);
     } catch (error) {
       return Left(ErrorHandler.handle(error).failure);

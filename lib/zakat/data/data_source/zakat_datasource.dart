@@ -6,6 +6,7 @@ import 'package:To3maa/zakat/domain/requsts/get_zakat_products_by_zakat_id_reque
 import 'package:To3maa/zakat/domain/requsts/insert_product_request.dart';
 import 'package:To3maa/zakat/domain/requsts/insert_zakat_products_request.dart';
 import 'package:To3maa/zakat/domain/requsts/insert_zakat_request.dart';
+import 'package:To3maa/zakat/domain/requsts/reset_product_quantity_request.dart';
 import 'package:To3maa/zakat/domain/requsts/update_product_quantity_request.dart';
 import 'package:To3maa/zakat/domain/requsts/update_product_request.dart';
 import 'package:To3maa/zakat/domain/responses/products_respose.dart';
@@ -22,6 +23,8 @@ abstract class BaseDataSource {
   Future<int> updateProductData(UpdateProductRequest updateProductRequest);
   Future<int> updateProductQuantityData(
       UpdateProductQuantityRequest updateProductQuantityRequest);
+  Future<int> resetProductQuantityData(
+      ResetProductQuantityRequest resetProductQuantityRequest);
 
   Future<int> deleteZakatData(DeleteZakatRequest deletetZakatRequest);
   Future<int> deleteAllZakatData();
@@ -189,6 +192,18 @@ class ZakatDataSource extends BaseDataSource {
       UpdateProductQuantityRequest updateProductQuantityRequest) async {
     final res =
         await _dbHelper.updateProductQuantityData(updateProductQuantityRequest);
+    try {
+      return res;
+    } catch (e) {
+      throw e.toString();
+    }
+  }
+
+  @override
+  Future<int> resetProductQuantityData(
+      ResetProductQuantityRequest resetProductQuantityRequest) async {
+    final res =
+        await _dbHelper.resetProductQuantityData(resetProductQuantityRequest);
     try {
       return res;
     } catch (e) {

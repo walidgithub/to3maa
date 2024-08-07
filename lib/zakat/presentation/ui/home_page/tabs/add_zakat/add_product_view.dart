@@ -3,6 +3,7 @@ import 'package:To3maa/zakat/presentation/shared/constant/app_constants.dart';
 import 'package:To3maa/zakat/presentation/shared/constant/app_fonts.dart';
 import 'package:To3maa/zakat/presentation/shared/constant/app_typography.dart';
 import 'package:To3maa/zakat/presentation/shared/style/app_colors.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:animate_do/animate_do.dart';
 
@@ -11,6 +12,7 @@ class AddProductView extends StatefulWidget {
   final String productName;
   final String productPrice;
   final String productDesc;
+  final int productQuantity;
   final Function increaseQunatity;
   final Function decreaseQunatity;
   const AddProductView({
@@ -19,6 +21,7 @@ class AddProductView extends StatefulWidget {
     required this.productName,
     required this.productPrice,
     required this.productDesc,
+    required this.productQuantity,
     required this.increaseQunatity,
     required this.decreaseQunatity,
   });
@@ -145,7 +148,7 @@ class _AddProductViewState extends State<AddProductView> {
                         ),
                       ),
                       Text(
-                        _itemQuantity.toString(),
+                        widget.productQuantity.toString(),
                         style: AppTypography.kLight14
                             .copyWith(fontFamily: AppFonts.boldFontFamily),
                       ),

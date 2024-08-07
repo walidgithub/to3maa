@@ -1,3 +1,4 @@
+import 'package:To3maa/zakat/domain/requsts/reset_product_quantity_request.dart';
 import 'package:dartz/dartz.dart';
 import 'package:To3maa/core/error/failure.dart';
 import 'package:To3maa/zakat/domain/requsts/delete_product_request.dart';
@@ -26,6 +27,8 @@ abstract class BaseRepository {
       UpdateProductRequest updateProductRequest);
   Future<Either<Failure, int>> updateProductQuantityData(
       UpdateProductQuantityRequest updateProductQuantityRequest);
+  Future<Either<Failure, int>> resetProductQuantityData(
+      ResetProductQuantityRequest resetProductQuantityRequest);
 
   Future<Either<Failure, int>> deletetZakatData(
       DeleteZakatRequest deletetZakatRequest);

@@ -9,6 +9,7 @@ import 'package:To3maa/zakat/domain/requsts/get_zakat_products_by_zakat_id_reque
 import 'package:To3maa/zakat/domain/requsts/insert_product_request.dart';
 import 'package:To3maa/zakat/domain/requsts/insert_zakat_products_request.dart';
 import 'package:To3maa/zakat/domain/requsts/insert_zakat_request.dart';
+import 'package:To3maa/zakat/domain/requsts/reset_product_quantity_request.dart';
 import 'package:To3maa/zakat/domain/requsts/update_product_quantity_request.dart';
 import 'package:To3maa/zakat/domain/requsts/update_product_request.dart';
 import 'package:path/path.dart';
@@ -99,6 +100,16 @@ class DbHelper {
     final db = _db!.database;
     return db.update('productsData', updateProductQuantityRequest.toJson(),
         where: 'id = ?', whereArgs: [updateProductQuantityRequest.id]);
+  }
+
+  Future<int> resetProductQuantityData(
+      ResetProductQuantityRequest resetProductQuantityRequest) async {
+    if (_db == null) {
+      await initDB(dbdName);
+    }
+
+    final db = _db!.database;
+    return db.update('productsData', resetProductQuantityRequest.toJson());
   }
 
   // delete ---------------------------------------------

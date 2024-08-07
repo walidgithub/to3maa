@@ -40,17 +40,16 @@ class AppStrings {
   static const String noProducts = "لـم يـتـم تـسـجـيـل أصـنـاف بـعـد.";
   static const String noCarts = "لـم يـتـم إضـافـة زكــاة بـعـد.";
 
-  static const String someThingWentWrong = "some thing went wrong";
+  static const String someThingWentWrong = "حـدث خـطـأ مـا";
 
-  static const String yes = 'نعم';
+  static const String yes = 'نـعـم';
   static const String loading = 'تـحـمـيـل';
   static const String no = 'لا';
-  static const String warning = 'تحذير';
-  static const String closeApp = 'هل تريد الخروج من التطبيق؟';
+  static const String warning = 'تـحـذيـر';
+  static const String closeApp = 'هـل تـريـد الـخـروج مـن الـتـطـبـيـق؟';
   static const String deleteAllData = 'هل تريد حـذف كـل مـا فـى الـعـربـة؟';
 
   // error handler
   static const String success = "success";
-  static const String unknownError = "unknown_error";
-  static const String defaultError = "somethingError";
+  static const String defaultError = "Something Error";
 }
