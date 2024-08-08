@@ -5,6 +5,7 @@ class ZakatProductsByKilosResponse extends Equatable {
   final String productPrice;
   final String productDesc;
   final String productImage;
+  final double sa3Weight;
   final int? sumProductQuantity;
 
   const ZakatProductsByKilosResponse({
@@ -12,10 +13,17 @@ class ZakatProductsByKilosResponse extends Equatable {
     required this.productPrice,
     required this.productDesc,
     required this.productImage,
+    required this.sa3Weight,
     this.sumProductQuantity,
   });
 
   @override
-  List<Object?> get props =>
-      [productName, productPrice, productDesc, productImage, sumProductQuantity];
+  List<Object?> get props => [
+        productName,
+        productPrice,
+        productDesc,
+        sa3Weight,
+        productImage,
+        sumProductQuantity
+      ];
 }

@@ -35,9 +35,9 @@ class DbHelper {
   Future<Database> initDB(String filePath) async {
     final dbPath = await getDatabasesPath();
     final path = join(dbPath, filePath);
-    return await openDatabase(path, version: 1, onCreate: createDB);
-    // return await openDatabase(path,
-    //     version: 2, onCreate: createDB, onUpgrade: onUpgrade);
+    // return await openDatabase(path, version: 1, onCreate: createDB);
+    return await openDatabase(path,
+        version: 2, onCreate: createDB, onUpgrade: onUpgrade);
   }
 
   Future createDB(Database db, int version) async {
@@ -51,12 +51,12 @@ class DbHelper {
         'create table productsData(id integer primary key autoincrement, productName varchar(255), productPrice varchar(10), productDesc varchar(255), productImage varchar(255), productQuantity integer)');
   }
 
-  // Future onUpgrade(Database db, int oldVersion, int newVersion) async {
-  //   if (oldVersion < newVersion) {
-  //     await db.execute(
-  //         'alter table productsData ADD COLUMN productQuantity integer');
-  //   }
-  // }
+  Future onUpgrade(Database db, int oldVersion, int newVersion) async {
+    if (oldVersion < newVersion) {
+      await db.execute('alter table productsData ADD COLUMN sa3Weight double');
+      await db.execute('alter table zakatProducts ADD COLUMN sa3Weight double');
+    }
+  }
 
   // add -------------------------------------------
   Future<int> insertZakatData(InsertZakatRequest insertZakatRequest) async {
@@ -216,6 +216,8 @@ class DbHelper {
 
     final result = await db.rawQuery(
         'SELECT productName, productPrice, productDesc, productImage, SUM(productQuantity) as sumProductQuantity FROM zakatProducts GROUP BY productName');
+    print('resultttttttttttttt');
+    print(result);
     return result.map((map) => ZakatProductsByKilosModel.fromMap(map)).toList();
   }
 }

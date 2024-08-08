@@ -6,6 +6,7 @@ class ZakatProductsModel extends ZakatProductsResponse {
     required super.productName,
     required super.productPrice,
     required super.productDesc,
+    required super.sa3Weight,
     required super.productImage,
     super.productQuantity,
     super.zakatId,
@@ -18,6 +19,7 @@ class ZakatProductsModel extends ZakatProductsResponse {
       productPrice: map['productPrice'],
       productDesc: map['productDesc'],
       productImage: map['productImage'],
+      sa3Weight: map['sa3Weight'],
       productQuantity: map['productQuantity'],
       zakatId: map['zakatId'],
     );

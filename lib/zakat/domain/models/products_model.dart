@@ -8,6 +8,7 @@ class ProductsModel extends ProductsResponse {
     required super.productDesc,
     required super.productImage,
     required super.productQuantity,
+    required super.sa3Weight,
   });
 
   factory ProductsModel.fromMap(Map<String, dynamic> map) {
@@ -18,6 +19,7 @@ class ProductsModel extends ProductsResponse {
       productDesc: map['productDesc'],
       productImage: map['productImage'],
       productQuantity: map['productQuantity'],
+      sa3Weight: map['sa3Weight'],
     );
   }
 }

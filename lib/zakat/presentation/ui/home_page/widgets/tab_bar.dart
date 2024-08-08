@@ -34,21 +34,29 @@ class TabBarWidget extends StatelessWidget {
           RotatedBox(
             quarterTurns: 1,
             child: index == 1
-                ? badges.Badge(
-                    position: badges.BadgePosition.topEnd(top: -10, end: -12),
-                    badgeContent: Text(
-                      badgeVal.toString(),
-                      style: AppTypography.kBold14.copyWith(
-                          color: AppColors.cWhite,
-                          fontFamily: AppFonts.boldFontFamily),
-                    ),
-                    showBadge: true,
-                    ignorePointer: false,
-                    child: SvgPicture.asset(
-                      icon,
-                      width: 25.w,
-                    ),
-                  )
+                ? badgeVal > 0
+                    ? Center(
+                        child: badges.Badge(
+                          position:
+                              badges.BadgePosition.topEnd(top: -10, end: -12),
+                          badgeContent: Text(
+                            badgeVal.toString(),
+                            style: AppTypography.kBold14.copyWith(
+                                color: AppColors.cWhite,
+                                fontFamily: AppFonts.boldFontFamily),
+                          ),
+                          showBadge: true,
+                          ignorePointer: false,
+                          child: SvgPicture.asset(
+                            icon,
+                            width: 25.w,
+                          ),
+                        ),
+                      )
+                    : SvgPicture.asset(
+                        icon,
+                        width: 25.w,
+                      )
                 : SvgPicture.asset(
                     icon,
                     width: 25.w,

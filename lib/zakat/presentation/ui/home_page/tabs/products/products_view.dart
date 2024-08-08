@@ -33,6 +33,7 @@ class _ProductsViewState extends State<ProductsView> {
   final TextEditingController _productNameController = TextEditingController();
   final TextEditingController _productPriceController = TextEditingController();
   final TextEditingController _productDescController = TextEditingController();
+  final TextEditingController _sa3WeightController = TextEditingController();
 
   // List<ProductsResponse> products = [];
 
@@ -181,6 +182,9 @@ class _ProductsViewState extends State<ProductsView> {
             }, builder: (context, state) {
               return Column(
                 children: [
+                  SizedBox(
+                    height: 10.h,
+                  ),
                   Expanded(
                       child: state.productsList.isNotEmpty
                           ? SingleChildScrollView(
@@ -190,12 +194,13 @@ class _ProductsViewState extends State<ProductsView> {
                                   scrollDirection: Axis.vertical,
                                   physics: const NeverScrollableScrollPhysics(),
                                   separatorBuilder:
-                                      (BuildContext context, int index) =>
+                                      (BuildContext productContext,
+                                              int index) =>
                                           SizedBox(
                                             height: 20.h,
                                           ),
                                   itemBuilder:
-                                      (BuildContext context, int index) {
+                                      (BuildContext productContext, int index) {
                                     DeleteProductRequest deleteProductRequest =
                                         (DeleteProductRequest(
                                             id: state.productsList[index].id));
@@ -210,11 +215,49 @@ class _ProductsViewState extends State<ProductsView> {
                                       productDesc: state
                                           .productsList[index].productDesc!,
                                       deleteProduct: () async {
-                                        await ZakatCubit.get(context)
-                                            .deleteProduct(
-                                                deleteProductRequest);
-                                        await getAllProducts();
-                                        setState(() {});
+                                        await showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return Directionality(
+                                                textDirection:
+                                                    TextDirection.rtl,
+                                                child: AlertDialog(
+                                                  title: Text(
+                                                      AppStrings.warning,
+                                                      style: AppTypography
+                                                          .kBold18),
+                                                  content: const Text(
+                                                      AppStrings.checkToDelete),
+                                                  actions: [
+                                                    TextButton(
+                                                        onPressed: () async {
+                                                          await ZakatCubit.get(
+                                                                  productContext)
+                                                              .deleteProduct(
+                                                                  deleteProductRequest);
+                                                          await getAllProducts();
+                                                          setState(() {});
+
+                                                          Navigator.of(context)
+                                                              .pop(false);
+                                                        },
+                                                        child: Text(
+                                                            AppStrings.yes,
+                                                            style: AppTypography
+                                                                .kLight14)),
+                                                    TextButton(
+                                                        onPressed: () {
+                                                          Navigator.of(context)
+                                                              .pop(false);
+                                                        },
+                                                        child: Text(
+                                                            AppStrings.no,
+                                                            style: AppTypography
+                                                                .kLight14)),
+                                                  ],
+                                                ),
+                                              );
+                                            });
                                       },
                                       editProduct: () {
                                         editProductId =
@@ -225,7 +268,9 @@ class _ProductsViewState extends State<ProductsView> {
                                             .productsList[index].productName!;
                                         _productDescController.text = state
                                             .productsList[index].productDesc!;
-
+                                        _sa3WeightController.text = state
+                                            .productsList[index].sa3Weight!
+                                            .toString();
                                         productImage = state
                                             .productsList[index].productImage!;
 
@@ -259,11 +304,14 @@ class _ProductsViewState extends State<ProductsView> {
                                                 productName: state
                                                     .productsList[index]
                                                     .productName,
+                                                sa3Weight: state
+                                                    .productsList[index]
+                                                    .sa3Weight,
                                                 productImage: state
                                                     .productsList[index]
                                                     .productImage));
 
-                                        await ZakatCubit.get(context)
+                                        await ZakatCubit.get(productContext)
                                             .updateProduct(
                                                 updateProductRequest);
 
@@ -379,6 +427,11 @@ class _ProductsViewState extends State<ProductsView> {
                   SizedBox(
                     height: AppConstants.heightBetweenElements,
                   ),
+                  textFieldWidget(_sa3WeightController, AppStrings.sa3Weight,
+                      TextInputType.text, (String textVal) {}),
+                  SizedBox(
+                    height: AppConstants.heightBetweenElements,
+                  ),
                   textFieldWidget(
                       _productDescController,
                       AppStrings.productDesc,
@@ -426,8 +479,13 @@ class _ProductsViewState extends State<ProductsView> {
                     onTap: () async {
                       if (editProduct) {
                         if (_productNameController.text.trim() == "" ||
-                            double.parse(_productPriceController.text.trim()) ==
+                            double.parse(_productPriceController.text.trim()) <=
                                 0) {
+                          return;
+                        }
+
+                        if (double.parse(_productPriceController.text.trim()) <=
+                            0) {
                           return;
                         }
 
@@ -438,6 +496,8 @@ class _ProductsViewState extends State<ProductsView> {
                                     _productPriceController.text.trim(),
                                 productDesc: _productDescController.text.trim(),
                                 productName: _productNameController.text.trim(),
+                                sa3Weight: double.parse(
+                                    _sa3WeightController.text.trim()),
                                 productImage: productImage));
 
                         await ZakatCubit.get(context)
@@ -459,6 +519,8 @@ class _ProductsViewState extends State<ProductsView> {
                                 productDesc: _productDescController.text.trim(),
                                 productImage: productImage,
                                 productName: _productNameController.text.trim(),
+                                sa3Weight:
+                                    double.parse(_sa3WeightController.text),
                                 productQuantity: 0,
                                 productPrice:
                                     _productPriceController.text.trim());

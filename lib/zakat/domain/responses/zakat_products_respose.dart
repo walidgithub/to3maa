@@ -6,6 +6,7 @@ class ZakatProductsResponse extends Equatable {
   final String productPrice;
   final String productDesc;
   final String productImage;
+  final double sa3Weight;
   final int? productQuantity;
   final int? zakatId;
 
@@ -15,11 +16,12 @@ class ZakatProductsResponse extends Equatable {
     required this.productPrice,
     required this.productDesc,
     required this.productImage,
+    required this.sa3Weight,
     this.productQuantity,
     this.zakatId,
   });
 
   @override
   List<Object?> get props =>
-      [id, productName, productPrice, productDesc, productImage, productQuantity, zakatId];
+      [id, productName, productPrice, productDesc, productImage, sa3Weight, productQuantity, zakatId];
 }

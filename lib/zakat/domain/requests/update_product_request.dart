@@ -5,6 +5,7 @@ class UpdateProductRequest extends Equatable {
   final String? productName;
   final String? productPrice;
   final String? productDesc;
+  final double? sa3Weight;
   final String? productImage;
 
   const UpdateProductRequest({
@@ -12,6 +13,7 @@ class UpdateProductRequest extends Equatable {
     this.productName,
     this.productPrice,
     this.productDesc,
+    this.sa3Weight,
     this.productImage,
   });
 
@@ -21,10 +23,11 @@ class UpdateProductRequest extends Equatable {
     data["productName"] = productName;
     data["productPrice"] = productPrice;
     data["productDesc"] = productDesc;
+    data["sa3Weight"] = sa3Weight;
     data["productImage"] = productImage;
     return data;
   }
 
   @override
-  List<Object?> get props => [id, productName, productPrice, productDesc];
+  List<Object?> get props => [id, productName, productPrice, sa3Weight, productDesc];
 }

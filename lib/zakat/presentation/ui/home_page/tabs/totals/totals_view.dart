@@ -60,10 +60,12 @@ class _TotalsViewState extends State<TotalsView> {
               showLoading();
             } else if (state.zakatState ==
                 RequestState.getZakatProductsByKilosError) {
+              print('errorrrrrr');
               hideLoading();
             } else if (state.zakatState ==
                 RequestState.getZakatProductsByKilosLoaded) {
               zakatByKilos = state.zakatProductsByKiloList;
+              print('loadedddddddddddd');
               hideLoading();
             }
           }, builder: (context, state) {
@@ -90,6 +92,7 @@ class _TotalsViewState extends State<TotalsView> {
                                           zakatByKilos[index].productImage,
                                       productPrice:
                                           zakatByKilos[index].productPrice,
+                                      sa3Weight: zakatByKilos[index].sa3Weight,
                                       productDesc:
                                           zakatByKilos[index].productDesc,
                                       sumProductQuantity: zakatByKilos[index]

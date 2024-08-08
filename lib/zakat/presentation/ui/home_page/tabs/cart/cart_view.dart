@@ -107,10 +107,12 @@ class _CartViewState extends State<CartView> {
                               scrollDirection: Axis.vertical,
                               physics: const NeverScrollableScrollPhysics(),
                               separatorBuilder:
-                                  (BuildContext context, int index) => SizedBox(
+                                  (BuildContext cartContext, int index) =>
+                                      SizedBox(
                                         height: 20.h,
                                       ),
-                              itemBuilder: (BuildContext context, int index) {
+                              itemBuilder:
+                                  (BuildContext cartContext, int index) {
                                 DeleteZakatRequest deleteZakatRequest =
                                     (DeleteZakatRequest(
                                         id: cartItems[index].id));
@@ -124,27 +126,66 @@ class _CartViewState extends State<CartView> {
                                   total: cartItems[index].zakatValue,
                                   remain: cartItems[index].remainValue,
                                   deleteCart: () async {
-                                    await ZakatCubit.get(context)
-                                        .deleteZakat(deleteZakatRequest);
+                                    await showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return Directionality(
+                                            textDirection: TextDirection.rtl,
+                                            child: AlertDialog(
+                                              title: Text(AppStrings.warning,
+                                                  style: AppTypography.kBold18),
+                                              content: const Text(
+                                                  AppStrings.checkToDelete),
+                                              actions: [
+                                                TextButton(
+                                                    onPressed: () async {
+                                                      await ZakatCubit.get(
+                                                              cartContext)
+                                                          .deleteZakat(
+                                                              deleteZakatRequest);
 
-                                    // ignore: use_build_context_synchronously
-                                    await ZakatCubit.get(context)
-                                        .deleteZakatProducts(
-                                            deleteZakatProductsRequest);
+                                                      // ignore: use_build_context_synchronously
+                                                      await ZakatCubit.get(
+                                                              cartContext)
+                                                          .deleteZakatProducts(
+                                                              deleteZakatProductsRequest);
 
-                                    final snackBar = SnackBar(
-                                      duration: Duration(
-                                          milliseconds:
-                                              AppConstants.durationOfSnackBar),
-                                      content:
-                                          const Text(AppStrings.successDelete),
-                                    );
-                                    // ignore: use_build_context_synchronously
-                                    ScaffoldMessenger.of(context)
-                                        .showSnackBar(snackBar);
+                                                      final snackBar = SnackBar(
+                                                        duration: Duration(
+                                                            milliseconds:
+                                                                AppConstants
+                                                                    .durationOfSnackBar),
+                                                        content: const Text(
+                                                            AppStrings
+                                                                .successDelete),
+                                                      );
+                                                      // ignore: use_build_context_synchronously
+                                                      ScaffoldMessenger.of(
+                                                              cartContext)
+                                                          .showSnackBar(
+                                                              snackBar);
 
-                                    await getAllZakat();
-                                    setState(() {});
+                                                      await getAllZakat();
+                                                      setState(() {});
+
+                                                      Navigator.of(context)
+                                                          .pop(false);
+                                                    },
+                                                    child: Text(AppStrings.yes,
+                                                        style: AppTypography
+                                                            .kLight14)),
+                                                TextButton(
+                                                    onPressed: () {
+                                                      Navigator.of(context)
+                                                          .pop(false);
+                                                    },
+                                                    child: Text(AppStrings.no,
+                                                        style: AppTypography
+                                                            .kLight14)),
+                                              ],
+                                            ),
+                                          );
+                                        });
                                   },
                                 );
                               }),

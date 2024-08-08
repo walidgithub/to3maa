@@ -8,6 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class SuggestedView extends StatelessWidget {
   final String imagePath;
   final String imageName;
+  final String imageDesc;
   final Function addSuggested;
   final bool selected;
   final int id;
@@ -15,6 +16,7 @@ class SuggestedView extends StatelessWidget {
       {super.key,
       required this.imagePath,
       required this.imageName,
+      required this.imageDesc,
       required this.addSuggested,
       required this.selected,
       required this.id});
@@ -53,6 +55,20 @@ class SuggestedView extends StatelessWidget {
                   left: 0,
                   right: 0,
                   bottom: 5.h,
+                  child: SizedBox(
+                      width: 70.w,
+                      child: Center(
+                        child: Text(
+                          imageDesc,
+                          style: AppTypography.kBold14
+                              .copyWith(color: AppColors.cBlack),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ))),
+              Positioned(
+                  left: 0,
+                  right: 0,
+                  top: 0,
                   child: SizedBox(
                       width: 70.w,
                       child: Center(

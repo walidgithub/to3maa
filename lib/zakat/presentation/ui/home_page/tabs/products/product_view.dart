@@ -37,13 +37,13 @@ class _ProductViewState extends State<ProductView> {
     return FadeInUp(
       duration: Duration(milliseconds: AppConstants.animation),
       child: SizedBox(
-        height: 150.h,
+        height: 140.h,
         child: Stack(
           alignment: Alignment.bottomCenter,
           children: [
             Container(
               width: MediaQuery.sizeOf(context).width * 0.75,
-              height: 130.h,
+              height: 120.h,
               padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 10.w),
               decoration: BoxDecoration(
                 color: AppColors.cBackGround,
@@ -114,8 +114,8 @@ class _ProductViewState extends State<ProductView> {
                   ),
                 )),
             Positioned(
-                bottom: 40.h,
-                left: 10.w,
+                top: 5.h,
+                right: 10.w,
                 child: SizedBox(
                     width: 100.w,
                     child: Row(
@@ -207,6 +207,10 @@ class _ProductViewState extends State<ProductView> {
                   ),
                   GestureDetector(
                     onTap: () {
+                      if (int.parse(_editController.text.trim().toString()) <=
+                          0) {
+                        return;
+                      }
                       widget.editPrice(_editController.text.trim());
                       _editController.text = '';
                     },

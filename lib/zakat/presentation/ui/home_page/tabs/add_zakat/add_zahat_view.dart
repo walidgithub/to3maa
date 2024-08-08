@@ -35,9 +35,8 @@ class _AddZakatViewState extends State<AddZakatView> {
 
   @override
   void initState() {
-    getAllProducts();
     getAllZakat();
-    resetQuantity();
+    clearData();
     super.initState();
   }
 
@@ -95,6 +94,7 @@ class _AddZakatViewState extends State<AddZakatView> {
           suggestedItems.add(SuggestedItems(
               imageId: x.id,
               imagePath: x.productImage,
+              imageDesc: x.productDesc,
               selected: false,
               imageName: x.productName));
         }
@@ -192,57 +192,73 @@ class _AddZakatViewState extends State<AddZakatView> {
                       )
                     : Container(),
                 suggested
-                    ? Container(
-                        width: MediaQuery.sizeOf(context).width * 0.75,
-                        height: 100.h,
-                        padding: EdgeInsets.symmetric(
-                            vertical: 10.h, horizontal: 10.w),
-                        decoration: BoxDecoration(
-                          border:
-                              Border.all(width: 2.w, color: AppColors.cPrimary),
-                          borderRadius:
-                              BorderRadius.circular(AppConstants.radius),
-                        ),
-                        child: ListView.separated(
-                            itemCount: suggestedItems.length,
-                            shrinkWrap: true,
-                            scrollDirection: Axis.horizontal,
-                            physics: const AlwaysScrollableScrollPhysics(),
-                            separatorBuilder:
-                                (BuildContext context, int index) => SizedBox(
-                                      width: 10.h,
-                                    ),
-                            itemBuilder: (BuildContext context, int index) {
-                              return SuggestedView(
-                                imagePath: suggestedItems[index].imagePath!,
-                                imageName: suggestedItems[index].imageName!,
-                                selected: suggestedItems[index].selected!,
-                                id: suggestedItems[index].imageId!,
-                                addSuggested: (int id) async {
-                                  setState(() {
-                                    for (var n in suggestedItems) {
-                                      n.selected = false;
-                                    }
-                                    suggestedItems[index].selected = true;
-                                  });
+                    ? Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            AppStrings.suggested,
+                            style:
+                                TextStyle(fontFamily: AppFonts.qabasFontFamily),
+                          ),
+                          SizedBox(
+                            height: 5.h,
+                          ),
+                          Container(
+                            width: MediaQuery.sizeOf(context).width * 0.75,
+                            height: 100.h,
+                            padding: EdgeInsets.symmetric(
+                                vertical: 10.h, horizontal: 10.w),
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                  width: 2.w, color: AppColors.cPrimary),
+                              borderRadius:
+                                  BorderRadius.circular(AppConstants.radius),
+                            ),
+                            child: ListView.separated(
+                                itemCount: suggestedItems.length,
+                                shrinkWrap: true,
+                                scrollDirection: Axis.horizontal,
+                                physics: const AlwaysScrollableScrollPhysics(),
+                                separatorBuilder:
+                                    (BuildContext context, int index) =>
+                                        SizedBox(
+                                          width: 10.h,
+                                        ),
+                                itemBuilder: (BuildContext context, int index) {
+                                  return SuggestedView(
+                                    imagePath: suggestedItems[index].imagePath!,
+                                    imageName: suggestedItems[index].imageName!,
+                                    imageDesc: suggestedItems[index].imageDesc!,
+                                    selected: suggestedItems[index].selected!,
+                                    id: suggestedItems[index].imageId!,
+                                    addSuggested: (int id) async {
+                                      setState(() {
+                                        for (var n in suggestedItems) {
+                                          n.selected = false;
+                                        }
+                                        suggestedItems[index].selected = true;
+                                      });
 
-                                  await resetQuantity();
+                                      await resetQuantity();
 
-                                  UpdateProductQuantityRequest
-                                      updateProductQuantityRequest =
-                                      (UpdateProductQuantityRequest(
-                                          id: state.productsList[index].id,
-                                          productQuantity: int.parse(
-                                              _membersCountController.text)));
+                                      UpdateProductQuantityRequest
+                                          updateProductQuantityRequest =
+                                          (UpdateProductQuantityRequest(
+                                              id: state.productsList[index].id,
+                                              productQuantity: int.parse(
+                                                  _membersCountController
+                                                      .text)));
 
-                                  await ZakatCubit.get(context)
-                                      .updateProductQuantity(
-                                          updateProductQuantityRequest);
+                                      await ZakatCubit.get(context)
+                                          .updateProductQuantity(
+                                              updateProductQuantityRequest);
 
-                                  await getAllProducts();
-                                },
-                              );
-                            }),
+                                      await getAllProducts();
+                                    },
+                                  );
+                                }),
+                          )
+                        ],
                       )
                     : Container(),
                 SizedBox(
@@ -273,6 +289,8 @@ class _AddZakatViewState extends State<AddZakatView> {
                                         state.productsList[index].productDesc!,
                                     productQuantity: state
                                         .productsList[index].productQuantity!,
+                                    allValue: allValue,
+                                    productsList: state.productsList,
                                     increaseQunatity: (int quantity) async {
                                       UpdateProductQuantityRequest
                                           updateProductQuantityRequest =
@@ -284,11 +302,30 @@ class _AddZakatViewState extends State<AddZakatView> {
                                           .updateProductQuantity(
                                               updateProductQuantityRequest);
 
-                                      setState(() {
+                                      setState(() async {
                                         state.productsList[index]
                                             .productQuantity = quantity;
                                         remain = allValue -
                                             calcRemain(state.productsList);
+                                        if (remain.isNegative) {
+                                          await showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return Directionality(
+                                                  textDirection:
+                                                      TextDirection.rtl,
+                                                  child: AlertDialog(
+                                                    title: Text(
+                                                        AppStrings.warning,
+                                                        style: AppTypography
+                                                            .kBold18),
+                                                    content: const Text(
+                                                        AppStrings
+                                                            .errorOnIncrease),
+                                                  ),
+                                                );
+                                              });
+                                        }
                                       });
                                     },
                                     decreaseQunatity: (int quantity) async {
@@ -402,10 +439,20 @@ class _AddZakatViewState extends State<AddZakatView> {
                               if (remain >= allValue) {
                                 return;
                               }
-                              if (_membersCountController.text.trim() == '' ||
-                                  _zakatValueController.text.trim() == '') {
+
+                              if (remain.isNegative) {
                                 return;
                               }
+
+                              if (double.parse(_membersCountController.text
+                                          .trim()) <=
+                                      0 ||
+                                  double.parse(
+                                          _zakatValueController.text.trim()) <=
+                                      0) {
+                                return;
+                              }
+
                               InsertZakatRequest insertZakatRequest =
                                   InsertZakatRequest(
                                       membersCount:

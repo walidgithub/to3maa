@@ -13,11 +13,13 @@ class AppStrings {
   static const String member = "الإســم";
   static const String zakatValue = "قــيـمـة الـزكــاة";
   static const String membersCount = "عــدد الأفــراد";
+  static const String suggested = "أصـنـاف مـقـتـرحـة";
 
   static const String add = "إضــافــة";
   static const String productDesc = "الوصــف";
   static const String productName = "اسـم الـصـنـف";
-  static const String productPrice = "سـعـر الصـنـف";
+  static const String productPrice = "سـعـر الصـاع";
+  static const String sa3Weight = "وزن الصـاع بـالـكـيـلـو";
 
   static const String package = "";
   static const String rice = "أرز";
@@ -48,6 +50,9 @@ class AppStrings {
   static const String warning = 'تـحـذيـر';
   static const String closeApp = 'هـل تـريـد الـخـروج مـن الـتـطـبـيـق؟';
   static const String deleteAllData = 'هل تريد حـذف كـل مـا فـى الـعـربـة؟';
+  static const String checkToDelete = 'هل أنـت مـتـأكـد مـن الـحـذف؟';
+  static const String errorOnIncrease =
+      'الـمـتـبـقـى أصـبـح أكـبـر مـن الإجـمـالـى!';
 
   // error handler
   static const String success = "success";

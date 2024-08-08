@@ -1,3 +1,4 @@
+import 'package:To3maa/zakat/domain/responses/products_respose.dart';
 import 'package:flutter/material.dart';
 import 'package:To3maa/zakat/presentation/shared/constant/app_constants.dart';
 import 'package:To3maa/zakat/presentation/shared/constant/app_fonts.dart';
@@ -15,6 +16,8 @@ class AddProductView extends StatefulWidget {
   final int productQuantity;
   final Function increaseQunatity;
   final Function decreaseQunatity;
+  final double allValue;
+  final List<ProductsResponse> productsList;
   const AddProductView({
     super.key,
     required this.productImage,
@@ -24,6 +27,8 @@ class AddProductView extends StatefulWidget {
     required this.productQuantity,
     required this.increaseQunatity,
     required this.decreaseQunatity,
+    required this.allValue,
+    required this.productsList,
   });
 
   @override
@@ -31,6 +36,16 @@ class AddProductView extends StatefulWidget {
 }
 
 class _AddProductViewState extends State<AddProductView> {
+  double calcRemain(var products) {
+    double allProductsValue = 0.0;
+    for (var x in products) {
+      double productTotal =
+          double.parse(x.productPrice!) * (x.productQuantity + 1 ?? 0);
+      allProductsValue = allProductsValue + productTotal;
+    }
+    return allProductsValue;
+  }
+
   int _itemQuantity = 0;
 
   @override
@@ -128,6 +143,11 @@ class _AddProductViewState extends State<AddProductView> {
                     children: [
                       GestureDetector(
                         onTap: () {
+                          double remain =
+                              widget.allValue - calcRemain(widget.productsList);
+                          if (remain.isNegative) {
+                            return;
+                          }
                           _itemQuantity++;
                           widget.increaseQunatity(_itemQuantity);
                         },
