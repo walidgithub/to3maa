@@ -325,7 +325,7 @@ class _AddZakatViewState extends State<AddZakatView> {
                   height: 5.h,
                 ),
                 Container(
-                  height: 150.h,
+                  height: 110.h,
                   width: MediaQuery.sizeOf(context).width * 0.75,
                   padding:
                       EdgeInsets.symmetric(vertical: 10.h, horizontal: 10.w),
@@ -479,7 +479,7 @@ class _AddZakatViewState extends State<AddZakatView> {
                   ),
                 ),
                 SizedBox(
-                  height: 30.h,
+                  height: MediaQuery.sizeOf(context).height * 0.07.h,
                 ),
               ],
             );

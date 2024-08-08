@@ -97,7 +97,7 @@ class _TotalsViewState extends State<TotalsView> {
                                 })),
                       ),
                       SizedBox(
-                        height: 30.h,
+                        height: MediaQuery.sizeOf(context).height * 0.07.h,
                       ),
                     ],
                   )

@@ -23,8 +23,8 @@ void main() async {
     DeviceOrientation.portraitDown,
   ]);
 
-  runApp(DevicePreview(builder: (context) => const MyApp()));
-  // runApp(const MyApp());
+  // runApp(DevicePreview(builder: (context) => const MyApp()));
+  runApp(const MyApp());
 
   ErrorWidget.builder = (FlutterErrorDetails details) => Scaffold(
         body: SafeArea(

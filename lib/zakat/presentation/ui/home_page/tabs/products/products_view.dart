@@ -281,7 +281,7 @@ class _ProductsViewState extends State<ProductsView> {
                               ),
                             )),
                   SizedBox(
-                    height: 30.h,
+                    height: MediaQuery.sizeOf(context).height * 0.07.h,
                   ),
                 ],
               );
@@ -495,7 +495,7 @@ class _ProductsViewState extends State<ProductsView> {
                     ),
                   ),
                   SizedBox(
-                    height: 30.h,
+                    height: MediaQuery.sizeOf(context).height * 0.07.h,
                   ),
                 ],
               );

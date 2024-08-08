@@ -160,7 +160,7 @@ class _CartViewState extends State<CartView> {
                 height: 5.h,
               ),
               Container(
-                height: 150.h,
+                height: 110.h,
                 width: MediaQuery.sizeOf(context).width * 0.75,
                 padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 10.w),
                 decoration: BoxDecoration(
@@ -245,7 +245,8 @@ class _CartViewState extends State<CartView> {
                                   return Directionality(
                                     textDirection: TextDirection.rtl,
                                     child: AlertDialog(
-                                      title: Text(AppStrings.warning,style: AppTypography.kBold18),
+                                      title: Text(AppStrings.warning,
+                                          style: AppTypography.kBold18),
                                       content:
                                           const Text(AppStrings.deleteAllData),
                                       actions: [
@@ -258,7 +259,9 @@ class _CartViewState extends State<CartView> {
                                                     milliseconds: AppConstants
                                                         .durationOfSnackBar),
                                                 content: Text(
-                                                    AppStrings.successDelete,style: AppTypography.kBold16),
+                                                    AppStrings.successDelete,
+                                                    style:
+                                                        AppTypography.kBold16),
                                               );
                                               // ignore: use_build_context_synchronously
                                               ScaffoldMessenger.of(context)
@@ -266,12 +269,14 @@ class _CartViewState extends State<CartView> {
                                               // ignore: use_build_context_synchronously
                                               Navigator.of(context).pop(false);
                                             },
-                                            child: Text(AppStrings.yes,style: AppTypography.kLight14)),
+                                            child: Text(AppStrings.yes,
+                                                style: AppTypography.kLight14)),
                                         TextButton(
                                             onPressed: () {
                                               Navigator.of(context).pop(false);
                                             },
-                                            child: Text(AppStrings.no,style: AppTypography.kLight14)),
+                                            child: Text(AppStrings.no,
+                                                style: AppTypography.kLight14)),
                                       ],
                                     ),
                                   );
@@ -303,7 +308,7 @@ class _CartViewState extends State<CartView> {
                 ),
               ),
               SizedBox(
-                height: 30.h,
+                height: MediaQuery.sizeOf(context).height * 0.07.h,
               ),
             ],
           );
