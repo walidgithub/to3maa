@@ -1,16 +1,16 @@
 import 'dart:async';
 
 import 'package:To3maa/core/utils/enums.dart';
-import 'package:To3maa/zakat/domain/requsts/delete_product_request.dart';
-import 'package:To3maa/zakat/domain/requsts/delete_zakat_products_request.dart';
-import 'package:To3maa/zakat/domain/requsts/delete_zakat_request.dart';
-import 'package:To3maa/zakat/domain/requsts/get_zakat_products_by_zakat_id_request.dart';
-import 'package:To3maa/zakat/domain/requsts/insert_product_request.dart';
-import 'package:To3maa/zakat/domain/requsts/insert_zakat_products_request.dart';
-import 'package:To3maa/zakat/domain/requsts/insert_zakat_request.dart';
-import 'package:To3maa/zakat/domain/requsts/reset_product_quantity_request.dart';
-import 'package:To3maa/zakat/domain/requsts/update_product_quantity_request.dart';
-import 'package:To3maa/zakat/domain/requsts/update_product_request.dart';
+import 'package:To3maa/zakat/domain/requests/delete_product_request.dart';
+import 'package:To3maa/zakat/domain/requests/delete_zakat_products_request.dart';
+import 'package:To3maa/zakat/domain/requests/delete_zakat_request.dart';
+import 'package:To3maa/zakat/domain/requests/get_zakat_products_by_zakat_id_request.dart';
+import 'package:To3maa/zakat/domain/requests/insert_product_request.dart';
+import 'package:To3maa/zakat/domain/requests/insert_zakat_products_request.dart';
+import 'package:To3maa/zakat/domain/requests/insert_zakat_request.dart';
+import 'package:To3maa/zakat/domain/requests/reset_product_quantity_request.dart';
+import 'package:To3maa/zakat/domain/requests/update_product_quantity_request.dart';
+import 'package:To3maa/zakat/domain/requests/update_product_request.dart';
 import 'package:To3maa/zakat/domain/use_cases/base_usecase/base_usecase.dart';
 import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/delete_all_zakat_products_usecase.dart';
 import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/delete_all_zakat_usecase.dart';

@@ -6,6 +6,7 @@ class InsertProductRequest extends Equatable {
   final String? productPrice;
   final String? productDesc;
   final String? productImage;
+  final int? productQuantity;
 
   const InsertProductRequest({
     this.id,
@@ -13,6 +14,7 @@ class InsertProductRequest extends Equatable {
     this.productPrice,
     this.productDesc,
     this.productImage,
+    this.productQuantity,
   });
 
   Map<String, dynamic> toJson() {
@@ -22,6 +24,7 @@ class InsertProductRequest extends Equatable {
     data["productPrice"] = productPrice;
     data["productDesc"] = productDesc;
     data["productImage"] = productImage;
+    data["productQuantity"] = productQuantity;
     return data;
   }
 

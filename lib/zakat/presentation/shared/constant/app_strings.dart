@@ -37,7 +37,7 @@ class AppStrings {
   static const String deleteAll = "حـذف الـكـل";
   static const String kilo = "كـيـلـو";
 
-  static const String noProducts = "لـم يـتـم تـسـجـيـل أصـنـاف بـعـد.";
+  static const String noProducts = "لـم يـتـم تـسـجـيـل مـنـتـجـات بـعـد.";
   static const String noCarts = "لـم يـتـم إضـافـة زكــاة بـعـد.";
 
   static const String someThingWentWrong = "حـدث خـطـأ مـا";
