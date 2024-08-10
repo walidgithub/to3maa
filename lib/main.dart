@@ -6,7 +6,6 @@ import 'package:To3maa/zakat/presentation/router/app_router.dart';
 import 'package:To3maa/zakat/presentation/shared/constant/app_strings.dart';
 import 'package:To3maa/zakat/presentation/shared/style/app_theme.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:device_preview/device_preview.dart';
 import 'zakat/presentation/shared/constant/app_constants.dart';
 import 'zakat/presentation/shared/style/app_colors.dart';
 
