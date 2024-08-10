@@ -215,9 +215,7 @@ class DbHelper {
     final db = _db!.database;
 
     final result = await db.rawQuery(
-        'SELECT productName, productPrice, productDesc, productImage, SUM(productQuantity) as sumProductQuantity FROM zakatProducts GROUP BY productName');
-    print('resultttttttttttttt');
-    print(result);
+        'SELECT productName, productPrice, productDesc, productImage, sa3Weight, SUM(productQuantity) as sumProductQuantity FROM zakatProducts GROUP BY productName');
     return result.map((map) => ZakatProductsByKilosModel.fromMap(map)).toList();
   }
 }

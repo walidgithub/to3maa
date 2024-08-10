@@ -22,8 +22,8 @@ class ZakatProductsByKilosResponse extends Equatable {
         productName,
         productPrice,
         productDesc,
-        sa3Weight,
         productImage,
+        sa3Weight,
         sumProductQuantity
       ];
 }

@@ -32,7 +32,7 @@ class SuggestedView extends StatelessWidget {
           child: Stack(
             children: [
               SizedBox(
-                height: 70.h,
+                height: 100.h,
                 width: 70.h,
                 child: Container(
                   padding: EdgeInsets.symmetric(vertical: 5.h, horizontal: 5.w),
@@ -68,7 +68,7 @@ class SuggestedView extends StatelessWidget {
               Positioned(
                   left: 0,
                   right: 0,
-                  top: 0,
+                  top: 5.h,
                   child: SizedBox(
                       width: 70.w,
                       child: Center(

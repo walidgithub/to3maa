@@ -1,9 +1,9 @@
 import 'dart:async';
 
+import 'package:To3maa/core/utils/enums.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:To3maa/core/utils/enums.dart';
 import 'package:To3maa/zakat/domain/entities/cart_items.dart';
 import 'package:To3maa/zakat/domain/requests/delete_zakat_products_request.dart';
 import 'package:To3maa/zakat/domain/requests/delete_zakat_request.dart';
@@ -32,13 +32,14 @@ class _CartViewState extends State<CartView> {
     super.initState();
   }
 
+  List<Cart> cart = [];
+
   Future<void> getAllZakat() async {
     await ZakatCubit.get(context).getAllZakat();
   }
 
   Future<void> deleteAll() async {
     await ZakatCubit.get(context).deleteAllZakat();
-    await ZakatCubit.get(context).deleteAllZakatProducts();
   }
 
   double getTotal() {
@@ -84,6 +85,14 @@ class _CartViewState extends State<CartView> {
             hideLoading();
           } else if (state.zakatState == RequestState.zakatLoaded) {
             cartItems = state.zakatList;
+            for (var x in state.zakatList) {
+              cart.add(Cart(
+                  id: x.id,
+                  membersCount: x.membersCount,
+                  remainValue: x.remainValue,
+                  selected: false,
+                  zakatValue: x.zakatValue));
+            }
             hideLoading();
           } else if (state.zakatState == RequestState.deleteLoading) {
             showLoading();
@@ -99,10 +108,10 @@ class _CartViewState extends State<CartView> {
                 height: 10.h,
               ),
               Expanded(
-                  child: cartItems.isNotEmpty
+                  child: cart.isNotEmpty
                       ? SingleChildScrollView(
                           child: ListView.separated(
-                              itemCount: cartItems.length,
+                              itemCount: cart.length,
                               shrinkWrap: true,
                               scrollDirection: Axis.vertical,
                               physics: const NeverScrollableScrollPhysics(),
@@ -120,11 +129,22 @@ class _CartViewState extends State<CartView> {
                                     deleteZakatProductsRequest =
                                     (DeleteZakatProductsRequest(
                                         id: cartItems[index].id));
+
                                 return CartItemView(
-                                  membersCount: cartItems[index].membersCount,
-                                  zakatValue: cartItems[index].zakatValue,
-                                  total: cartItems[index].zakatValue,
-                                  remain: cartItems[index].remainValue,
+                                  selected: cart[index].selected!,
+                                  zakatId: cart[index].id!,
+                                  membersCount: cart[index].membersCount!,
+                                  zakatValue: cart[index].zakatValue!,
+                                  total: cart[index].zakatValue!,
+                                  remain: cart[index].remainValue!,
+                                  setSelected: () async {
+                                    setState(() {
+                                      for (var n in cart) {
+                                        n.selected = false;
+                                      }
+                                      cart[index].selected = true;
+                                    });
+                                  },
                                   deleteCart: () async {
                                     await showDialog(
                                         context: context,
@@ -149,6 +169,12 @@ class _CartViewState extends State<CartView> {
                                                               cartContext)
                                                           .deleteZakatProducts(
                                                               deleteZakatProductsRequest);
+
+                                                      cart.removeWhere(
+                                                        (element) =>
+                                                            element.id ==
+                                                            cartItems[index].id,
+                                                      );
 
                                                       final snackBar = SnackBar(
                                                         duration: Duration(

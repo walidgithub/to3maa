@@ -128,8 +128,13 @@ class _HomePageViewState extends State<HomePageView> {
                           height: 40.h,
                         ),
                         itemBuilder: (BuildContext context, int index) {
-                          return GestureDetector(
-                            onTap: () {
+                          return TabBarWidget(
+                            title: tabItems[index].title!,
+                            activeTab: tabItems[index].activeTab!,
+                            index: index,
+                            icon: tabItems[index].icon!,
+                            badgeVal: cartItems.length,
+                            toggleTabs: () {
                               setState(() {
                                 for (var n in tabItems) {
                                   n.activeTab = false;
@@ -138,13 +143,6 @@ class _HomePageViewState extends State<HomePageView> {
                                 selectedTab = index;
                               });
                             },
-                            child: TabBarWidget(
-                              title: tabItems[index].title!,
-                              activeTab: tabItems[index].activeTab!,
-                              index: index,
-                              icon: tabItems[index].icon!,
-                              badgeVal: cartItems.length,
-                            ),
                           );
                         },
                       ),

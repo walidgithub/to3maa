@@ -100,6 +100,7 @@ class _ProductsViewState extends State<ProductsView> {
     _productNameController.text = '';
     _productPriceController.text = '';
     _productDescController.text = '';
+    _sa3WeightController.text = '';
     for (var n in productImages) {
       n.activeImage = false;
     }
@@ -428,7 +429,7 @@ class _ProductsViewState extends State<ProductsView> {
                     height: AppConstants.heightBetweenElements,
                   ),
                   textFieldWidget(_sa3WeightController, AppStrings.sa3Weight,
-                      TextInputType.text, (String textVal) {}),
+                      TextInputType.number, (String textVal) {}),
                   SizedBox(
                     height: AppConstants.heightBetweenElements,
                   ),
@@ -480,6 +481,8 @@ class _ProductsViewState extends State<ProductsView> {
                       if (editProduct) {
                         if (_productNameController.text.trim() == "" ||
                             double.parse(_productPriceController.text.trim()) <=
+                                0 ||
+                            double.parse(_sa3WeightController.text.trim()) <=
                                 0) {
                           return;
                         }
@@ -507,10 +510,13 @@ class _ProductsViewState extends State<ProductsView> {
                         _productPriceController.text = '';
                         _productNameController.text = '';
                         _productDescController.text = '';
+                        _sa3WeightController.text = '';
                         editProduct = false;
                       } else {
                         if (_productNameController.text.trim() == "" ||
-                            double.parse(_productPriceController.text.trim()) ==
+                            double.parse(_productPriceController.text.trim()) <=
+                                0 ||
+                            double.parse(_sa3WeightController.text.trim()) <=
                                 0) {
                           return;
                         }

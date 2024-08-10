@@ -205,7 +205,7 @@ class _AddZakatViewState extends State<AddZakatView> {
                           ),
                           Container(
                             width: MediaQuery.sizeOf(context).width * 0.75,
-                            height: 100.h,
+                            height: 120.h,
                             padding: EdgeInsets.symmetric(
                                 vertical: 10.h, horizontal: 10.w),
                             decoration: BoxDecoration(
@@ -302,30 +302,11 @@ class _AddZakatViewState extends State<AddZakatView> {
                                           .updateProductQuantity(
                                               updateProductQuantityRequest);
 
-                                      setState(() async {
+                                      setState(() {
                                         state.productsList[index]
                                             .productQuantity = quantity;
                                         remain = allValue -
                                             calcRemain(state.productsList);
-                                        if (remain.isNegative) {
-                                          await showDialog(
-                                              context: context,
-                                              builder: (BuildContext context) {
-                                                return Directionality(
-                                                  textDirection:
-                                                      TextDirection.rtl,
-                                                  child: AlertDialog(
-                                                    title: Text(
-                                                        AppStrings.warning,
-                                                        style: AppTypography
-                                                            .kBold18),
-                                                    content: const Text(
-                                                        AppStrings
-                                                            .errorOnIncrease),
-                                                  ),
-                                                );
-                                              });
-                                        }
                                       });
                                     },
                                     decreaseQunatity: (int quantity) async {
@@ -473,6 +454,7 @@ class _AddZakatViewState extends State<AddZakatView> {
                                         productName: x.productName,
                                         productPrice: x.productPrice,
                                         productQuantity: x.productQuantity,
+                                        sa3Weight: x.sa3Weight,
                                         zakatId: DbHelper.insertedNewZakat);
 
                                 // ignore: use_build_context_synchronously

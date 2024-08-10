@@ -33,5 +33,5 @@ class InsertProductRequest extends Equatable {
 
   @override
   List<Object?> get props =>
-      [id, productName, productPrice, productDesc, productImage, sa3Weight];
+      [id, productName, productPrice, productDesc, productImage, sa3Weight, productQuantity];
 }

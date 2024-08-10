@@ -29,5 +29,5 @@ class UpdateProductRequest extends Equatable {
   }
 
   @override
-  List<Object?> get props => [id, productName, productPrice, sa3Weight, productDesc];
+  List<Object?> get props => [id, productName, productPrice, productDesc, sa3Weight, productImage];
 }

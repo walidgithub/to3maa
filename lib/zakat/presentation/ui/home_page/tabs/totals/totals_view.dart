@@ -60,12 +60,10 @@ class _TotalsViewState extends State<TotalsView> {
               showLoading();
             } else if (state.zakatState ==
                 RequestState.getZakatProductsByKilosError) {
-              print('errorrrrrr');
               hideLoading();
             } else if (state.zakatState ==
                 RequestState.getZakatProductsByKilosLoaded) {
               zakatByKilos = state.zakatProductsByKiloList;
-              print('loadedddddddddddd');
               hideLoading();
             }
           }, builder: (context, state) {

@@ -38,6 +38,7 @@ class AppStrings {
   static const String editPrice = "تـعـديـل الـسـعـر:";
   static const String deleteAll = "حـذف الـكـل";
   static const String kilo = "كـيـلـو";
+  static const String sa3 = "صــاع";
 
   static const String noProducts = "لـم يـتـم تـسـجـيـل مـنـتـجـات بـعـد.";
   static const String noCarts = "لـم يـتـم إضـافـة زكــاة بـعـد.";
@@ -51,8 +52,6 @@ class AppStrings {
   static const String closeApp = 'هـل تـريـد الـخـروج مـن الـتـطـبـيـق؟';
   static const String deleteAllData = 'هل تريد حـذف كـل مـا فـى الـعـربـة؟';
   static const String checkToDelete = 'هل أنـت مـتـأكـد مـن الـحـذف؟';
-  static const String errorOnIncrease =
-      'الـمـتـبـقـى أصـبـح أكـبـر مـن الإجـمـالـى!';
 
   // error handler
   static const String success = "success";
