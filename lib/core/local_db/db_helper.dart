@@ -35,28 +35,29 @@ class DbHelper {
   Future<Database> initDB(String filePath) async {
     final dbPath = await getDatabasesPath();
     final path = join(dbPath, filePath);
-    return await openDatabase(path, version: 1, onCreate: createDB);
-    // return await openDatabase(path,
-    //     version: 2, onCreate: createDB, onUpgrade: onUpgrade);
+    // return await openDatabase(path, version: 1, onCreate: createDB);
+    return await openDatabase(path,
+        version: 4, onCreate: createDB, onUpgrade: onUpgrade);
   }
 
   Future createDB(Database db, int version) async {
     await db.execute(
-        'create table zakat(id integer primary key autoincrement, membersCount integer, zakatValue varchar(10), remainValue varchar(10))');
+        'create table zakat(id integer primary key autoincrement, membersCount integer, zakatValue varchar(10), remainValue varchar(10), hegriDate varchar(50))');
 
     await db.execute(
-        'create table zakatProducts(id integer primary key autoincrement, productName varchar(255), productPrice varchar(10), productDesc varchar(255), productImage varchar(255), productQuantity integer, sa3Weight double, zakatId integer)');
+        'create table zakatProducts(id integer primary key autoincrement, productName varchar(255), productPrice varchar(10), productDesc varchar(255), productImage varchar(255), productQuantity integer, sa3Weight double, zakatId integer, hegriDate varchar(50))');
 
     await db.execute(
         'create table productsData(id integer primary key autoincrement, productName varchar(255), productPrice varchar(10), productDesc varchar(255), productImage varchar(255), productQuantity integer, sa3Weight double)');
   }
 
-  // Future onUpgrade(Database db, int oldVersion, int newVersion) async {
-  //   if (oldVersion < newVersion) {
-  //     await db.execute('alter table productsData ADD COLUMN sa3Weight double');
-  //     await db.execute('alter table zakatProducts ADD COLUMN sa3Weight double');
-  //   }
-  // }
+  Future onUpgrade(Database db, int oldVersion, int newVersion) async {
+    if (oldVersion < newVersion) {
+      await db.execute('alter table zakat ADD COLUMN hegriDate varchar(50)');
+      await db.execute(
+          'alter table zakatProducts ADD COLUMN hegriDate varchar(50)');
+    }
+  }
 
   // add -------------------------------------------
   Future<int> insertZakatData(InsertZakatRequest insertZakatRequest) async {
@@ -200,6 +201,7 @@ class DbHelper {
 
     final db = _db!.database;
     var result = [];
+
     result = await db.rawQuery('SELECT * FROM zakatProducts where zakatId = ?',
         [getZakatProductsByZatatIdRequest.zakatId]);
 
@@ -215,7 +217,7 @@ class DbHelper {
     final db = _db!.database;
 
     final result = await db.rawQuery(
-        'SELECT productName, productPrice, productDesc, productImage, sa3Weight, SUM(productQuantity) as sumProductQuantity FROM zakatProducts GROUP BY productName');
+        'SELECT productName, productPrice, productDesc, productImage, sa3Weight, hegriDate, SUM(productQuantity) as sumProductQuantity FROM zakatProducts GROUP BY productName');
     return result.map((map) => ZakatProductsByKilosModel.fromMap(map)).toList();
   }
 }

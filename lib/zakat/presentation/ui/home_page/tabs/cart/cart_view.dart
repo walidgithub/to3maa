@@ -90,6 +90,7 @@ class _CartViewState extends State<CartView> {
                   id: x.id,
                   membersCount: x.membersCount,
                   remainValue: x.remainValue,
+                  hijriDate: x.hegriDate,
                   selected: false,
                   zakatValue: x.zakatValue));
             }
@@ -132,6 +133,7 @@ class _CartViewState extends State<CartView> {
 
                                 return CartItemView(
                                   selected: cart[index].selected!,
+                                  hijriDate: cart[index].hijriDate!,
                                   zakatId: cart[index].id!,
                                   membersCount: cart[index].membersCount!,
                                   zakatValue: cart[index].zakatValue!,
@@ -262,7 +264,7 @@ class _CartViewState extends State<CartView> {
                                   width: 5.w,
                                 ),
                                 Text(
-                                  'ج.م',
+                                  AppStrings.currency,
                                   style: AppTypography.kLight16.copyWith(
                                       fontFamily: AppFonts.boldFontFamily,
                                       color: AppColors.cWhite),
@@ -292,7 +294,7 @@ class _CartViewState extends State<CartView> {
                                   width: 5.w,
                                 ),
                                 Text(
-                                  'ج.م',
+                                  AppStrings.currency,
                                   style: AppTypography.kLight16.copyWith(
                                       fontFamily: AppFonts.boldFontFamily,
                                       color: AppColors.cWhite),

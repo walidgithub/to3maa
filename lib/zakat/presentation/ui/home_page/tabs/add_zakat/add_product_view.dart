@@ -8,6 +8,8 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:animate_do/animate_do.dart';
 
+import '../../../../shared/constant/app_strings.dart';
+
 class AddProductView extends StatefulWidget {
   final String productImage;
   final String productName;
@@ -91,7 +93,7 @@ class _AddProductViewState extends State<AddProductView> {
                         width: 5.w,
                       ),
                       Text(
-                        'ج.م',
+                        AppStrings.currency,
                         style: AppTypography.kLight16.copyWith(
                             fontFamily: AppFonts.boldFontFamily,
                             color: AppColors.cBlack),

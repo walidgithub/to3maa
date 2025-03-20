@@ -8,6 +8,7 @@ class ZakatProductsModel extends ZakatProductsResponse {
     required super.productDesc,
     required super.sa3Weight,
     required super.productImage,
+    required super.hegriDate,
     super.productQuantity,
     super.zakatId,
   });
@@ -19,6 +20,7 @@ class ZakatProductsModel extends ZakatProductsResponse {
       productPrice: map['productPrice'],
       productDesc: map['productDesc'],
       productImage: map['productImage'],
+      hegriDate: map['hegriDate'],
       sa3Weight: map['sa3Weight'],
       productQuantity: map['productQuantity'],
       zakatId: map['zakatId'],

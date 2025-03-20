@@ -69,7 +69,7 @@ class _TotalsProductsViewState extends State<TotalsProductsView> {
                         width: 5.w,
                       ),
                       Text(
-                        'ج.م',
+                        AppStrings.currency,
                         style: AppTypography.kLight16.copyWith(
                             fontFamily: AppFonts.boldFontFamily,
                             color: AppColors.cBlack),

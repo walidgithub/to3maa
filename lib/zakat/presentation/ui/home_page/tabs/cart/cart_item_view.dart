@@ -23,6 +23,7 @@ class CartItemView extends StatefulWidget {
   final String zakatValue;
   final String total;
   final String remain;
+  final String hijriDate;
   final Function deleteCart;
   final Function setSelected;
   const CartItemView({
@@ -31,6 +32,7 @@ class CartItemView extends StatefulWidget {
     required this.zakatId,
     required this.membersCount,
     required this.zakatValue,
+    required this.hijriDate,
     required this.total,
     required this.remain,
     required this.deleteCart,
@@ -43,6 +45,7 @@ class CartItemView extends StatefulWidget {
 
 class _CartItemViewState extends State<CartItemView> {
   bool showDetails = false;
+  final ScrollController _scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -65,9 +68,9 @@ class _CartItemViewState extends State<CartItemView> {
               children: [
                 Container(
                   width: MediaQuery.sizeOf(context).width * 0.75,
-                  height: 115.h,
+                  height: 145.h,
                   padding:
-                      EdgeInsets.symmetric(vertical: 10.h, horizontal: 10.w),
+                  EdgeInsets.symmetric(vertical: 10.h, horizontal: 10.w),
                   decoration: BoxDecoration(
                     color: AppColors.cBackGround,
                     borderRadius: BorderRadius.only(
@@ -86,6 +89,28 @@ class _CartItemViewState extends State<CartItemView> {
                               Row(
                                 children: [
                                   Text(
+                                    AppStrings.higriDate,
+                                    style: AppTypography.kLight16.copyWith(
+                                        fontFamily: AppFonts.boldFontFamily,
+                                        color: AppColors.cBlack),
+                                  ),
+                                  SizedBox(
+                                    width: 5.w,
+                                  ),
+                                  Text(
+                                    widget.hijriDate.toString(),
+                                    style: AppTypography.kLight14.copyWith(
+                                        fontFamily: AppFonts.boldFontFamily,
+                                        color: AppColors.cNumber),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 10.h,
+                              ),
+                              Row(
+                                children: [
+                                  Text(
                                     widget.zakatValue.toString(),
                                     style: AppTypography.kLight16.copyWith(
                                         fontFamily: AppFonts.boldFontFamily,
@@ -95,7 +120,7 @@ class _CartItemViewState extends State<CartItemView> {
                                     width: 5.w,
                                   ),
                                   Text(
-                                    'ج.م',
+                                    AppStrings.currency,
                                     style: AppTypography.kLight16.copyWith(
                                         fontFamily: AppFonts.boldFontFamily,
                                         color: AppColors.cBlack),
@@ -117,7 +142,7 @@ class _CartItemViewState extends State<CartItemView> {
                                     width: 5.w,
                                   ),
                                   Text(
-                                    'أفراد',
+                                    AppStrings.members,
                                     style: AppTypography.kLight16.copyWith(
                                         fontFamily: AppFonts.boldFontFamily,
                                         color: AppColors.cBlack),
@@ -150,7 +175,7 @@ class _CartItemViewState extends State<CartItemView> {
                                         width: 5.w,
                                       ),
                                       Text(
-                                        'ج.م',
+                                        AppStrings.currency,
                                         style: AppTypography.kLight16.copyWith(
                                             fontFamily: AppFonts.boldFontFamily,
                                             color: AppColors.cBlack),
@@ -181,7 +206,7 @@ class _CartItemViewState extends State<CartItemView> {
                                             width: 2.w,
                                             color: AppColors.cPrimary),
                                         borderRadius:
-                                            BorderRadius.circular(4.w),
+                                        BorderRadius.circular(4.w),
                                         color: AppColors.cWhite,
                                         shape: BoxShape.rectangle,
                                       ),
@@ -223,80 +248,82 @@ class _CartItemViewState extends State<CartItemView> {
                 ),
                 showDetails && widget.selected
                     ? Positioned(
-                        bottom: 2.h,
-                        child: FadeInUp(
-                          duration:
-                              Duration(milliseconds: AppConstants.animation),
-                          child: Container(
-                            width: MediaQuery.sizeOf(context).width * 0.65,
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 10.w, vertical: 5.h),
-                            height: 130.w,
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                  width: 2.w, color: AppColors.cPrimary),
-                              borderRadius:
-                                  BorderRadius.circular(AppConstants.radius),
-                              color: AppColors.cWhite,
-                              shape: BoxShape.rectangle,
-                            ),
-                            child: Column(
-                              children: [
-                                GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      showDetails = false;
-                                    });
-                                  },
-                                  child: Icon(
-                                    Icons.close,
-                                    size: 25.w,
-                                  ),
-                                ),
-                                const Divider(),
-                                Expanded(
-                                  child: state
-                                          .zakatProductsByZakatIdList.isNotEmpty
-                                      ? SingleChildScrollView(
-                                          child: ListView.separated(
-                                              itemCount: state
-                                                  .zakatProductsByZakatIdList
-                                                  .length,
-                                              shrinkWrap: true,
-                                              scrollDirection: Axis.vertical,
-                                              physics:
-                                                  const NeverScrollableScrollPhysics(),
-                                              separatorBuilder:
-                                                  (BuildContext cartContext,
-                                                          int index) =>
-                                                      const SizedBox(height: 0),
-                                              itemBuilder:
-                                                  (BuildContext cartContext,
-                                                      int index) {
-                                                return CartItemProductView(
-                                                  productName: state
-                                                      .zakatProductsByZakatIdList[
-                                                          index]
-                                                      .productName,
-                                                  productDesc: state
-                                                      .zakatProductsByZakatIdList[
-                                                          index]
-                                                      .productDesc,
-                                                  productQuantity: state
-                                                      .zakatProductsByZakatIdList[
-                                                          index]
-                                                      .productQuantity
-                                                      .toString(),
-                                                );
-                                              }),
-                                        )
-                                      : Container(),
-                                )
-                              ],
+                  bottom: 2.h,
+                  child: FadeInUp(
+                    duration:
+                    Duration(milliseconds: AppConstants.animation),
+                    child: Container(
+                      width: MediaQuery.sizeOf(context).width * 0.65,
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 10.w, vertical: 5.h),
+                      height: 130.w,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                            width: 2.w, color: AppColors.cPrimary),
+                        borderRadius:
+                        BorderRadius.circular(AppConstants.radius),
+                        color: AppColors.cWhite,
+                        shape: BoxShape.rectangle,
+                      ),
+                      child: Column(
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                showDetails = false;
+                              });
+                            },
+                            child: Icon(
+                              Icons.close,
+                              size: 25.w,
                             ),
                           ),
-                        ),
-                      )
+                          const Divider(),
+                          Expanded(
+                            child: state
+                                .zakatProductsByZakatIdList.isNotEmpty
+                                ? Scrollbar(
+                                  thumbVisibility: true,
+                                  controller: _scrollController,
+                                  child: ListView.separated(
+                                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+                                      controller: _scrollController,
+                                      itemCount: state
+                                          .zakatProductsByZakatIdList
+                                          .length,
+                                      shrinkWrap: true,
+                                      scrollDirection: Axis.vertical,
+                                      separatorBuilder:
+                                          (BuildContext cartContext,
+                                          int index) =>
+                                      const SizedBox(height: 0),
+                                      itemBuilder:
+                                          (BuildContext cartContext,
+                                          int index) {
+                                        return CartItemProductView(
+                                          productName: state
+                                              .zakatProductsByZakatIdList[
+                                          index]
+                                              .productName,
+                                          productDesc: state
+                                              .zakatProductsByZakatIdList[
+                                          index]
+                                              .productDesc,
+                                          productQuantity: state
+                                              .zakatProductsByZakatIdList[
+                                          index]
+                                              .productQuantity
+                                              .toString(),
+                                        );
+                                      }),
+                                )
+                                : Container(),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                )
                     : Container(),
               ],
             );

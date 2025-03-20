@@ -6,6 +6,7 @@ class ZakatModel extends ZakatResponse {
     required super.membersCount,
     required super.zakatValue,
     required super.remainValue,
+    required super.hegriDate,
   });
 
   factory ZakatModel.fromMap(Map<String, dynamic> map) {
@@ -14,6 +15,7 @@ class ZakatModel extends ZakatResponse {
       membersCount: map['membersCount'],
       zakatValue: map['zakatValue'],
       remainValue: map['remainValue'],
+      hegriDate: map['hegriDate'],
     );
   }
 }

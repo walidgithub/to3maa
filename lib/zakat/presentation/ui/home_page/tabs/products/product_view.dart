@@ -73,7 +73,7 @@ class _ProductViewState extends State<ProductView> {
                         width: 5.w,
                       ),
                       Text(
-                        'ج.م',
+                        AppStrings.currency,
                         style: AppTypography.kLight16.copyWith(
                             fontFamily: AppFonts.boldFontFamily,
                             color: AppColors.cBlack),
@@ -198,7 +198,7 @@ class _ProductViewState extends State<ProductView> {
                     width: 10.w,
                   ),
                   Text(
-                    'ج.م',
+                    AppStrings.currency,
                     style: AppTypography.kLight14
                         .copyWith(fontFamily: AppFonts.boldFontFamily),
                   ),

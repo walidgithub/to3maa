@@ -6,8 +6,9 @@ class Cart {
   int? membersCount;
   String? zakatValue;
   String? remainValue;
+  String? hijriDate;
   bool? selected;
-  Cart({this.id, this.membersCount, this.zakatValue, this.remainValue, this.selected});
+  Cart({this.id, this.membersCount, this.zakatValue, this.remainValue, this.selected, this.hijriDate});
 }
 List<ZakatResponse> cartItems = [];
 List<ZakatProductsResponse> cartProductsItems = [];

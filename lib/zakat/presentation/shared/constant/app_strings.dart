@@ -39,6 +39,10 @@ class AppStrings {
   static const String deleteAll = "حـذف الـكـل";
   static const String kilo = "كـيـلـو";
   static const String sa3 = "صــاع";
+  static const String higriDate = "الـتـاريـخ:";
+  static const String members = "أفـراد";
+  static const String currency = 'ج.م';
+  
 
   static const String noProducts = "لـم يـتـم تـسـجـيـل مـنـتـجـات بـعـد.";
   static const String noCarts = "لـم يـتـم إضـافـة زكــاة بـعـد.";

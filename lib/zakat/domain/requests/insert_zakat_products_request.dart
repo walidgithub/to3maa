@@ -6,6 +6,7 @@ class InsertZakatProductsRequest extends Equatable {
   final String? productPrice;
   final String? productDesc;
   final String? productImage;
+  final String? hegriDate;
   final double? sa3Weight;
   final int? productQuantity;
   final int? zakatId;
@@ -19,6 +20,7 @@ class InsertZakatProductsRequest extends Equatable {
     this.sa3Weight,
     this.productQuantity,
     this.zakatId,
+    this.hegriDate,
   });
 
   Map<String, dynamic> toJson() {
@@ -31,10 +33,11 @@ class InsertZakatProductsRequest extends Equatable {
     data["sa3Weight"] = sa3Weight;
     data["productQuantity"] = productQuantity;
     data["zakatId"] = zakatId;
+    data["hegriDate"] = hegriDate;
     return data;
   }
 
   @override
   List<Object?> get props =>
-      [id, productName, productPrice, productDesc, productImage, sa3Weight, productQuantity, zakatId];
+      [id, productName, productPrice, productDesc, productImage, sa3Weight, productQuantity, zakatId, hegriDate];
 }

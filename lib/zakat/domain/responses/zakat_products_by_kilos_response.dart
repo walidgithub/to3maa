@@ -5,6 +5,7 @@ class ZakatProductsByKilosResponse extends Equatable {
   final String productPrice;
   final String productDesc;
   final String productImage;
+  final String hegriDate;
   final double sa3Weight;
   final int? sumProductQuantity;
 
@@ -14,6 +15,7 @@ class ZakatProductsByKilosResponse extends Equatable {
     required this.productDesc,
     required this.productImage,
     required this.sa3Weight,
+    required this.hegriDate,
     this.sumProductQuantity,
   });
 
@@ -24,6 +26,7 @@ class ZakatProductsByKilosResponse extends Equatable {
         productDesc,
         productImage,
         sa3Weight,
+    hegriDate,
         sumProductQuantity
       ];
 }

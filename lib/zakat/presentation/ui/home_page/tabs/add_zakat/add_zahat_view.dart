@@ -21,6 +21,7 @@ import 'package:To3maa/zakat/presentation/ui/home_page/tabs/add_zakat/suggested_
 import 'package:To3maa/zakat/presentation/ui_components/loading_dialog.dart';
 import 'package:To3maa/zakat/presentation/ui_components/text_field_widget.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hijri/hijri_calendar.dart';
 
 class AddZakatView extends StatefulWidget {
   const AddZakatView({super.key});
@@ -33,8 +34,12 @@ class _AddZakatViewState extends State<AddZakatView> {
   final TextEditingController _membersCountController = TextEditingController();
   final TextEditingController _zakatValueController = TextEditingController();
 
+  HijriCalendar hijriDate = HijriCalendar.now();
+
+
   @override
   void initState() {
+    HijriCalendar.setLocal('ar');
     getAllZakat();
     clearData();
     super.initState();
@@ -376,7 +381,7 @@ class _AddZakatViewState extends State<AddZakatView> {
                                     width: 5.w,
                                   ),
                                   Text(
-                                    'ج.م',
+                                    AppStrings.currency,
                                     style: AppTypography.kLight16.copyWith(
                                         fontFamily: AppFonts.boldFontFamily,
                                         color: AppColors.cWhite),
@@ -406,7 +411,7 @@ class _AddZakatViewState extends State<AddZakatView> {
                                     width: 5.w,
                                   ),
                                   Text(
-                                    'ج.م',
+                                    AppStrings.currency,
                                     style: AppTypography.kLight16.copyWith(
                                         fontFamily: AppFonts.boldFontFamily,
                                         color: AppColors.cWhite),
@@ -440,29 +445,34 @@ class _AddZakatViewState extends State<AddZakatView> {
                                           _membersCountController.text.trim(),
                                       zakatValue:
                                           _zakatValueController.text.trim(),
+                                      hegriDate: hijriDate.fullDate().toString(),
                                       remainValue: remain.toString());
+
 
                               await ZakatCubit.get(context)
                                   .insertZakat(insertZakatRequest);
 
                               for (var x in state.productsList) {
-                                InsertZakatProductsRequest
-                                    insertZakatProductsRequest =
-                                    InsertZakatProductsRequest(
-                                        productDesc: x.productDesc,
-                                        productImage: x.productImage,
-                                        productName: x.productName,
-                                        productPrice: x.productPrice,
-                                        productQuantity: x.productQuantity,
-                                        sa3Weight: x.sa3Weight,
-                                        zakatId: DbHelper.insertedNewZakat);
+                                if (x.productQuantity != 0) {
+                                  InsertZakatProductsRequest
+                                  insertZakatProductsRequest =
+                                  InsertZakatProductsRequest(
+                                      productDesc: x.productDesc,
+                                      productImage: x.productImage,
+                                      productName: x.productName,
+                                      productPrice: x.productPrice,
+                                      productQuantity: x.productQuantity,
+                                      hegriDate: hijriDate.fullDate().toString(),
+                                      sa3Weight: x.sa3Weight,
+                                      zakatId: DbHelper.insertedNewZakat);
 
-                                // ignore: use_build_context_synchronously
-                                await ZakatCubit.get(context)
-                                    .insertZakatProducts(
-                                        insertZakatProductsRequest);
+                                  // ignore: use_build_context_synchronously
+                                  await ZakatCubit.get(context)
+                                      .insertZakatProducts(
+                                      insertZakatProductsRequest);
 
-                                x.productQuantity = 0;
+                                  x.productQuantity = 0;
+                                }
                               }
 
                               final snackBar = SnackBar(

@@ -6,6 +6,7 @@ class ProductsResponse extends Equatable {
   final String? productPrice;
   final String? productDesc;
   final String? productImage;
+  final String? hijriDate;
   final double? sa3Weight;
   int? productQuantity;
 
@@ -13,6 +14,7 @@ class ProductsResponse extends Equatable {
     required this.id,
     this.productName,
     this.productPrice,
+    this.hijriDate,
     this.productDesc,
     this.productImage,
     this.sa3Weight,
@@ -24,6 +26,7 @@ class ProductsResponse extends Equatable {
         id,
         productName,
         productPrice,
+    hijriDate,
         productDesc,
         productImage,
         sa3Weight,

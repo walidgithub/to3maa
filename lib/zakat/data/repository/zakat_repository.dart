@@ -88,6 +88,7 @@ class ZakatRepository extends BaseRepository {
     try {
       final result = await _baseDataSource
           .getZakatProductsByZatatId(getZakatProductsByZatatIdRequest);
+
       return Right(result);
     } catch (error) {
       return Left(ErrorHandler.handle(error).failure);
