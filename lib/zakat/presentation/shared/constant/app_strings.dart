@@ -34,10 +34,11 @@ class AppStrings {
 
   static const String total = "الإجمالى: ";
   static const String remain = "المتبقى: ";
+  static const String allMembersCount = "عدد الأفراد: ";
   static const String save = "حـــفـــظ";
   static const String editPrice = "تـعـديـل الـسـعـر:";
-  static const String deleteAll = "حـذف الـكـل";
   static const String kilo = "كـيـلـو";
+  static const String ton = "طــن";
   static const String sa3 = "صــاع";
   static const String higriDate = "الـتـاريـخ:";
   static const String members = "أفـراد";

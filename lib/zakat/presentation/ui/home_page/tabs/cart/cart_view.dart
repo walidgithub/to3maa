@@ -34,6 +34,10 @@ class _CartViewState extends State<CartView> {
 
   List<Cart> cart = [];
 
+  int getTotalMembersCount(List<Cart> carts) {
+    return carts.fold(0, (sum, cart) => sum + (cart.membersCount ?? 0));
+  }
+
   Future<void> getAllZakat() async {
     await ZakatCubit.get(context).getAllZakat();
   }
@@ -236,7 +240,7 @@ class _CartViewState extends State<CartView> {
                   borderRadius: BorderRadius.circular(AppConstants.radius),
                   color: AppColors.cButton,
                 ),
-                child: Column(
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Column(
@@ -303,6 +307,23 @@ class _CartViewState extends State<CartView> {
                             ),
                           ],
                         ),
+                        Row(
+                          children: [
+                            Text(
+                              AppStrings.allMembersCount,
+                              style: AppTypography.kBold18.copyWith(
+                                color: AppColors.cWhite,
+                                fontFamily: AppFonts.qabasFontFamily,
+                              ),
+                            ),
+                            Text(
+                              getTotalMembersCount(cart).toString(),
+                              style: AppTypography.kLight16.copyWith(
+                                  fontFamily: AppFonts.boldFontFamily,
+                                  color: AppColors.cBlack),
+                            ),
+                          ],
+                        ),
                       ],
                     ),
                     GestureDetector(
@@ -323,6 +344,7 @@ class _CartViewState extends State<CartView> {
                                             onPressed: () async {
                                               await deleteAll();
                                               await getAllZakat();
+                                              getTotalMembersCount(cart);
                                               final snackBar = SnackBar(
                                                 duration: Duration(
                                                     milliseconds: AppConstants
@@ -353,7 +375,7 @@ class _CartViewState extends State<CartView> {
                             : null;
                       },
                       child: Container(
-                          width: 80.w,
+                          width: 50.w,
                           height: 50.w,
                           decoration: BoxDecoration(
                             border: Border.all(
@@ -364,12 +386,10 @@ class _CartViewState extends State<CartView> {
                             shape: BoxShape.rectangle,
                           ),
                           child: Center(
-                            child: Text(
-                              AppStrings.deleteAll,
-                              style: AppTypography.kLight14.copyWith(
-                                fontFamily: AppFonts.qabasFontFamily,
-                                color: AppColors.cButton,
-                              ),
+                            child: Icon(
+                              Icons.delete_outline,
+                              size: 30.w,
+                              color: AppColors.cButton,
                             ),
                           )),
                     ),

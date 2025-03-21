@@ -7,6 +7,8 @@ import 'package:To3maa/zakat/presentation/shared/constant/app_typography.dart';
 import 'package:To3maa/zakat/presentation/shared/style/app_colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../../../core/utils/functions.dart';
+
 class TotalsProductsView extends StatefulWidget {
   final String productImage;
   final String productName;
@@ -118,15 +120,17 @@ class _TotalsProductsViewState extends State<TotalsProductsView> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Text(
-                        // widget.sumProductQuantity.toString(),
-                        (widget.sumProductQuantity * widget.sa3Weight)
-                            .toString(),
+                        formatWeight(widget.sumProductQuantity * widget.sa3Weight).toString(),
                         style: AppTypography.kLight14.copyWith(
                             fontFamily: AppFonts.boldFontFamily,
                             color: AppColors.cNumber),
                       ),
                       Text(
-                        AppStrings.kilo,
+                        formatWeightString(widget.sumProductQuantity *
+                                        widget.sa3Weight).toString() ==
+                                "ton"
+                            ? AppStrings.ton
+                            : AppStrings.kilo,
                         style: AppTypography.kLight14
                             .copyWith(fontFamily: AppFonts.boldFontFamily),
                       ),

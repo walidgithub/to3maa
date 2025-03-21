@@ -29,3 +29,21 @@ Future<bool> onBackButtonPressed(BuildContext context) async {
       });
   return exitApp;
 }
+
+String formatWeight(num weightKg) {
+  if (weightKg >= 1000) {
+    double tons = weightKg / 1000;
+    return tons.toStringAsFixed(2);
+  } else {
+    return weightKg.toStringAsFixed(2);
+  }
+}
+
+String formatWeightString(num weightKg) {
+  if (weightKg >= 1000) {
+    double tons = weightKg / 1000;
+    return "ton";
+  } else {
+    return "kg";
+  }
+}
