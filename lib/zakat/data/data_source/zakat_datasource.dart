@@ -30,7 +30,6 @@ abstract class BaseDataSource {
   Future<int> deleteAllZakatData();
   Future<int> deleteZakatProductsData(
       DeleteZakatProductsRequest deletetZakatProductsRequest);
-  Future<int> deleteAllZakatProductsData();
   Future<int> deleteProductData(DeleteProductRequest deletetProductRequest);
 
   Future<List<ProductsResponse>> getAllProducts();

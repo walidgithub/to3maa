@@ -71,16 +71,6 @@ class ZakatRepository extends BaseRepository {
   }
 
   @override
-  Future<Either<Failure, int>> deletetAllZakatProductsData() async {
-    try {
-      final result = await _baseDataSource.deleteAllZakatProductsData();
-      return Right(result);
-    } catch (error) {
-      return Left(ErrorHandler.handle(error).failure);
-    }
-  }
-
-  @override
   Future<Either<Failure, List<ZakatProductsResponse>>>
       getZakatProductsByZakatId(
           GetZakatProductsByZatatIdRequest

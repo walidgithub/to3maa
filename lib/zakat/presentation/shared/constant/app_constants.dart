@@ -6,5 +6,5 @@ class AppConstants {
   static double moreRadius = 20.h;
   // static double bottomMargin = 30.h;
   static int animation = 700;
-  static int durationOfSnackBar = 500;
+  static int durationOfSnackBar = 1500;
 }

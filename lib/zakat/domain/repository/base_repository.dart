@@ -35,7 +35,6 @@ abstract class BaseRepository {
   Future<Either<Failure, int>> deletetAllZakatData();
   Future<Either<Failure, int>> deletetZakatProductsData(
       DeleteZakatProductsRequest deletetZakatProductsRequest);
-  Future<Either<Failure, int>> deletetAllZakatProductsData();
   Future<Either<Failure, int>> deletetProductData(
       DeleteProductRequest deletetProductRequest);
 

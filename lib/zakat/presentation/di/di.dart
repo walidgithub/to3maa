@@ -2,7 +2,6 @@ import 'package:To3maa/core/local_db/db_helper.dart';
 import 'package:To3maa/zakat/data/data_source/zakat_datasource.dart';
 import 'package:To3maa/zakat/data/repository/zakat_repository.dart';
 import 'package:To3maa/zakat/domain/repository/base_repository.dart';
-import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/delete_all_zakat_products_usecase.dart';
 import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/delete_all_zakat_usecase.dart';
 import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/delete_product_usecase.dart';
 import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/delete_zakat_products_usecase.dart';
@@ -38,7 +37,7 @@ class ServiceLocator {
 
     // Cubit
     sl.registerFactory(() => ZakatCubit(sl(), sl(), sl(), sl(), sl(), sl(),
-        sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl()));
+        sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl()));
 
     // Use Cases
     sl.registerLazySingleton<DeleteProductUseCase>(
@@ -46,9 +45,6 @@ class ServiceLocator {
 
     sl.registerLazySingleton<DeleteZakatProductsUseCase>(
         () => DeleteZakatProductsUseCase(sl()));
-
-    sl.registerLazySingleton<DeleteAllZakatProductsUseCase>(
-        () => DeleteAllZakatProductsUseCase(sl()));
 
     sl.registerLazySingleton<DeleteZakatUseCase>(
         () => DeleteZakatUseCase(sl()));

@@ -137,6 +137,7 @@ class DbHelper {
         where: 'zakatId = ?', whereArgs: [deleteZakatProductsRequest.id]);
   }
 
+  // delete all zakat data
   Future<int> deleteAllZakatData() async {
     if (_db == null) {
       await initDB(dbdName);
@@ -157,6 +158,7 @@ class DbHelper {
     return db.delete('zakatProducts');
   }
 
+  // delete product data
   Future<int> deleteProductData(
       DeleteProductRequest deleteProductRequest) async {
     if (_db == null) {

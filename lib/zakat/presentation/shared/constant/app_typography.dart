@@ -12,6 +12,8 @@ class AppTypography {
       GoogleFonts.poppins(fontSize: 14.sp, fontWeight: FontWeight.w400);
   static TextStyle kLight16 =
       GoogleFonts.poppins(fontSize: 16.sp, fontWeight: FontWeight.w400);
+  static TextStyle kLight18 =
+  GoogleFonts.poppins(fontSize: 16.sp, fontWeight: FontWeight.w400);
   static TextStyle kLight20 =
       GoogleFonts.poppins(fontSize: 25.sp, fontWeight: FontWeight.w400);
   static TextStyle kLight30 =
@@ -47,6 +49,10 @@ class AppTypography {
       GoogleFonts.poppins(fontSize: 16.sp, fontWeight: FontWeight.w700);
   static TextStyle kBold18 =
       GoogleFonts.poppins(fontSize: 18.sp, fontWeight: FontWeight.w700);
+  static TextStyle kBold20 =
+  GoogleFonts.poppins(fontSize: 20.sp, fontWeight: FontWeight.w700);
+  static TextStyle kBold22 =
+  GoogleFonts.poppins(fontSize: 22.sp, fontWeight: FontWeight.w700);
   static TextStyle kBold24 =
       GoogleFonts.poppins(fontSize: 24.sp, fontWeight: FontWeight.w700);
   static TextStyle kBold30 =

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:To3maa/core/utils/enums.dart';
+import 'package:To3maa/zakat/presentation/ui/home_page/tabs/cart/check_delete_dialog.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,6 +18,7 @@ import 'package:To3maa/zakat/presentation/ui/home_page/cubit/zakat_states.dart';
 import 'package:To3maa/zakat/presentation/ui/home_page/tabs/cart/cart_item_view.dart';
 import 'package:To3maa/zakat/presentation/ui_components/loading_dialog.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 class CartView extends StatefulWidget {
   const CartView({super.key});
@@ -232,149 +234,28 @@ class _CartViewState extends State<CartView> {
               SizedBox(
                 height: 5.h,
               ),
-              Container(
-                height: 110.h,
-                width: MediaQuery.sizeOf(context).width * 0.75,
-                padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 10.w),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(AppConstants.radius),
-                  color: AppColors.cButton,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              Slidable(
+                endActionPane: ActionPane(
+                  extentRatio: 0.4.w,
+                  motion: const ScrollMotion(),
                   children: [
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              AppStrings.total,
-                              style: AppTypography.kBold18.copyWith(
-                                color: AppColors.cWhite,
-                                fontFamily: AppFonts.qabasFontFamily,
-                              ),
-                            ),
-                            Row(
-                              children: [
-                                Text(
-                                  getTotal().toString(),
-                                  style: AppTypography.kLight16.copyWith(
-                                      fontFamily: AppFonts.boldFontFamily,
-                                      color: AppColors.cBlack),
-                                ),
-                                SizedBox(
-                                  width: 5.w,
-                                ),
-                                Text(
-                                  AppStrings.currency,
-                                  style: AppTypography.kLight16.copyWith(
-                                      fontFamily: AppFonts.boldFontFamily,
-                                      color: AppColors.cWhite),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              AppStrings.remain,
-                              style: AppTypography.kBold18.copyWith(
-                                color: AppColors.cWhite,
-                                fontFamily: AppFonts.qabasFontFamily,
-                              ),
-                            ),
-                            Row(
-                              children: [
-                                Text(
-                                  getRemain().toString(),
-                                  style: AppTypography.kLight16.copyWith(
-                                      fontFamily: AppFonts.boldFontFamily,
-                                      color: AppColors.cBlack),
-                                ),
-                                SizedBox(
-                                  width: 5.w,
-                                ),
-                                Text(
-                                  AppStrings.currency,
-                                  style: AppTypography.kLight16.copyWith(
-                                      fontFamily: AppFonts.boldFontFamily,
-                                      color: AppColors.cWhite),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              AppStrings.allMembersCount,
-                              style: AppTypography.kBold18.copyWith(
-                                color: AppColors.cWhite,
-                                fontFamily: AppFonts.qabasFontFamily,
-                              ),
-                            ),
-                            Text(
-                              getTotalMembersCount(cart).toString(),
-                              style: AppTypography.kLight16.copyWith(
-                                  fontFamily: AppFonts.boldFontFamily,
-                                  color: AppColors.cBlack),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    GestureDetector(
-                      onTap: () async {
-                        cartItems.isNotEmpty
-                            ? await showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return Directionality(
-                                    textDirection: TextDirection.rtl,
-                                    child: AlertDialog(
-                                      title: Text(AppStrings.warning,
-                                          style: AppTypography.kBold18),
-                                      content:
-                                          const Text(AppStrings.deleteAllData),
-                                      actions: [
-                                        TextButton(
-                                            onPressed: () async {
-                                              await deleteAll();
-                                              await getAllZakat();
-                                              getTotalMembersCount(cart);
-                                              final snackBar = SnackBar(
-                                                duration: Duration(
-                                                    milliseconds: AppConstants
-                                                        .durationOfSnackBar),
-                                                content: Text(
-                                                    AppStrings.successDelete,
-                                                    style:
-                                                        AppTypography.kBold16),
-                                              );
-                                              // ignore: use_build_context_synchronously
-                                              ScaffoldMessenger.of(context)
-                                                  .showSnackBar(snackBar);
-                                              // ignore: use_build_context_synchronously
-                                              Navigator.of(context).pop(false);
-                                            },
-                                            child: Text(AppStrings.yes,
-                                                style: AppTypography.kLight14)),
-                                        TextButton(
-                                            onPressed: () {
-                                              Navigator.of(context).pop(false);
-                                            },
-                                            child: Text(AppStrings.no,
-                                                style: AppTypography.kLight14)),
-                                      ],
-                                    ),
-                                  );
-                                })
-                            : null;
-                      },
-                      child: Container(
+                    SizedBox(width: 10.w),
+                    Builder(
+                      builder: (innerContext) => GestureDetector(
+                        onTap: () async {
+                          Slidable.of(innerContext)?.close();
+
+                          if (cartItems.isNotEmpty) {
+                            CheckDeleteDialog.show(innerContext, () async {
+                              await deleteAll();
+                              await getAllZakat();
+                              getTotalMembersCount(cart);
+                              cart.clear();
+                              setState(() {});
+                            });
+                          }
+                        },
+                        child: Container(
                           width: 50.w,
                           height: 50.w,
                           decoration: BoxDecoration(
@@ -391,9 +272,113 @@ class _CartViewState extends State<CartView> {
                               size: 30.w,
                               color: AppColors.cButton,
                             ),
-                          )),
+                          ),
+                        ),
+                      ),
                     ),
                   ],
+                ),
+                child: Container(
+                  height: 110.h,
+                  width: MediaQuery.sizeOf(context).width * 0.75,
+                  padding:
+                      EdgeInsets.symmetric(vertical: 10.h, horizontal: 10.w),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(AppConstants.radius),
+                    color: AppColors.cButton,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Text(
+                                AppStrings.total,
+                                style: AppTypography.kBold18.copyWith(
+                                  color: AppColors.cWhite,
+                                  fontFamily: AppFonts.qabasFontFamily,
+                                ),
+                              ),
+                              Row(
+                                children: [
+                                  Text(
+                                    getTotal().toString(),
+                                    style: AppTypography.kLight16.copyWith(
+                                        fontFamily: AppFonts.boldFontFamily,
+                                        color: AppColors.cBlack),
+                                  ),
+                                  SizedBox(
+                                    width: 5.w,
+                                  ),
+                                  Text(
+                                    AppStrings.currency,
+                                    style: AppTypography.kLight16.copyWith(
+                                        fontFamily: AppFonts.boldFontFamily,
+                                        color: AppColors.cWhite),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Text(
+                                AppStrings.remain,
+                                style: AppTypography.kBold18.copyWith(
+                                  color: AppColors.cWhite,
+                                  fontFamily: AppFonts.qabasFontFamily,
+                                ),
+                              ),
+                              Row(
+                                children: [
+                                  Text(
+                                    getRemain().toString(),
+                                    style: AppTypography.kLight16.copyWith(
+                                        fontFamily: AppFonts.boldFontFamily,
+                                        color: AppColors.cBlack),
+                                  ),
+                                  SizedBox(
+                                    width: 5.w,
+                                  ),
+                                  Text(
+                                    AppStrings.currency,
+                                    style: AppTypography.kLight16.copyWith(
+                                        fontFamily: AppFonts.boldFontFamily,
+                                        color: AppColors.cWhite),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Text(
+                                AppStrings.allMembersCount,
+                                style: AppTypography.kBold18.copyWith(
+                                  color: AppColors.cWhite,
+                                  fontFamily: AppFonts.qabasFontFamily,
+                                ),
+                              ),
+                              Text(
+                                getTotalMembersCount(cart).toString(),
+                                style: AppTypography.kLight16.copyWith(
+                                    fontFamily: AppFonts.boldFontFamily,
+                                    color: AppColors.cBlack),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      const Icon(
+                        Icons.arrow_back_ios_new,
+                        color: AppColors.cWhite,
+                      )
+                    ],
+                  ),
                 ),
               ),
               SizedBox(

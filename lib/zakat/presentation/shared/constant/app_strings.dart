@@ -51,6 +51,9 @@ class AppStrings {
   static const String someThingWentWrong = "حـدث خـطـأ مـا";
 
   static const String yes = 'نـعـم';
+  static const String checkOk = 'تـأكـيـد';
+  static const String checkDeleteAll = 'تـأكـيـد حـذف كـل الـعـربـة';
+  static const String skip = 'تـراجـع';
   static const String loading = 'تـحـمـيـل';
   static const String no = 'لا';
   static const String warning = 'تـحـذيـر';

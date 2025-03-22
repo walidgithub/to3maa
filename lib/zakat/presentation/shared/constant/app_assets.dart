@@ -5,7 +5,6 @@ class AppAssets {
   static const String addNew = '$imagePath/add_new.svg';
   static const String products = '$imagePath/products.svg';
   static const String totals = '$imagePath/totals.svg';
-  static const String arrowUp = '$imagePath/arrow_up.svg';
   static const String back = '$imagePath/back.svg';
   static const String dates = '$imagePath/dates.png';
   static const String raisins = '$imagePath/raisins.png';

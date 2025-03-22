@@ -4,6 +4,7 @@ class AppColors {
   static const Color cPrimary = Color(0xFFfcb757);
   static const Color cBorder = Color(0xFFd79f89);
   static const Color cNumber = Color.fromRGBO(72, 100, 224, 1);
+  static const Color cTitle = Color(0xFF00BCD4);
   static const Color cGray = Color(0xFF968e82);
   static const Color cButton = Color(0xFFf25f44);
   static const Color cBackGround = Color(0xFFf5ede1);

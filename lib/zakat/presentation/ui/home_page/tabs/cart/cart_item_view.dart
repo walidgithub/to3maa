@@ -217,6 +217,40 @@ class _CartItemViewState extends State<CartItemView> {
                                       ),
                                     ),
                                   ),
+                                  SizedBox(
+                                    height: 10.h,
+                                  ),
+                                  GestureDetector(
+                                    onTap: () async {
+                                      await ZakatCubit.get(context).getZakatProductsByZakatId(
+                                          GetZakatProductsByZatatIdRequest(
+                                              zakatId: widget.zakatId));
+
+                                      widget.setSelected();
+
+                                      setState(() {
+                                        showDetails = true;
+                                      });
+                                    },
+                                    child: Container(
+                                      width: 30.w,
+                                      height: 30.w,
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                            width: 2.w,
+                                            color: AppColors.cPrimary),
+                                        borderRadius:
+                                        BorderRadius.circular(4.w),
+                                        color: AppColors.cWhite,
+                                        shape: BoxShape.rectangle,
+                                      ),
+                                      child: Icon(
+                                        Icons.question_mark,
+                                        size: 20.w,
+                                        color: AppColors.cTitle,
+                                      ),
+                                    ),
+                                  ),
                                 ],
                               )
                             ],
@@ -224,26 +258,6 @@ class _CartItemViewState extends State<CartItemView> {
                         ],
                       )
                     ],
-                  ),
-                ),
-                Positioned(
-                  bottom: 2.h,
-                  child: GestureDetector(
-                    onTap: () async {
-                      await ZakatCubit.get(context).getZakatProductsByZakatId(
-                          GetZakatProductsByZatatIdRequest(
-                              zakatId: widget.zakatId));
-
-                      widget.setSelected();
-
-                      setState(() {
-                        showDetails = true;
-                      });
-                    },
-                    child: SvgPicture.asset(
-                      AppAssets.arrowUp,
-                      width: 25.w,
-                    ),
                   ),
                 ),
                 showDetails && widget.selected
