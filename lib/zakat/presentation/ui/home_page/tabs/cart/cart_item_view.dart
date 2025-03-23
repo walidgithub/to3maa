@@ -67,8 +67,6 @@ class _CartItemViewState extends State<CartItemView> {
               alignment: Alignment.bottomCenter,
               children: [
                 Container(
-                  width: MediaQuery.sizeOf(context).width * 0.75,
-                  height: 145.h,
                   padding:
                   EdgeInsets.symmetric(vertical: 10.h, horizontal: 10.w),
                   decoration: BoxDecoration(
@@ -86,24 +84,11 @@ class _CartItemViewState extends State<CartItemView> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Row(
-                                children: [
-                                  Text(
-                                    AppStrings.higriDate,
-                                    style: AppTypography.kLight16.copyWith(
-                                        fontFamily: AppFonts.boldFontFamily,
-                                        color: AppColors.cBlack),
-                                  ),
-                                  SizedBox(
-                                    width: 5.w,
-                                  ),
-                                  Text(
-                                    widget.hijriDate.toString(),
-                                    style: AppTypography.kLight14.copyWith(
-                                        fontFamily: AppFonts.boldFontFamily,
-                                        color: AppColors.cNumber),
-                                  ),
-                                ],
+                              Text(
+                                widget.hijriDate.toString(),
+                                style: AppTypography.kLight14.copyWith(
+                                    fontFamily: AppFonts.boldFontFamily,
+                                    color: AppColors.cNumber),
                               ),
                               SizedBox(
                                 height: 10.h,

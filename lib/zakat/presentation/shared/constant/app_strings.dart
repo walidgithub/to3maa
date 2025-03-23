@@ -40,7 +40,6 @@ class AppStrings {
   static const String kilo = "كـيـلـو";
   static const String ton = "طــن";
   static const String sa3 = "صــاع";
-  static const String higriDate = "الـتـاريـخ:";
   static const String members = "أفـراد";
   static const String currency = 'ج.م';
   

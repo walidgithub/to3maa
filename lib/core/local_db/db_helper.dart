@@ -18,7 +18,7 @@ import 'package:sqflite/sqflite.dart';
 class DbHelper {
   Database? _db;
 
-  String dbdName = 'To3maa.db';
+  String dbdName = 'to3mah.db';
 
   static int? insertedNewProduct;
   static int? insertedNewZakat;
@@ -35,9 +35,9 @@ class DbHelper {
   Future<Database> initDB(String filePath) async {
     final dbPath = await getDatabasesPath();
     final path = join(dbPath, filePath);
-    // return await openDatabase(path, version: 1, onCreate: createDB);
-    return await openDatabase(path,
-        version: 4, onCreate: createDB, onUpgrade: onUpgrade);
+    return await openDatabase(path, version: 1, onCreate: createDB);
+    // return await openDatabase(path,
+    //     version: 4, onCreate: createDB, onUpgrade: onUpgrade);
   }
 
   Future createDB(Database db, int version) async {
@@ -51,13 +51,13 @@ class DbHelper {
         'create table productsData(id integer primary key autoincrement, productName varchar(255), productPrice varchar(10), productDesc varchar(255), productImage varchar(255), productQuantity integer, sa3Weight double)');
   }
 
-  Future onUpgrade(Database db, int oldVersion, int newVersion) async {
-    if (oldVersion < newVersion) {
-      await db.execute('alter table zakat ADD COLUMN hegriDate varchar(50)');
-      await db.execute(
-          'alter table zakatProducts ADD COLUMN hegriDate varchar(50)');
-    }
-  }
+  // Future onUpgrade(Database db, int oldVersion, int newVersion) async {
+  //   if (oldVersion < newVersion) {
+  //     await db.execute('alter table zakat ADD COLUMN hegriDate varchar(50)');
+  //     await db.execute(
+  //         'alter table zakatProducts ADD COLUMN hegriDate varchar(50)');
+  //   }
+  // }
 
   // add -------------------------------------------
   Future<int> insertZakatData(InsertZakatRequest insertZakatRequest) async {
