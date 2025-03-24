@@ -284,7 +284,7 @@ class _AddZakatViewState extends State<AddZakatView> {
                                       UpdateProductQuantityRequest
                                           updateProductQuantityRequest =
                                           (UpdateProductQuantityRequest(
-                                              id: state.productsList[index].id,
+                                              id: suggestedItems[index].imageId!,
                                               productQuantity: int.parse(
                                                   _membersCountController
                                                       .text)));
