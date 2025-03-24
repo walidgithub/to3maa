@@ -47,6 +47,36 @@ class _CartItemViewState extends State<CartItemView> {
   bool showDetails = false;
   final ScrollController _scrollController = ScrollController();
 
+  String? hegriText;
+  List? hegriDateParts;
+  String? dayName;
+  String? hijriDate;
+  String? lastPart;
+
+  String hijriYear = '';
+  String time = '';
+
+  @override
+  void initState() {
+    hegriText = widget.hijriDate;
+    hegriDateParts = hegriText!.split(",").map((e) => e.trim()).toList();
+
+    dayName = hegriDateParts!.isNotEmpty ? hegriDateParts![0] : '';
+    hijriDate = hegriDateParts!.length > 1 ? hegriDateParts![1] : '';
+    lastPart = hegriDateParts!.length > 2 ? hegriDateParts![2] : '';
+
+    hijriYear = '';
+    time = '';
+
+    if (lastPart!.contains('-')) {
+      final yearAndTime = lastPart!.split('-').map((e) => e.trim()).toList();
+      hijriYear = yearAndTime[0];
+      time = yearAndTime.length > 1 ? yearAndTime[1] : '';
+    } else {
+      hijriYear = lastPart!;
+    }
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return FadeInUp(
@@ -84,11 +114,45 @@ class _CartItemViewState extends State<CartItemView> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
+                              Row(
+                                children: [
+                                  Text(
+                                    AppStrings.index,
+                                    style: AppTypography.kLight16.copyWith(
+                                        fontFamily: AppFonts.boldFontFamily,
+                                        color: AppColors.cBlack),
+                                  ),
+                                  SizedBox(
+                                    width: 5.w,
+                                  ),
+                                  Text(
+                                    widget.zakatId.toString(),
+                                    style: AppTypography.kLight16.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                        color: AppColors.cNumber),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 10.h,
+                              ),
                               Text(
-                                widget.hijriDate.toString(),
-                                style: AppTypography.kLight14.copyWith(
+                                "$dayName - $hijriDate , $hijriYear",
+                                style: AppTypography.kLight16.copyWith(
                                     fontFamily: AppFonts.boldFontFamily,
                                     color: AppColors.cNumber),
+                              ),
+                              SizedBox(
+                                height: 5.h,
+                              ),
+                              Directionality(
+                                textDirection: TextDirection.ltr,
+                                child: Text(
+                                    "$time",
+                                  style: AppTypography.kLight16.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                      color: AppColors.cNumber),
+                                ),
                               ),
                               SizedBox(
                                 height: 10.h,
@@ -98,7 +162,7 @@ class _CartItemViewState extends State<CartItemView> {
                                   Text(
                                     widget.zakatValue.toString(),
                                     style: AppTypography.kLight16.copyWith(
-                                        fontFamily: AppFonts.boldFontFamily,
+                                        fontWeight: FontWeight.bold,
                                         color: AppColors.cNumber),
                                   ),
                                   SizedBox(
@@ -120,7 +184,7 @@ class _CartItemViewState extends State<CartItemView> {
                                   Text(
                                     widget.membersCount.toString(),
                                     style: AppTypography.kLight16.copyWith(
-                                        fontFamily: AppFonts.boldFontFamily,
+                                        fontWeight: FontWeight.bold,
                                         color: AppColors.cNumber),
                                   ),
                                   SizedBox(
@@ -153,7 +217,7 @@ class _CartItemViewState extends State<CartItemView> {
                                       Text(
                                         widget.remain.toString(),
                                         style: AppTypography.kLight16.copyWith(
-                                            fontFamily: AppFonts.boldFontFamily,
+                                            fontWeight: FontWeight.bold,
                                             color: AppColors.cNumber),
                                       ),
                                       SizedBox(

@@ -42,7 +42,8 @@ class AppStrings {
   static const String sa3 = "صــاع";
   static const String members = "أفـراد";
   static const String currency = 'ج.م';
-  
+  static const String index = 'مسلسل:';
+
 
   static const String noProducts = "لـم يـتـم تـسـجـيـل مـنـتـجـات بـعـد.";
   static const String noCarts = "لـم يـتـم إضـافـة زكــاة بـعـد.";

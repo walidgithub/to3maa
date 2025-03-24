@@ -14,7 +14,7 @@ Widget textFieldWidget(TextEditingController textController, String labelText,
       ],
       keyboardType: textInputType,
       controller: textController,
-      style: TextStyle(fontSize: 15.sp, fontFamily: AppFonts.boldFontFamily),
+      style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.bold,),
       decoration: InputDecoration(
           hintStyle: TextStyle(fontSize: 15.sp),
           labelText: labelText,

@@ -172,7 +172,7 @@ class _TotalsViewState extends State<TotalsView> {
                                       Text(
                                         getTotal().toString(),
                                         style: AppTypography.kLight16.copyWith(
-                                            fontFamily: AppFonts.boldFontFamily,
+                                            fontWeight: FontWeight.bold,
                                             color: AppColors.cBlack),
                                       ),
                                       SizedBox(
@@ -202,7 +202,7 @@ class _TotalsViewState extends State<TotalsView> {
                                       Text(
                                         getRemain().toString(),
                                         style: AppTypography.kLight16.copyWith(
-                                            fontFamily: AppFonts.boldFontFamily,
+                                            fontWeight: FontWeight.bold,
                                             color: AppColors.cBlack),
                                       ),
                                       SizedBox(
@@ -230,7 +230,7 @@ class _TotalsViewState extends State<TotalsView> {
                                   Text(
                                     getTotalMembersCount(cart).toString(),
                                     style: AppTypography.kLight16.copyWith(
-                                        fontFamily: AppFonts.boldFontFamily,
+                                        fontWeight: FontWeight.bold,
                                         color: AppColors.cBlack),
                                   ),
                                 ],
@@ -245,47 +245,7 @@ class _TotalsViewState extends State<TotalsView> {
                     ),
                   ],
                 );
-            // return zakatByKilos.isNotEmpty
-            //     ? Column(
-            //         children: [
-            //           Expanded(
-            //             child: SingleChildScrollView(
-            //                 child: ListView.separated(
-            //                     itemCount: zakatByKilos.length,
-            //                     shrinkWrap: true,
-            //                     scrollDirection: Axis.vertical,
-            //                     physics: const NeverScrollableScrollPhysics(),
-            //                     separatorBuilder:
-            //                         (BuildContext context, int index) =>
-            //                             SizedBox(
-            //                               height: 20.h,
-            //                             ),
-            //                     itemBuilder: (BuildContext context, int index) {
-            //                       return TotalsProductsView(
-            //                           productName:
-            //                               zakatByKilos[index].productName,
-            //                           productImage:
-            //                               zakatByKilos[index].productImage,
-            //                           productPrice:
-            //                               zakatByKilos[index].productPrice,
-            //                           sa3Weight: zakatByKilos[index].sa3Weight,
-            //                           productDesc:
-            //                               zakatByKilos[index].productDesc,
-            //                           sumProductQuantity: zakatByKilos[index]
-            //                               .sumProductQuantity!);
-            //                     })),
-            //           ),
-            //           SizedBox(
-            //             height: MediaQuery.sizeOf(context).height * 0.07.h,
-            //           ),
-            //         ],
-            //       )
-            //     : const Center(
-            //         child: Text(
-            //           AppStrings.noCarts,
-            //           style: TextStyle(fontFamily: AppFonts.qabasFontFamily),
-            //         ),
-            //       );
+
           }),
         ));
   }

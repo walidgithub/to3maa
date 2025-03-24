@@ -53,18 +53,24 @@ class _TotalsProductsViewState extends State<TotalsProductsView> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(
+                    height: 5.h,
+                  ),
+                  SizedBox(
                     width: MediaQuery.sizeOf(context).width * 0.30,
                     child: Text(widget.productName,
                         style: AppTypography.kLight20
                             .copyWith(fontFamily: AppFonts.boldFontFamily),
                         overflow: TextOverflow.ellipsis),
                   ),
+                  SizedBox(
+                    height: 10.h,
+                  ),
                   Row(
                     children: [
                       Text(
                         widget.productPrice.toString(),
                         style: AppTypography.kLight16.copyWith(
-                            fontFamily: AppFonts.boldFontFamily,
+                            fontWeight: FontWeight.bold,
                             color: AppColors.cNumber),
                       ),
                       SizedBox(
@@ -122,7 +128,7 @@ class _TotalsProductsViewState extends State<TotalsProductsView> {
                       Text(
                         formatWeight(widget.sumProductQuantity * widget.sa3Weight).toString(),
                         style: AppTypography.kLight14.copyWith(
-                            fontFamily: AppFonts.boldFontFamily,
+                            fontWeight: FontWeight.bold,
                             color: AppColors.cNumber),
                       ),
                       Text(

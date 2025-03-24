@@ -308,7 +308,7 @@ class _CartViewState extends State<CartView> {
                                   Text(
                                     getTotal().toString(),
                                     style: AppTypography.kLight16.copyWith(
-                                        fontFamily: AppFonts.boldFontFamily,
+                                        fontWeight: FontWeight.bold,
                                         color: AppColors.cBlack),
                                   ),
                                   SizedBox(
@@ -338,7 +338,7 @@ class _CartViewState extends State<CartView> {
                                   Text(
                                     getRemain().toString(),
                                     style: AppTypography.kLight16.copyWith(
-                                        fontFamily: AppFonts.boldFontFamily,
+                                        fontWeight: FontWeight.bold,
                                         color: AppColors.cBlack),
                                   ),
                                   SizedBox(
@@ -366,7 +366,7 @@ class _CartViewState extends State<CartView> {
                               Text(
                                 getTotalMembersCount(cart).toString(),
                                 style: AppTypography.kLight16.copyWith(
-                                    fontFamily: AppFonts.boldFontFamily,
+                                    fontWeight: FontWeight.bold,
                                     color: AppColors.cBlack),
                               ),
                             ],

@@ -1,6 +1,7 @@
 import 'package:To3maa/zakat/domain/requests/reset_product_quantity_request.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:To3maa/core/local_db/db_helper.dart';
 import 'package:To3maa/core/utils/enums.dart';
@@ -22,6 +23,8 @@ import 'package:To3maa/zakat/presentation/ui_components/loading_dialog.dart';
 import 'package:To3maa/zakat/presentation/ui_components/text_field_widget.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hijri/hijri_calendar.dart';
+import 'dart:ui' as ui;
+import 'package:intl/intl.dart';
 
 class AddZakatView extends StatefulWidget {
   const AddZakatView({super.key});
@@ -36,6 +39,8 @@ class _AddZakatViewState extends State<AddZakatView> {
 
   HijriCalendar hijriDate = HijriCalendar.now();
 
+  bool minVal = false;
+  bool minCount = false;
 
   @override
   void initState() {
@@ -66,6 +71,13 @@ class _AddZakatViewState extends State<AddZakatView> {
     suggested = false;
     resetQuantity();
     getAllProducts();
+  }
+
+  double getMaxProductPrice(var products) {
+    if (products.isEmpty) return 0;
+    return products
+        .map((product) => double.tryParse(product.productPrice ?? '0') ?? 0)
+        .reduce((a, b) => a < b ? a : b);
   }
 
   bool suggested = false;
@@ -122,7 +134,7 @@ class _AddZakatViewState extends State<AddZakatView> {
   @override
   Widget build(BuildContext context) {
     return Directionality(
-      textDirection: TextDirection.rtl,
+      textDirection: ui.TextDirection.rtl,
       child: Scaffold(
           appBar: AppBar(
             backgroundColor: AppColors.cWhite,
@@ -171,7 +183,10 @@ class _AddZakatViewState extends State<AddZakatView> {
                 textFieldWidget(
                     _membersCountController,
                     AppStrings.membersCount,
-                    TextInputType.number, (String textVal) {
+                    TextInputType.number, (String textVal) async {
+                  await resetQuantity();
+                  await getAllProducts();
+
                   getSuggested(
                       int.parse(_membersCountController.text),
                       int.parse(_zakatValueController.text),
@@ -181,16 +196,36 @@ class _AddZakatViewState extends State<AddZakatView> {
                   height: AppConstants.heightBetweenElements,
                 ),
                 textFieldWidget(_zakatValueController, AppStrings.zakatValue,
-                    TextInputType.number, (String textVal) {
+                    TextInputType.number, (String textVal) async {
                   setState(() {
                     allValue = double.parse(textVal);
                     remain = allValue - calcRemain(state.productsList);
                   });
+
+                  await resetQuantity();
+                  await getAllProducts();
+
                   getSuggested(
                       int.parse(_membersCountController.text),
                       int.parse(_zakatValueController.text),
                       state.productsList);
                 }),
+                minVal
+                    ? Text(
+                        "قيمة الزكاة لم تصل الحد الى الأدنى",
+                        style:
+                            const TextStyle(fontFamily: AppFonts.boldFontFamily)
+                                .copyWith(color: AppColors.cButton),
+                      )
+                    : Container(),
+                minCount
+                    ? Text(
+                        "الكميات لا تناسب عدد الأفراد وقيمة الزكاة",
+                        style:
+                            const TextStyle(fontFamily: AppFonts.boldFontFamily)
+                                .copyWith(color: AppColors.cButton),
+                      )
+                    : Container(),
                 suggested
                     ? SizedBox(
                         height: 5.h,
@@ -374,7 +409,7 @@ class _AddZakatViewState extends State<AddZakatView> {
                                   Text(
                                     allValue.toString(),
                                     style: AppTypography.kLight16.copyWith(
-                                        fontFamily: AppFonts.boldFontFamily,
+                                        fontWeight: FontWeight.bold,
                                         color: AppColors.cBlack),
                                   ),
                                   SizedBox(
@@ -404,7 +439,7 @@ class _AddZakatViewState extends State<AddZakatView> {
                                   Text(
                                     remain.toString(),
                                     style: AppTypography.kLight16.copyWith(
-                                        fontFamily: AppFonts.boldFontFamily,
+                                        fontWeight: FontWeight.bold,
                                         color: AppColors.cBlack),
                                   ),
                                   SizedBox(
@@ -423,10 +458,12 @@ class _AddZakatViewState extends State<AddZakatView> {
                           GestureDetector(
                             onTap: () async {
                               if (remain >= allValue) {
+                                HapticFeedback.vibrate();
                                 return;
                               }
 
                               if (remain.isNegative) {
+                                HapticFeedback.vibrate();
                                 return;
                               }
 
@@ -439,15 +476,76 @@ class _AddZakatViewState extends State<AddZakatView> {
                                 return;
                               }
 
+                              var maxVal =
+                                  getMaxProductPrice(state.productsList);
+
+                              if (allValue <
+                                  (maxVal *
+                                      int.parse(_membersCountController.text
+                                          .trim()))) {
+                                HapticFeedback.vibrate();
+                                setState(() {
+                                  minVal = true;
+                                });
+                                return;
+                              } else {
+                                if (minVal) {
+                                  setState(() {
+                                    minVal = false;
+                                  });
+                                }
+                              }
+
+                              int totalQuantity = state.productsList.fold(
+                                0,
+                                    (sum, product) => sum + (product.productQuantity ?? 0),
+                              );
+
+                              if (totalQuantity < int.parse(
+                                  _membersCountController.text.trim())) {
+                                HapticFeedback.vibrate();
+                                setState(() {
+                                  minCount = true;
+                                });
+                                return;
+                              } else {
+                                if (minCount) {
+                                  setState(() {
+                                    minCount = false;
+                                  });
+                                }
+                              }
+
+                              if ((allValue - remain) <
+                                  (maxVal *
+                                      int.parse(_membersCountController.text
+                                          .trim()))) {
+                                HapticFeedback.vibrate();
+                                setState(() {
+                                  minCount = true;
+                                });
+                                return;
+                              } else {
+                                if (minCount) {
+                                  setState(() {
+                                    minCount = false;
+                                  });
+                                }
+                              }
+
+                              DateTime now = DateTime.now();
+                              String formattedTime =
+                                  DateFormat('hh:mm ss a').format(now);
+
                               InsertZakatRequest insertZakatRequest =
                                   InsertZakatRequest(
                                       membersCount:
                                           _membersCountController.text.trim(),
                                       zakatValue:
                                           _zakatValueController.text.trim(),
-                                      hegriDate: hijriDate.fullDate().toString(),
+                                      hegriDate:
+                                          "${hijriDate.fullDate().toString()} - $formattedTime",
                                       remainValue: remain.toString());
-
 
                               await ZakatCubit.get(context)
                                   .insertZakat(insertZakatRequest);
@@ -455,21 +553,22 @@ class _AddZakatViewState extends State<AddZakatView> {
                               for (var x in state.productsList) {
                                 if (x.productQuantity != 0) {
                                   InsertZakatProductsRequest
-                                  insertZakatProductsRequest =
-                                  InsertZakatProductsRequest(
-                                      productDesc: x.productDesc,
-                                      productImage: x.productImage,
-                                      productName: x.productName,
-                                      productPrice: x.productPrice,
-                                      productQuantity: x.productQuantity,
-                                      hegriDate: hijriDate.fullDate().toString(),
-                                      sa3Weight: x.sa3Weight,
-                                      zakatId: DbHelper.insertedNewZakat);
+                                      insertZakatProductsRequest =
+                                      InsertZakatProductsRequest(
+                                          productDesc: x.productDesc,
+                                          productImage: x.productImage,
+                                          productName: x.productName,
+                                          productPrice: x.productPrice,
+                                          productQuantity: x.productQuantity,
+                                          hegriDate:
+                                              "${hijriDate.fullDate().toString()} - $formattedTime",
+                                          sa3Weight: x.sa3Weight,
+                                          zakatId: DbHelper.insertedNewZakat);
 
                                   // ignore: use_build_context_synchronously
                                   await ZakatCubit.get(context)
                                       .insertZakatProducts(
-                                      insertZakatProductsRequest);
+                                          insertZakatProductsRequest);
 
                                   x.productQuantity = 0;
                                 }

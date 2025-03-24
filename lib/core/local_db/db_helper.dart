@@ -191,7 +191,7 @@ class DbHelper {
 
     final db = _db!.database;
 
-    final result = await db.rawQuery('SELECT * FROM zakat Order by id ASC');
+    final result = await db.rawQuery('SELECT * FROM zakat Order by id Desc');
     return result.map((map) => ZakatModel.fromMap(map)).toList();
   }
 

@@ -55,18 +55,24 @@ class _ProductViewState extends State<ProductView> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(
+                    height: 5.h,
+                  ),
+                  SizedBox(
                     width: MediaQuery.sizeOf(context).width * 0.30,
                     child: Text(widget.productName,
                         style: AppTypography.kLight20
                             .copyWith(fontFamily: AppFonts.boldFontFamily),
                         overflow: TextOverflow.ellipsis),
                   ),
+                  SizedBox(
+                    height: 10.h,
+                  ),
                   Row(
                     children: [
                       Text(
                         widget.productPrice.toString(),
                         style: AppTypography.kLight16.copyWith(
-                            fontFamily: AppFonts.boldFontFamily,
+                            fontWeight: FontWeight.bold,
                             color: AppColors.cNumber),
                       ),
                       SizedBox(
@@ -190,7 +196,7 @@ class _ProductViewState extends State<ProductView> {
                         controller: _editController,
                         style: TextStyle(
                             fontSize: 15.sp,
-                            fontFamily: AppFonts.boldFontFamily),
+                          fontWeight: FontWeight.bold,),
                         decoration:
                             const InputDecoration(border: InputBorder.none)),
                   ),

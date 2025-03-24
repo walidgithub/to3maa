@@ -38,18 +38,17 @@ class AddProductView extends StatefulWidget {
 }
 
 class _AddProductViewState extends State<AddProductView> {
-  double calcRemain(var products) {
-    double allProductsValue = 0.0;
-    for (var x in products) {
-      double productTotal =
-          double.parse(x.productPrice!) * (x.productQuantity + 1 ?? 0);
-      allProductsValue = allProductsValue + productTotal;
-    }
-    return allProductsValue;
+  double usedAmount(var products) {
+    return products.fold(0, (sum, item) => sum + (double.parse(item.productQuantity.toString()) * double.parse(item.productPrice.toString())));
   }
 
-  int _itemQuantity = 0;
+  int? _itemQuantity;
 
+  @override
+  void initState() {
+    _itemQuantity = 0;
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return FadeInUp(
@@ -73,6 +72,9 @@ class _AddProductViewState extends State<AddProductView> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(
+                    height: 5.h,
+                  ),
+                  SizedBox(
                     width: MediaQuery.sizeOf(context).width * 0.30,
                     child: Text(
                       widget.productName,
@@ -81,12 +83,15 @@ class _AddProductViewState extends State<AddProductView> {
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
+                  SizedBox(
+                    height: 10.h,
+                  ),
                   Row(
                     children: [
                       Text(
                         widget.productPrice.toString(),
                         style: AppTypography.kLight16.copyWith(
-                            fontFamily: AppFonts.boldFontFamily,
+                            fontWeight: FontWeight.bold,
                             color: AppColors.cNumber),
                       ),
                       SizedBox(
@@ -146,11 +151,15 @@ class _AddProductViewState extends State<AddProductView> {
                       GestureDetector(
                         onTap: () {
                           double remain =
-                              widget.allValue - calcRemain(widget.productsList);
+                              widget.allValue - usedAmount(widget.productsList) - double.parse(widget.productPrice);
                           if (remain.isNegative) {
                             return;
                           }
-                          _itemQuantity++;
+
+                          setState(() {
+                            _itemQuantity = _itemQuantity! + 1;
+                          });
+
                           widget.increaseQunatity(_itemQuantity);
                         },
                         child: Container(
@@ -172,12 +181,14 @@ class _AddProductViewState extends State<AddProductView> {
                       Text(
                         widget.productQuantity.toString(),
                         style: AppTypography.kLight14
-                            .copyWith(fontFamily: AppFonts.boldFontFamily),
+                            .copyWith(fontWeight: FontWeight.bold,),
                       ),
                       GestureDetector(
                         onTap: () {
                           if (_itemQuantity != 0) {
-                            _itemQuantity--;
+                            setState(() {
+                              _itemQuantity = _itemQuantity! - 1;
+                            });
                           }
                           widget.decreaseQunatity(_itemQuantity);
                         },
