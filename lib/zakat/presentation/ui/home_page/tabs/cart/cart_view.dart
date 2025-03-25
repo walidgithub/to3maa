@@ -96,6 +96,7 @@ class _CartViewState extends State<CartView> {
             hideLoading();
           } else if (state.zakatState == RequestState.zakatLoaded) {
             cartItems = state.zakatList;
+            cart.clear();
             for (var x in state.zakatList) {
               cart.add(Cart(
                   id: x.id,
@@ -105,7 +106,7 @@ class _CartViewState extends State<CartView> {
                   selected: false,
                   zakatValue: x.zakatValue));
             }
-            // getTotalMembersCount(cart);
+            getTotalMembersCount(cart);
             hideLoading();
           } else if (state.zakatState == RequestState.deleteLoading) {
             showLoading();
@@ -147,7 +148,7 @@ class _CartViewState extends State<CartView> {
                                     (DeleteZakatProductsRequest(id: itemId));
 
                                 return CartItemView(
-                                  index: index + 1,
+                                  index: cart.length - index,
                                   selected: cart[index].selected!,
                                   hijriDate: cart[index].hijriDate!,
                                   zakatId: cart[index].id!,
@@ -210,8 +211,8 @@ class _CartViewState extends State<CartView> {
                                                               snackBar);
 
                                                       await getAllZakat();
-                                                      // getTotalMembersCount(
-                                                      //     cart);
+                                                      getTotalMembersCount(
+                                                          cart);
                                                       setState(() {});
                                                       Navigator.of(context)
                                                           .pop(false);
@@ -260,7 +261,7 @@ class _CartViewState extends State<CartView> {
                             CheckDeleteDialog.show(innerContext, () async {
                               await deleteAll();
                               await getAllZakat();
-                              // getTotalMembersCount(cart);
+                              getTotalMembersCount(cart);
                               cart.clear();
                               setState(() {});
                             });
@@ -362,6 +363,24 @@ class _CartViewState extends State<CartView> {
                                         color: AppColors.cWhite),
                                   ),
                                 ],
+                              ),
+
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Text(
+                                AppStrings.allMembersCount,
+                                style: AppTypography.kBold18.copyWith(
+                                  color: AppColors.cWhite,
+                                  fontFamily: AppFonts.qabasFontFamily,
+                                ),
+                              ),
+                              Text(
+                                membersCountText.toString(),
+                                style: AppTypography.kLight16.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColors.cBlack),
                               ),
                             ],
                           ),
