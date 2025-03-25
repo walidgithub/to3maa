@@ -18,6 +18,7 @@ import 'package:flutter_svg/svg.dart';
 
 class CartItemView extends StatefulWidget {
   final bool selected;
+  final int index;
   final int zakatId;
   final int membersCount;
   final String zakatValue;
@@ -30,6 +31,7 @@ class CartItemView extends StatefulWidget {
     super.key,
     required this.selected,
     required this.zakatId,
+    required this.index,
     required this.membersCount,
     required this.zakatValue,
     required this.hijriDate,
@@ -126,7 +128,7 @@ class _CartItemViewState extends State<CartItemView> {
                                     width: 5.w,
                                   ),
                                   Text(
-                                    widget.zakatId.toString(),
+                                    widget.index.toString(),
                                     style: AppTypography.kLight16.copyWith(
                                       fontWeight: FontWeight.bold,
                                         color: AppColors.cNumber),

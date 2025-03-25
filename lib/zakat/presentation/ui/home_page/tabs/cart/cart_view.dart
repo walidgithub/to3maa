@@ -138,6 +138,7 @@ class _CartViewState extends State<CartView> {
                                         id: cartItems[index].id));
 
                                 return CartItemView(
+                                  index: index + 1,
                                   selected: cart[index].selected!,
                                   hijriDate: cart[index].hijriDate!,
                                   zakatId: cart[index].id!,
@@ -161,7 +162,7 @@ class _CartViewState extends State<CartView> {
                                             textDirection: TextDirection.rtl,
                                             child: AlertDialog(
                                               title: Text(AppStrings.warning,
-                                                  style: AppTypography.kBold18),
+                                                  style: AppTypography.kBold20),
                                               content: const Text(
                                                   AppStrings.checkToDelete),
                                               actions: [
@@ -207,7 +208,7 @@ class _CartViewState extends State<CartView> {
                                                     },
                                                     child: Text(AppStrings.yes,
                                                         style: AppTypography
-                                                            .kLight14)),
+                                                            .kLight16)),
                                                 TextButton(
                                                     onPressed: () {
                                                       Navigator.of(context)
@@ -215,7 +216,7 @@ class _CartViewState extends State<CartView> {
                                                     },
                                                     child: Text(AppStrings.no,
                                                         style: AppTypography
-                                                            .kLight14)),
+                                                            .kLight16)),
                                               ],
                                             ),
                                           );

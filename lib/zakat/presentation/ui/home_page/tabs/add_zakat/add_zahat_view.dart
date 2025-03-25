@@ -39,8 +39,8 @@ class _AddZakatViewState extends State<AddZakatView> {
 
   HijriCalendar hijriDate = HijriCalendar.now();
 
-  bool minVal = false;
-  bool minCount = false;
+  bool showError = false;
+  String errorMessage = "";
 
   @override
   void initState() {
@@ -117,10 +117,12 @@ class _AddZakatViewState extends State<AddZakatView> {
         }
       }
       setState(() {
+        errorMessage = "";
         suggested = true;
       });
     } else {
       setState(() {
+        errorMessage = "";
         suggested = false;
       });
     }
@@ -210,17 +212,9 @@ class _AddZakatViewState extends State<AddZakatView> {
                       int.parse(_zakatValueController.text),
                       state.productsList);
                 }),
-                minVal
+                showError
                     ? Text(
-                        "قيمة الزكاة لم تصل الحد الى الأدنى",
-                        style:
-                            const TextStyle(fontFamily: AppFonts.boldFontFamily)
-                                .copyWith(color: AppColors.cButton),
-                      )
-                    : Container(),
-                minCount
-                    ? Text(
-                        "الكميات لا تناسب عدد الأفراد وقيمة الزكاة",
+                        errorMessage,
                         style:
                             const TextStyle(fontFamily: AppFonts.boldFontFamily)
                                 .copyWith(color: AppColors.cButton),
@@ -457,14 +451,38 @@ class _AddZakatViewState extends State<AddZakatView> {
                           ),
                           GestureDetector(
                             onTap: () async {
-                              if (remain >= allValue) {
+                              if (remain > allValue) {
+                                print("111111111111");
                                 HapticFeedback.vibrate();
+                                setState(() {
+                                  showError = true;
+                                  errorMessage = "خطأ فى عدد الأفراد أو قيمة الزكاة";
+                                });
                                 return;
+                              } else {
+                                if (showError) {
+                                  setState(() {
+                                    showError = false;
+                                    errorMessage = "";
+                                  });
+                                }
                               }
 
                               if (remain.isNegative) {
+                                print("222222222222");
                                 HapticFeedback.vibrate();
+                                setState(() {
+                                  showError = true;
+                                  errorMessage = "خطأ فى عدد الأفراد أو قيمة الزكاة";
+                                });
                                 return;
+                              } else {
+                                if (showError) {
+                                  setState(() {
+                                    showError = false;
+                                    errorMessage = "";
+                                  });
+                                }
                               }
 
                               if (double.parse(_membersCountController.text
@@ -473,7 +491,19 @@ class _AddZakatViewState extends State<AddZakatView> {
                                   double.parse(
                                           _zakatValueController.text.trim()) <=
                                       0) {
+                                setState(() {
+                                  print("3333333333333");
+                                  showError = true;
+                                  errorMessage = "أدخل خانات عدد الأفراد وقيمة الزكاة";
+                                });
                                 return;
+                              } else {
+                                if (showError) {
+                                  setState(() {
+                                    showError = false;
+                                    errorMessage = "";
+                                  });
+                                }
                               }
 
                               var maxVal =
@@ -485,13 +515,16 @@ class _AddZakatViewState extends State<AddZakatView> {
                                           .trim()))) {
                                 HapticFeedback.vibrate();
                                 setState(() {
-                                  minVal = true;
+                                  print("4444444444");
+                                  showError = true;
+                                  errorMessage = "قيمة الزكاة لم تصل الحد الى الأدنى";
                                 });
                                 return;
                               } else {
-                                if (minVal) {
+                                if (showError) {
                                   setState(() {
-                                    minVal = false;
+                                    showError = false;
+                                    errorMessage = "";
                                   });
                                 }
                               }
@@ -503,15 +536,18 @@ class _AddZakatViewState extends State<AddZakatView> {
 
                               if (totalQuantity < int.parse(
                                   _membersCountController.text.trim())) {
+                                print("555555555555");
                                 HapticFeedback.vibrate();
                                 setState(() {
-                                  minCount = true;
+                                  showError = true;
+                                  errorMessage = "لم يتم اختيار أصناف مناسبة لقيمة الزكاة وعدد الأفراد";
                                 });
                                 return;
                               } else {
-                                if (minCount) {
+                                if (showError) {
                                   setState(() {
-                                    minCount = false;
+                                    showError = false;
+                                    errorMessage = "";
                                   });
                                 }
                               }
@@ -520,15 +556,35 @@ class _AddZakatViewState extends State<AddZakatView> {
                                   (maxVal *
                                       int.parse(_membersCountController.text
                                           .trim()))) {
+                                print("66666666666");
                                 HapticFeedback.vibrate();
                                 setState(() {
-                                  minCount = true;
+                                  showError = true;
+                                  errorMessage = "الكميات لا تناسب عدد الأفراد وقيمة الزكاة";
                                 });
                                 return;
                               } else {
-                                if (minCount) {
+                                if (showError) {
                                   setState(() {
-                                    minCount = false;
+                                    showError = false;
+                                    errorMessage = "";
+                                  });
+                                }
+                              }
+
+                              if (remain == allValue) {
+                                print("000000000000");
+                                HapticFeedback.vibrate();
+                                setState(() {
+                                  showError = true;
+                                  errorMessage = "لم يتم اختيار أى أصناف";
+                                });
+                                return;
+                              } else {
+                                if (showError) {
+                                  setState(() {
+                                    showError = false;
+                                    errorMessage = "";
                                   });
                                 }
                               }
