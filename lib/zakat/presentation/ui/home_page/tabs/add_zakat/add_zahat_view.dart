@@ -189,10 +189,17 @@ class _AddZakatViewState extends State<AddZakatView> {
                   await resetQuantity();
                   await getAllProducts();
 
-                  getSuggested(
-                      int.parse(_membersCountController.text),
-                      int.parse(_zakatValueController.text),
-                      state.productsList);
+                  if (_zakatValueController.text.isNotEmpty) {
+                    final zakatValue = int.tryParse(_zakatValueController.text);
+                    if (zakatValue != null) {
+                      getSuggested(
+                          int.parse(_membersCountController.text),
+                          zakatValue,
+                          state.productsList);
+                    } else {
+                    }
+                  } else {
+                  }
                 }),
                 SizedBox(
                   height: AppConstants.heightBetweenElements,

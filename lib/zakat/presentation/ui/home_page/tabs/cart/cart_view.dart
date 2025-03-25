@@ -36,8 +36,13 @@ class _CartViewState extends State<CartView> {
 
   List<Cart> cart = [];
 
-  int getTotalMembersCount(List<Cart> carts) {
-    return carts.fold(0, (sum, cart) => sum + (cart.membersCount ?? 0));
+  int membersCountText = 0;
+
+  void getTotalMembersCount(List<Cart> carts) {
+    setState(() {
+      membersCountText =
+          carts.fold(0, (sum, cart) => sum + (cart.membersCount ?? 0));
+    });
   }
 
   Future<void> getAllZakat() async {
@@ -100,6 +105,7 @@ class _CartViewState extends State<CartView> {
                   selected: false,
                   zakatValue: x.zakatValue));
             }
+            // getTotalMembersCount(cart);
             hideLoading();
           } else if (state.zakatState == RequestState.deleteLoading) {
             showLoading();
@@ -129,13 +135,16 @@ class _CartViewState extends State<CartView> {
                                       ),
                               itemBuilder:
                                   (BuildContext cartContext, int index) {
+                                int? itemId;
+                                if (index >= 0 && index < cartItems.length) {
+                                  itemId = cartItems[index].id;
+                                }
+
                                 DeleteZakatRequest deleteZakatRequest =
-                                    (DeleteZakatRequest(
-                                        id: cartItems[index].id));
+                                    (DeleteZakatRequest(id: itemId!));
                                 DeleteZakatProductsRequest
                                     deleteZakatProductsRequest =
-                                    (DeleteZakatProductsRequest(
-                                        id: cartItems[index].id));
+                                    (DeleteZakatProductsRequest(id: itemId));
 
                                 return CartItemView(
                                   index: index + 1,
@@ -182,7 +191,7 @@ class _CartViewState extends State<CartView> {
                                                       cart.removeWhere(
                                                         (element) =>
                                                             element.id ==
-                                                            cartItems[index].id,
+                                                            itemId,
                                                       );
 
                                                       final snackBar = SnackBar(
@@ -201,8 +210,9 @@ class _CartViewState extends State<CartView> {
                                                               snackBar);
 
                                                       await getAllZakat();
+                                                      // getTotalMembersCount(
+                                                      //     cart);
                                                       setState(() {});
-
                                                       Navigator.of(context)
                                                           .pop(false);
                                                     },
@@ -250,7 +260,7 @@ class _CartViewState extends State<CartView> {
                             CheckDeleteDialog.show(innerContext, () async {
                               await deleteAll();
                               await getAllZakat();
-                              getTotalMembersCount(cart);
+                              // getTotalMembersCount(cart);
                               cart.clear();
                               setState(() {});
                             });
@@ -352,23 +362,6 @@ class _CartViewState extends State<CartView> {
                                         color: AppColors.cWhite),
                                   ),
                                 ],
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Text(
-                                AppStrings.allMembersCount,
-                                style: AppTypography.kBold18.copyWith(
-                                  color: AppColors.cWhite,
-                                  fontFamily: AppFonts.qabasFontFamily,
-                                ),
-                              ),
-                              Text(
-                                getTotalMembersCount(cart).toString(),
-                                style: AppTypography.kLight16.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    color: AppColors.cBlack),
                               ),
                             ],
                           ),
