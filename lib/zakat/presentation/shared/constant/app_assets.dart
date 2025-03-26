@@ -16,4 +16,5 @@ class AppAssets {
   static const String lobia = '$imagePath/lobia.png';
   static const String favaBeans = '$imagePath/favaBeans.png';
   static const String lentils = '$imagePath/lentils.png';
+  static const String export = '$imagePath/export.svg';
 }

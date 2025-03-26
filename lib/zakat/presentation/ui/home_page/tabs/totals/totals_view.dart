@@ -1,3 +1,4 @@
+import 'package:To3maa/zakat/presentation/shared/constant/app_assets.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,8 +14,11 @@ import 'package:To3maa/zakat/presentation/ui/home_page/cubit/zakat_states.dart';
 import 'package:To3maa/zakat/presentation/ui/home_page/tabs/totals/totals_products_view.dart';
 import 'package:To3maa/zakat/presentation/ui_components/loading_dialog.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../../../../../domain/entities/cart_items.dart';
+import 'export_class.dart';
 
 class TotalsView extends StatefulWidget {
   const TotalsView({super.key});
@@ -78,10 +82,33 @@ class _TotalsViewState extends State<TotalsView> {
             surfaceTintColor: Colors.transparent,
             title: FadeInLeft(
               duration: Duration(milliseconds: AppConstants.animation),
-              child: Text(
-                AppStrings.totals,
-                style: AppTypography.kLight20
-                    .copyWith(fontFamily: AppFonts.boldFontFamily),
+              child: Row(
+                children: [
+                  Text(
+                    AppStrings.totals,
+                    style: AppTypography.kLight20
+                        .copyWith(fontFamily: AppFonts.boldFontFamily),
+                  ),
+                  SizedBox(
+                    width: 20.w,
+                  ),
+                  GestureDetector(
+                    onTap: () async {
+                      if (await Permission.manageExternalStorage.request().isGranted) {
+                        await exportCartsAndProductsDesign(
+                          carts: cart,
+                          products: zakatByKilos,
+                        );
+                      } else {
+                        print("Manage External Storage permission denied");
+                      }
+                    },
+                    child: SvgPicture.asset(
+                      AppAssets.export,
+                      width: 25.w,
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
