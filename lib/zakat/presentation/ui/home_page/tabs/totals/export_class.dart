@@ -1,11 +1,18 @@
 import 'dart:io';
 import 'package:excel/excel.dart';
+import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
+import '../../../../../../core/utils/functions.dart';
 import '../../../../../domain/entities/cart_items.dart';
 import '../../../../../domain/responses/zakat_products_by_kilos_response.dart';
+import '../../../../shared/constant/app_constants.dart';
+import '../../../../shared/constant/app_strings.dart';
 
 Future<void> exportCartsAndProductsDesign({
+  required String printDate,
+  required String yearOfDate,
   required List<Cart> carts,
+  required BuildContext context,
   required List<ZakatProductsByKilosResponse> products,
 }) async {
   final excel = Excel.createExcel();
@@ -13,63 +20,127 @@ Future<void> exportCartsAndProductsDesign({
 
   int row = 0;
 
-  // Headers for products table
-  sheet.cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: row))
-      .value = TextCellValue('(بالكيلو) الوزن');
-  sheet.cell(CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: row))
-      .value = TextCellValue('بيان الأصناف');
+  CellStyle headerStyle = CellStyle(
+    bold: true,
+    fontSize: 12,
+    textWrapping: TextWrapping.WrapText,
+    horizontalAlign: HorizontalAlign.Center,
+    verticalAlign: VerticalAlign.Center,
+    backgroundColorHex: ExcelColor.fromHexString("#00BCD4"),
+  );
+
+  CellStyle highlightedStyle = CellStyle(
+    bold: true,
+    fontSize: 12,
+    textWrapping: TextWrapping.WrapText,
+    horizontalAlign: HorizontalAlign.Center,
+    verticalAlign: VerticalAlign.Center,
+    backgroundColorHex: ExcelColor.fromHexString("#fcb757"),
+  );
+
+  CellStyle normalCenterStyle = CellStyle(
+    horizontalAlign: HorizontalAlign.Center,
+    verticalAlign: VerticalAlign.Center,
+  );
+
+  // Headers
+  var headerCells = [
+    sheet.cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: row)),
+    sheet.cell(CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: row))
+  ];
+
+  headerCells[0].value = TextCellValue('(بالكيلو) الوزن');
+  headerCells[1].value = TextCellValue('بيان الأصناف');
+
+  for (var cell in headerCells) {
+    cell.cellStyle = headerStyle;
+  }
+
   row++;
 
-  // Add product rows
   for (var product in products) {
-    sheet.cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: row))
-        .value = DoubleCellValue(product.sa3Weight);
-    sheet.cell(CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: row))
-        .value = TextCellValue(product.productName);
+    var weightCell =
+        sheet.cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: row));
+    var nameCell =
+        sheet.cell(CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: row));
+
+    weightCell.value = TextCellValue("${formatWeight(product.sumProductQuantity! * product.sa3Weight).toString()} ${formatWeightString(product.sumProductQuantity! *
+        product.sa3Weight).toString() ==
+        "ton"
+        ? AppStrings.ton
+        : AppStrings.kilo}");
+    nameCell.value = TextCellValue(product.productName);
+
+    weightCell.cellStyle = normalCenterStyle;
+    nameCell.cellStyle = normalCenterStyle;
+
     row++;
   }
 
-  // Calculate totals from carts
   int sumMembers = carts.fold(0, (sum, cart) => sum + (cart.membersCount ?? 0));
-  double sumZakat = carts.fold(0, (sum, cart) => sum + (double.tryParse(cart.zakatValue ?? '0') ?? 0));
-  double sumRemain = carts.fold(0, (sum, cart) => sum + (double.tryParse(cart.remainValue ?? '0') ?? 0));
-  String hijriDate = carts.isNotEmpty ? carts.last.hijriDate ?? '' : '';
+  double sumZakat = carts.fold(
+      0, (sum, cart) => sum + (double.tryParse(cart.zakatValue ?? '0') ?? 0));
+  double sumRemain = carts.fold(
+      0, (sum, cart) => sum + (double.tryParse(cart.remainValue ?? '0') ?? 0));
 
-  // Empty row
-  row++;
-
-  // Add summary fields
-  sheet.cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: row))
-      .value = IntCellValue(sumMembers);
-  sheet.cell(CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: row))
-      .value = TextCellValue('عدد الأفراد');
   row++;
 
-  sheet.cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: row))
-      .value = DoubleCellValue(sumZakat);
-  sheet.cell(CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: row))
-      .value = TextCellValue('إجمالي الزكاة');
+  var summaryItems = [
+    [sumMembers, 'عدد الأفراد'],
+    [sumZakat, 'إجمالي الزكاة'],
+    [sumRemain, 'المبلغ المتبقي'],
+    [printDate, 'تاريخ الطباعة']
+  ];
+
+  for (var item in summaryItems) {
+    var valueCell =
+        sheet.cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: row));
+    var labelCell =
+        sheet.cell(CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: row));
+
+    valueCell.value = item[0] is int
+        ? IntCellValue(item[0] as int)
+        : TextCellValue(item[0].toString());
+    labelCell.value = TextCellValue(item[1].toString());
+
+    valueCell.cellStyle = highlightedStyle;
+    labelCell.cellStyle = highlightedStyle;
+
+    row++;
+  }
+
+  // Footer
   row++;
 
-  sheet.cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: row))
-      .value = DoubleCellValue(sumRemain);
-  sheet.cell(CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: row))
-      .value = TextCellValue('المبلغ المتبقي');
+  CellStyle boldStyle = CellStyle(
+    bold: true,
+    fontSize: 12,
+    horizontalAlign: HorizontalAlign.Center
+  );
+
+  int totalColumns = 2;
+
+// Merge first footer row
+  sheet.merge(
+    CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: row),
+    CellIndex.indexByColumnRow(columnIndex: totalColumns - 1, rowIndex: row),
+  );
+  sheet.cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: row)).value =
+      TextCellValue('طهُرة للصائم من اللغو والرفث وطعمة للمساكين');
+  sheet
+      .cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: row))
+      .cellStyle = boldStyle;
   row++;
 
-  sheet.cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: row))
-      .value = TextCellValue(hijriDate);
-  sheet.cell(CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: row))
-      .value = TextCellValue('هجرياً');
-  row++;
-
-  // Footer note
-  row++;
-  sheet.cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: row))
-      .value = TextCellValue('طهُرة للصائم من اللغو والرفث وطعمة للمساكين');
-  row++;
-  sheet.cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: row))
-      .value = TextCellValue('زكاة الفطر عام 1446 هجرياً');
+  sheet.merge(
+    CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: row),
+    CellIndex.indexByColumnRow(columnIndex: totalColumns - 1, rowIndex: row),
+  );
+  sheet.cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: row)).value =
+      TextCellValue('زكاة الفطر عام $yearOfDate هجريًا');
+  sheet
+      .cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: row))
+      .cellStyle = boldStyle;
 
   // Save in Download folder
   final downloadsDir = Directory('/storage/emulated/0/Download');
@@ -79,12 +150,16 @@ Future<void> exportCartsAndProductsDesign({
     final file = File(filePath)
       ..createSync(recursive: true)
       ..writeAsBytesSync(excel.encode()!);
+
+    final snackBar = SnackBar(
+      duration: Duration(milliseconds: AppConstants.durationOfSnackBar),
+      content: const Text(AppStrings.successExport),
+    );
+    // ignore: use_build_context_synchronously
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
     print('Excel file saved at: $filePath');
   } else {
     print('Permission denied');
   }
 }
-
-
-
-

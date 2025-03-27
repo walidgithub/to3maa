@@ -8,6 +8,7 @@ class AppStrings {
   static const String cart = "الـعـربـة";
   static const String successDelete = "تـم الـحـذف بـنـجـاح";
   static const String successAdd = "تـمـت الإضـافـة بـنـجـاح";
+  static const String successExport = "تـم استخراج التقرير بنجاح";
   static const String successUpdate = "تـم الـتـعـديـل بـنـجـاح";
 
   static const String member = "الإســم";
@@ -43,6 +44,7 @@ class AppStrings {
   static const String members = "أفـراد";
   static const String currency = 'ج.م';
   static const String index = 'مسلسل:';
+  static const String selectDate = 'اختار التاريخ';
 
 
   static const String noProducts = "لـم يـتـم تـسـجـيـل مـنـتـجـات بـعـد.";

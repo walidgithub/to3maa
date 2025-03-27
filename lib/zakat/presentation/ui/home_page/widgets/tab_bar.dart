@@ -28,6 +28,7 @@ class TabBarWidget extends StatefulWidget {
 }
 
 class _TabBarWidgetState extends State<TabBarWidget> {
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -51,12 +52,12 @@ class _TabBarWidgetState extends State<TabBarWidget> {
                         ? Center(
                             child: badges.Badge(
                               position: badges.BadgePosition.topEnd(
-                                  top: -10, end: -12),
+                                  top: -18, end: 0),
                               badgeContent: Text(
-                                widget.badgeVal.toString(),
+                                widget.badgeVal > 99 ? '99+' : widget.badgeVal.toString(),
                                 style: AppTypography.kBold14.copyWith(
                                     color: AppColors.cWhite,
-                                    fontFamily: AppFonts.boldFontFamily),
+                                    fontWeight: FontWeight.bold),
                               ),
                               showBadge: true,
                               ignorePointer: false,
