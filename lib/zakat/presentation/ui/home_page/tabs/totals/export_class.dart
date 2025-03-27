@@ -1,12 +1,11 @@
-import 'dart:io';
 import 'package:excel/excel.dart';
 import 'package:flutter/material.dart';
-import 'package:permission_handler/permission_handler.dart';
 import '../../../../../../core/utils/functions.dart';
 import '../../../../../domain/entities/cart_items.dart';
 import '../../../../../domain/responses/zakat_products_by_kilos_response.dart';
-import '../../../../shared/constant/app_constants.dart';
 import '../../../../shared/constant/app_strings.dart';
+
+import 'export_to_excel.dart';
 
 Future<void> exportCartsAndProductsDesign({
   required String printDate,
@@ -60,15 +59,17 @@ Future<void> exportCartsAndProductsDesign({
 
   for (var product in products) {
     var weightCell =
-        sheet.cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: row));
+    sheet.cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: row));
     var nameCell =
-        sheet.cell(CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: row));
+    sheet.cell(CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: row));
 
-    weightCell.value = TextCellValue("${formatWeight(product.sumProductQuantity! * product.sa3Weight).toString()} ${formatWeightString(product.sumProductQuantity! *
-        product.sa3Weight).toString() ==
-        "ton"
-        ? AppStrings.ton
-        : AppStrings.kilo}");
+    weightCell.value = TextCellValue(
+        "${formatWeight(product.sumProductQuantity! * product.sa3Weight)
+            .toString()} ${formatWeightString(product.sumProductQuantity! *
+            product.sa3Weight).toString() ==
+            "ton"
+            ? AppStrings.ton
+            : AppStrings.kilo}");
     nameCell.value = TextCellValue(product.productName);
 
     weightCell.cellStyle = normalCenterStyle;
@@ -94,9 +95,9 @@ Future<void> exportCartsAndProductsDesign({
 
   for (var item in summaryItems) {
     var valueCell =
-        sheet.cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: row));
+    sheet.cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: row));
     var labelCell =
-        sheet.cell(CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: row));
+    sheet.cell(CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: row));
 
     valueCell.value = item[0] is int
         ? IntCellValue(item[0] as int)
@@ -113,9 +114,9 @@ Future<void> exportCartsAndProductsDesign({
   row++;
 
   CellStyle boldStyle = CellStyle(
-    bold: true,
-    fontSize: 12,
-    horizontalAlign: HorizontalAlign.Center
+      bold: true,
+      fontSize: 12,
+      horizontalAlign: HorizontalAlign.Center
   );
 
   int totalColumns = 2;
@@ -125,7 +126,9 @@ Future<void> exportCartsAndProductsDesign({
     CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: row),
     CellIndex.indexByColumnRow(columnIndex: totalColumns - 1, rowIndex: row),
   );
-  sheet.cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: row)).value =
+  sheet
+      .cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: row))
+      .value =
       TextCellValue('طهُرة للصائم من اللغو والرفث وطعمة للمساكين');
   sheet
       .cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: row))
@@ -136,30 +139,34 @@ Future<void> exportCartsAndProductsDesign({
     CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: row),
     CellIndex.indexByColumnRow(columnIndex: totalColumns - 1, rowIndex: row),
   );
-  sheet.cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: row)).value =
+  sheet
+      .cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: row))
+      .value =
       TextCellValue('زكاة الفطر عام $yearOfDate هجريًا');
   sheet
       .cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: row))
       .cellStyle = boldStyle;
 
-  // Save in Download folder
-  final downloadsDir = Directory('/storage/emulated/0/Download');
-  if (await Permission.manageExternalStorage.request().isGranted ||
-      await Permission.storage.request().isGranted) {
-    final filePath = '${downloadsDir.path}/to3mah.xlsx';
-    final file = File(filePath)
-      ..createSync(recursive: true)
-      ..writeAsBytesSync(excel.encode()!);
-
-    final snackBar = SnackBar(
-      duration: Duration(milliseconds: AppConstants.durationOfSnackBar),
-      content: const Text(AppStrings.successExport),
-    );
-    // ignore: use_build_context_synchronously
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-
-    print('Excel file saved at: $filePath');
-  } else {
-    print('Permission denied');
-  }
+  saveExcelFile(excel ,context);
 }
+//   // Save in Download folder
+//   final downloadsDir = Directory('/storage/emulated/0/Download');
+//   if (await Permission.manageExternalStorage.request().isGranted ||
+//       await Permission.storage.request().isGranted) {
+//     final filePath = '${downloadsDir.path}/to3mah.xlsx';
+//     final file = File(filePath)
+//       ..createSync(recursive: true)
+//       ..writeAsBytesSync(excel.encode()!);
+//
+//     final snackBar = SnackBar(
+//       duration: Duration(milliseconds: AppConstants.durationOfSnackBar),
+//       content: const Text(AppStrings.successExport),
+//     );
+//     // ignore: use_build_context_synchronously
+//     ScaffoldMessenger.of(context).showSnackBar(snackBar);
+//
+//     print('Excel file saved at: $filePath');
+//   } else {
+//     print('Permission denied');
+//   }
+// }
