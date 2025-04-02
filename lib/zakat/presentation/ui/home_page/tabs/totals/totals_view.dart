@@ -35,9 +35,6 @@ class _TotalsViewState extends State<TotalsView> {
   DatesResponse? selectedDate;
   List<DatesResponse> datesList = [];
   List<Cart> cart = [];
-  // List<ZakatProductsByKilosResponse> filteredZakat = [];
-  // List<Cart> filteredCarts = [];
-  final TextEditingController _dateController = TextEditingController();
 
   @override
   void initState() {
@@ -111,20 +108,7 @@ class _TotalsViewState extends State<TotalsView> {
   }
 
   String extractHijriYear(String hegriDate) {
-    return hegriDate.split('-')[0]; // Gets the first part (year)
-  }
-
-  List<ZakatProductsByKilosResponse> filterZakatByYear(
-      List<ZakatProductsByKilosResponse> zakatList, String targetYear) {
-    return zakatList.where((product) {
-      return extractHijriYear(product.hegriDate) == targetYear;
-    }).toList();
-  }
-
-  List<Cart> filterCartByYear(List<Cart> carts, String targetYear) {
-    return carts.where((cart) {
-      return extractHijriYear(cart.hijriDate ?? '') == targetYear;
-    }).toList();
+    return hegriDate.split('-')[0];
   }
 
   double getTotal() {
@@ -191,116 +175,6 @@ class _TotalsViewState extends State<TotalsView> {
                 ),
                 Row(
                   children: [
-                    // Expanded(
-                    //     child: DropdownButton2(
-                    //   underline: Container(),
-                    //   value: selectedDate,
-                    //   items: datesList.map((item) {
-                    //     return DropdownMenuItem(
-                    //         value: item,
-                    //         child: Row(
-                    //           children: [
-                    //             Container(
-                    //                 constraints:
-                    //                     BoxConstraints(maxWidth: 200.w),
-                    //                 child: Text(item.date!,
-                    //                     style: AppTypography.kExtraLight15
-                    //                         .copyWith(
-                    //                             color: AppColors.cTitle))),
-                    //           ],
-                    //         ));
-                    //   }).toList(),
-                    //   onChanged: (selectedDateP) {
-                    //     setState(() {
-                    //       selectedDateP = selectedDate;
-                    //       // filteredZakat =
-                    //       // filterZakatByYear(zakatByKilos, selectedDate!.date!);
-                    //       //
-                    //       // filteredCarts = filterCartByYear(cart, selectedDate!.date!);
-                    //     });
-                    //   },
-                    //   dropdownSearchData: DropdownSearchData(
-                    //     searchController: _dateController,
-                    //     searchInnerWidgetHeight: 60,
-                    //     searchInnerWidget: Container(
-                    //       height: 60,
-                    //       padding: const EdgeInsets.only(
-                    //           top: 8, bottom: 4, right: 8, left: 8),
-                    //       child: Directionality(
-                    //         textDirection: ui.TextDirection.rtl,
-                    //         child: TextField(
-                    //           expands: true,
-                    //           maxLines: null,
-                    //           controller: _dateController,
-                    //           decoration: InputDecoration(
-                    //             isDense: true,
-                    //             contentPadding: const EdgeInsets.symmetric(
-                    //               horizontal: 10,
-                    //               vertical: 8,
-                    //             ),
-                    //             hintText: AppStrings.selectDate,
-                    //             hintStyle: AppTypography.kExtraLight14,
-                    //             border: OutlineInputBorder(
-                    //               borderRadius: BorderRadius.circular(
-                    //                   AppConstants.radius),
-                    //             ),
-                    //           ),
-                    //         ),
-                    //       ),
-                    //     ),
-                    //     searchMatchFn: (item, searchValue) {
-                    //       selectedDate = item.value as DatesResponse;
-                    //       var choose = selectedDate!.date!.toLowerCase();
-                    //       return choose.contains(searchValue.toLowerCase());
-                    //     },
-                    //   ),
-                    //   onMenuStateChange: (isOpen) {
-                    //     if (!isOpen) {
-                    //       _dateController.clear();
-                    //     }
-                    //   },
-                    //   buttonStyleData: ButtonStyleData(
-                    //     height: 60.h,
-                    //     padding: const EdgeInsets.only(left: 14, right: 14),
-                    //     decoration: BoxDecoration(
-                    //       borderRadius:
-                    //           BorderRadius.circular(AppConstants.radius),
-                    //       border: Border.all(
-                    //         color: AppColors.cTitle,
-                    //       ),
-                    //       color: AppColors.cBackGround,
-                    //     ),
-                    //     elevation: 0,
-                    //   ),
-                    //   dropdownStyleData: DropdownStyleData(
-                    //     maxHeight: 300.h,
-                    //     decoration: BoxDecoration(
-                    //         borderRadius:
-                    //             BorderRadius.circular(AppConstants.radius),
-                    //         color: AppColors.cBackGround,
-                    //         border: Border.all(color: AppColors.cTitle)),
-                    //     elevation: 0,
-                    //     offset: const Offset(0, 0),
-                    //     scrollbarTheme: ScrollbarThemeData(
-                    //       radius: Radius.circular(AppConstants.radius),
-                    //       thickness: MaterialStateProperty.all<double>(6),
-                    //       thumbVisibility:
-                    //           MaterialStateProperty.all<bool>(true),
-                    //     ),
-                    //   ),
-                    //   isExpanded: true,
-                    //   hint: Row(
-                    //     children: [
-                    //       Text(AppStrings.selectDate,
-                    //           style: AppTypography.kLight16),
-                    //       SizedBox(
-                    //         width: 5.w,
-                    //       )
-                    //     ],
-                    //   ),
-                    //   style: AppTypography.kLight16,
-                    //   iconStyleData: IconStyleData(iconSize: 20.w),
-                    // )),
                     Text("استخراج البيانات الحالية", style: const TextStyle(fontFamily: AppFonts.boldFontFamily).copyWith(fontWeight: FontWeight.bold,fontSize: 18.sp),),
                     SizedBox(
                       width: 20.w,

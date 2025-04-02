@@ -6,7 +6,6 @@ import 'package:To3maa/zakat/domain/entities/product_image.dart';
 import 'package:To3maa/zakat/domain/requests/delete_product_request.dart';
 import 'package:To3maa/zakat/domain/requests/insert_product_request.dart';
 import 'package:To3maa/zakat/domain/requests/update_product_request.dart';
-import 'package:To3maa/core/shared/constant/app_assets.dart';
 import 'package:To3maa/core/shared/constant/app_typography.dart';
 import 'package:To3maa/zakat/presentation/ui/home_page/cubit/zakat_cubit.dart';
 import 'package:To3maa/zakat/presentation/ui/home_page/cubit/zakat_states.dart';
@@ -34,54 +33,10 @@ class _ProductsViewState extends State<ProductsView> {
   final TextEditingController _productPriceController = TextEditingController();
   final TextEditingController _productDescController = TextEditingController();
   final TextEditingController _sa3WeightController = TextEditingController();
-
-  // List<ProductsResponse> products = [];
+  final ScrollController _scrollController = ScrollController();
 
   int editProductId = 0;
   bool editProduct = false;
-
-  List<ProductImages> productImages = [
-    ProductImages(
-        imagePath: AppAssets.package,
-        activeImage: true,
-        imageName: AppStrings.package),
-    ProductImages(
-        imagePath: AppAssets.dates,
-        activeImage: false,
-        imageName: AppStrings.dates),
-    ProductImages(
-        imagePath: AppAssets.lentils,
-        activeImage: false,
-        imageName: AppStrings.lentils),
-    ProductImages(
-        imagePath: AppAssets.raisins,
-        activeImage: false,
-        imageName: AppStrings.raisins),
-    ProductImages(
-        imagePath: AppAssets.rice,
-        activeImage: false,
-        imageName: AppStrings.rice),
-    ProductImages(
-        imagePath: AppAssets.wheat,
-        activeImage: false,
-        imageName: AppStrings.wheat),
-    ProductImages(
-        imagePath: AppAssets.lobia,
-        activeImage: false,
-        imageName: AppStrings.lobia),
-    ProductImages(
-        imagePath: AppAssets.pasta,
-        activeImage: false,
-        imageName: AppStrings.pasta),
-    ProductImages(
-        imagePath: AppAssets.beans,
-        activeImage: false,
-        imageName: AppStrings.beans),
-    ProductImages(
-        imagePath: AppAssets.favaBeans,
-        activeImage: false,
-        imageName: AppStrings.favaBeans),
-  ];
 
   String productImage = '';
 
@@ -442,9 +397,12 @@ class _ProductsViewState extends State<ProductsView> {
                     height: 10.h,
                   ),
                   Expanded(
-                      child: SingleChildScrollView(
+                      child: Scrollbar(
+                        thumbVisibility: true,
+                        controller: _scrollController,
                     child: GridView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
+                        padding: const EdgeInsets.only(right: 8,left: 8),
+                        controller: _scrollController,
                         scrollDirection: Axis.vertical,
                         shrinkWrap: true,
                         gridDelegate:

@@ -21,8 +21,13 @@ class AppStrings {
   static const String productDesc = "الوصــف";
   static const String productName = "اسـم الـصـنـف";
   static const String productPrice = "سـعـر الصـاع";
+  static const String productPriceWKilo = "سـعـر الكـيـلو";
   static const String sa3Weight = "وزن الصـاع بـالـكـيـلـو";
   static const String sundries = "نـثـريـات";
+  static const String sundryName = "الاســم";
+  static const String sundryPrice = "الـسـعـر";
+  static const String buyProducts = "شـراء مـنـتـجـات";
+  static const String reports = "الـتـقـاريـر";
 
   static const String package = "";
   static const String rice = "أرز";

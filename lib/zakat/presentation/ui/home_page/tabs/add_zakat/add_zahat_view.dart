@@ -460,7 +460,6 @@ class _AddZakatViewState extends State<AddZakatView> {
                           GestureDetector(
                             onTap: () async {
                               if (remain > allValue) {
-                                print("111111111111");
                                 HapticFeedback.vibrate();
                                 setState(() {
                                   showError = true;
@@ -477,7 +476,6 @@ class _AddZakatViewState extends State<AddZakatView> {
                               }
 
                               if (remain.isNegative) {
-                                print("222222222222");
                                 HapticFeedback.vibrate();
                                 setState(() {
                                   showError = true;
@@ -500,7 +498,6 @@ class _AddZakatViewState extends State<AddZakatView> {
                                           _zakatValueController.text.trim()) <=
                                       0) {
                                 setState(() {
-                                  print("3333333333333");
                                   showError = true;
                                   errorMessage = "أدخل خانات عدد الأفراد وقيمة الزكاة";
                                 });
@@ -523,7 +520,6 @@ class _AddZakatViewState extends State<AddZakatView> {
                                           .trim()))) {
                                 HapticFeedback.vibrate();
                                 setState(() {
-                                  print("4444444444");
                                   showError = true;
                                   errorMessage = "قيمة الزكاة لم تصل الحد الى الأدنى";
                                 });
@@ -544,7 +540,6 @@ class _AddZakatViewState extends State<AddZakatView> {
 
                               if (totalQuantity < int.parse(
                                   _membersCountController.text.trim())) {
-                                print("555555555555");
                                 HapticFeedback.vibrate();
                                 setState(() {
                                   showError = true;
@@ -564,7 +559,6 @@ class _AddZakatViewState extends State<AddZakatView> {
                                   (maxVal *
                                       int.parse(_membersCountController.text
                                           .trim()))) {
-                                print("66666666666");
                                 HapticFeedback.vibrate();
                                 setState(() {
                                   showError = true;
@@ -581,7 +575,6 @@ class _AddZakatViewState extends State<AddZakatView> {
                               }
 
                               if (remain == allValue) {
-                                print("000000000000");
                                 HapticFeedback.vibrate();
                                 setState(() {
                                   showError = true;
