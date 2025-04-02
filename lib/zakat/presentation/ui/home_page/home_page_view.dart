@@ -1,16 +1,13 @@
+import 'package:To3maa/zakat/presentation/ui/home_page/tabs/remain/remain_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:To3maa/core/utils/enums.dart';
 import 'package:To3maa/core/utils/functions.dart';
 import 'package:To3maa/zakat/domain/entities/cart_items.dart';
 import 'package:To3maa/zakat/domain/entities/tab_items.dart';
-import 'package:To3maa/zakat/presentation/di/di.dart';
-import 'package:To3maa/zakat/presentation/shared/constant/app_assets.dart';
-import 'package:To3maa/zakat/presentation/shared/constant/app_constants.dart';
-import 'package:To3maa/zakat/presentation/shared/constant/app_fonts.dart';
-import 'package:To3maa/zakat/presentation/shared/constant/app_strings.dart';
-import 'package:To3maa/zakat/presentation/shared/style/app_colors.dart';
-import 'package:To3maa/zakat/presentation/shared/constant/app_typography.dart';
+import 'package:To3maa/core/di/di.dart';
+import 'package:To3maa/core/shared/constant/app_assets.dart';
+import 'package:To3maa/core/shared/constant/app_typography.dart';
 import 'package:To3maa/zakat/presentation/ui/home_page/cubit/zakat_cubit.dart';
 import 'package:To3maa/zakat/presentation/ui/home_page/cubit/zakat_states.dart';
 import 'package:To3maa/zakat/presentation/ui/home_page/tabs/add_zakat/add_zahat_view.dart';
@@ -19,6 +16,10 @@ import 'package:To3maa/zakat/presentation/ui/home_page/tabs/products/products_vi
 import 'package:To3maa/zakat/presentation/ui/home_page/tabs/totals/totals_view.dart';
 import 'package:To3maa/zakat/presentation/ui/home_page/widgets/tab_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../../../../core/shared/constant/app_constants.dart';
+import '../../../../../../core/shared/constant/app_fonts.dart';
+import '../../../../../../core/shared/constant/app_strings.dart';
+import '../../../../../../core/shared/style/app_colors.dart';
 
 class HomePageView extends StatefulWidget {
   const HomePageView({super.key});
@@ -35,6 +36,8 @@ class _HomePageViewState extends State<HomePageView> {
     TabItems(
         title: AppStrings.totals, activeTab: false, icon: AppAssets.totals),
     TabItems(
+        title: AppStrings.remainTab, activeTab: false, icon: AppAssets.remain),
+    TabItems(
         title: AppStrings.products, activeTab: false, icon: AppAssets.products)
   ];
 
@@ -44,6 +47,7 @@ class _HomePageViewState extends State<HomePageView> {
     const AddZakatView(),
     const CartView(),
     const TotalsView(),
+    const RemainView(),
     const ProductsView()
   ];
 
@@ -119,13 +123,13 @@ class _HomePageViewState extends State<HomePageView> {
                   Expanded(
                     child: Container(
                       padding:
-                          EdgeInsets.symmetric(horizontal: 0, vertical: 30.h),
+                          EdgeInsets.symmetric(horizontal: 0, vertical: 15.h),
                       child: ListView.separated(
                         itemCount: tabItems.length,
                         shrinkWrap: false,
                         separatorBuilder: (BuildContext context, int index) =>
                             SizedBox(
-                          height: 40.h,
+                          height: 30.h,
                         ),
                         itemBuilder: (BuildContext context, int index) {
                           return TabBarWidget(

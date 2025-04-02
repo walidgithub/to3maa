@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:intl/intl.dart';
 import 'dart:ui' as ui;
-
-import '../../../../shared/constant/app_constants.dart';
-import '../../../../shared/constant/app_fonts.dart';
-import '../../../../shared/constant/app_strings.dart';
-import '../../../../shared/constant/app_typography.dart';
-import '../../../../shared/style/app_colors.dart';
+import '../../../../../../core/shared/constant/app_typography.dart';
+import '../../../../../../core/shared/constant/app_constants.dart';
+import '../../../../../../core/shared/constant/app_fonts.dart';
+import '../../../../../../core/shared/constant/app_strings.dart';
+import '../../../../../../core/shared/style/app_colors.dart';
 
 class CheckDeleteDialog extends StatefulWidget {
   Function deleteAll;

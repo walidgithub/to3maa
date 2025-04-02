@@ -1,7 +1,8 @@
-import 'package:To3maa/zakat/presentation/shared/constant/app_typography.dart';
+import 'package:To3maa/core/shared/constant/app_typography.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:To3maa/zakat/presentation/shared/constant/app_strings.dart';
+
+import '../shared/constant/app_strings.dart';
 
 Future<bool> onBackButtonPressed(BuildContext context) async {
   bool exitApp = await showDialog(

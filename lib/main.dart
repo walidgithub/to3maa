@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:To3maa/zakat/presentation/di/di.dart';
-import 'package:To3maa/zakat/presentation/router/app_router.dart';
-import 'package:To3maa/zakat/presentation/shared/constant/app_strings.dart';
-import 'package:To3maa/zakat/presentation/shared/style/app_theme.dart';
+import 'package:To3maa/core/di/di.dart';
+import 'package:To3maa/core/router/app_router.dart';
+import 'package:To3maa/core/shared/style/app_theme.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'zakat/presentation/shared/constant/app_constants.dart';
-import 'zakat/presentation/shared/style/app_colors.dart';
+import '../../../../../../core/shared/constant/app_constants.dart';
+import '../../../../../../core/shared/constant/app_strings.dart';
+import '../../../../../../core/shared/style/app_colors.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

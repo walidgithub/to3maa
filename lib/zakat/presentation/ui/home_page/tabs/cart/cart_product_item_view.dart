@@ -1,7 +1,8 @@
-import 'package:To3maa/zakat/presentation/shared/constant/app_strings.dart';
-import 'package:To3maa/zakat/presentation/shared/constant/app_typography.dart';
-import 'package:To3maa/zakat/presentation/shared/style/app_colors.dart';
+
+import 'package:To3maa/core/shared/constant/app_typography.dart';
+import 'package:To3maa/core/shared/style/app_colors.dart';
 import 'package:flutter/material.dart';
+import '../../../../../../core/shared/constant/app_strings.dart';
 
 class CartItemProductView extends StatelessWidget {
   final String productName;

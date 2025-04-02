@@ -1,9 +1,9 @@
 import 'package:excel/excel.dart';
 import 'package:flutter/material.dart';
+import '../../../../../../core/shared/constant/app_strings.dart';
 import '../../../../../../core/utils/functions.dart';
 import '../../../../../domain/entities/cart_items.dart';
 import '../../../../../domain/responses/zakat_products_by_kilos_response.dart';
-import '../../../../shared/constant/app_strings.dart';
 
 import 'export_to_excel.dart';
 
@@ -147,26 +147,6 @@ Future<void> exportCartsAndProductsDesign({
       .cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: row))
       .cellStyle = boldStyle;
 
-  saveExcelFile(excel ,context);
+  saveExcelFile(excel ,context, yearOfDate);
 }
-//   // Save in Download folder
-//   final downloadsDir = Directory('/storage/emulated/0/Download');
-//   if (await Permission.manageExternalStorage.request().isGranted ||
-//       await Permission.storage.request().isGranted) {
-//     final filePath = '${downloadsDir.path}/to3mah.xlsx';
-//     final file = File(filePath)
-//       ..createSync(recursive: true)
-//       ..writeAsBytesSync(excel.encode()!);
-//
-//     final snackBar = SnackBar(
-//       duration: Duration(milliseconds: AppConstants.durationOfSnackBar),
-//       content: const Text(AppStrings.successExport),
-//     );
-//     // ignore: use_build_context_synchronously
-//     ScaffoldMessenger.of(context).showSnackBar(snackBar);
-//
-//     print('Excel file saved at: $filePath');
-//   } else {
-//     print('Permission denied');
-//   }
-// }
+

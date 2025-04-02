@@ -1,11 +1,11 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
-import 'package:To3maa/zakat/presentation/shared/constant/app_constants.dart';
-import 'package:To3maa/zakat/presentation/shared/constant/app_fonts.dart';
-import 'package:To3maa/zakat/presentation/shared/constant/app_strings.dart';
-import 'package:To3maa/zakat/presentation/shared/constant/app_typography.dart';
-import 'package:To3maa/zakat/presentation/shared/style/app_colors.dart';
+import 'package:To3maa/core/shared/constant/app_constants.dart';
+import 'package:To3maa/core/shared/constant/app_typography.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../../../../core/shared/constant/app_fonts.dart';
+import '../../../../../../core/shared/constant/app_strings.dart';
+import '../../../../../../core/shared/style/app_colors.dart';
 
 import '../../../../../../core/utils/functions.dart';
 

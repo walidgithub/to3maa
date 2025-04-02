@@ -5,7 +5,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:open_file/open_file.dart';
 import 'package:flutter/material.dart';
 
-Future<void> saveExcelFile(Excel excel, BuildContext context) async {
+Future<void> saveExcelFile(Excel excel, BuildContext context, String dateOfYear) async {
   try {
     // Encode Excel file into bytes
     List<int>? excelBytes = excel.encode();
@@ -24,7 +24,7 @@ Future<void> saveExcelFile(Excel excel, BuildContext context) async {
       return;
     }
 
-    String filePath = '${directory.path}/to3mah.xlsx';
+    String filePath = '${directory.path}/to3mah - $dateOfYear.xlsx';
 
     // Write file using Uint8List bytes
     File file = File(filePath);

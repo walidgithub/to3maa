@@ -1,16 +1,11 @@
-import 'package:To3maa/zakat/presentation/shared/constant/app_assets.dart';
+import 'package:To3maa/core/shared/constant/app_assets.dart';
 import 'package:To3maa/zakat/presentation/ui/home_page/tabs/totals/dates_response.dart';
 import 'package:animate_do/animate_do.dart';
-import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:To3maa/core/utils/enums.dart';
 import 'package:To3maa/zakat/domain/responses/zakat_products_by_kilos_response.dart';
-import 'package:To3maa/zakat/presentation/shared/constant/app_constants.dart';
-import 'package:To3maa/zakat/presentation/shared/constant/app_fonts.dart';
-import 'package:To3maa/zakat/presentation/shared/constant/app_strings.dart';
-import 'package:To3maa/zakat/presentation/shared/constant/app_typography.dart';
-import 'package:To3maa/zakat/presentation/shared/style/app_colors.dart';
+import 'package:To3maa/core/shared/constant/app_typography.dart';
 import 'package:To3maa/zakat/presentation/ui/home_page/cubit/zakat_cubit.dart';
 import 'package:To3maa/zakat/presentation/ui/home_page/cubit/zakat_states.dart';
 import 'package:To3maa/zakat/presentation/ui/home_page/tabs/totals/totals_products_view.dart';
@@ -22,6 +17,10 @@ import 'dart:ui' as ui;
 import '../../../../../domain/entities/cart_items.dart';
 import 'export_class.dart';
 import 'package:intl/intl.dart';
+import '../../../../../../core/shared/constant/app_constants.dart';
+import '../../../../../../core/shared/constant/app_fonts.dart';
+import '../../../../../../core/shared/constant/app_strings.dart';
+import '../../../../../../core/shared/style/app_colors.dart';
 
 class TotalsView extends StatefulWidget {
   const TotalsView({super.key});
@@ -302,7 +301,7 @@ class _TotalsViewState extends State<TotalsView> {
                     //   style: AppTypography.kLight16,
                     //   iconStyleData: IconStyleData(iconSize: 20.w),
                     // )),
-                    Text("استخراج الملفات المطلوبة", style: const TextStyle(fontFamily: AppFonts.boldFontFamily).copyWith(fontWeight: FontWeight.bold,fontSize: 18.sp),),
+                    Text("استخراج البيانات الحالية", style: const TextStyle(fontFamily: AppFonts.boldFontFamily).copyWith(fontWeight: FontWeight.bold,fontSize: 18.sp),),
                     SizedBox(
                       width: 20.w,
                     ),

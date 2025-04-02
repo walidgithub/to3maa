@@ -1,20 +1,19 @@
 import 'package:To3maa/core/utils/enums.dart';
 import 'package:To3maa/zakat/domain/entities/cart_items.dart';
 import 'package:To3maa/zakat/domain/requests/get_zakat_products_by_zakat_id_request.dart';
-import 'package:To3maa/zakat/presentation/shared/constant/app_assets.dart';
+import 'package:To3maa/core/shared/constant/app_assets.dart';
 import 'package:To3maa/zakat/presentation/ui/home_page/cubit/zakat_cubit.dart';
 import 'package:To3maa/zakat/presentation/ui/home_page/cubit/zakat_states.dart';
 import 'package:To3maa/zakat/presentation/ui/home_page/tabs/cart/cart_product_item_view.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
-import 'package:To3maa/zakat/presentation/shared/constant/app_constants.dart';
-import 'package:To3maa/zakat/presentation/shared/constant/app_fonts.dart';
-import 'package:To3maa/zakat/presentation/shared/constant/app_strings.dart';
-import 'package:To3maa/zakat/presentation/shared/constant/app_typography.dart';
-import 'package:To3maa/zakat/presentation/shared/style/app_colors.dart';
+import 'package:To3maa/core/shared/constant/app_typography.dart';
+import 'package:To3maa/core/shared/style/app_colors.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
+import '../../../../../../core/shared/constant/app_constants.dart';
+import '../../../../../../core/shared/constant/app_fonts.dart';
+import '../../../../../../core/shared/constant/app_strings.dart';
 
 class CartItemView extends StatefulWidget {
   final bool selected;

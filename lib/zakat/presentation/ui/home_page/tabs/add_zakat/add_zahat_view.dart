@@ -10,11 +10,7 @@ import 'package:To3maa/zakat/domain/entities/suggested_items.dart';
 import 'package:To3maa/zakat/domain/requests/insert_zakat_products_request.dart';
 import 'package:To3maa/zakat/domain/requests/insert_zakat_request.dart';
 import 'package:To3maa/zakat/domain/requests/update_product_quantity_request.dart';
-import 'package:To3maa/zakat/presentation/shared/constant/app_constants.dart';
-import 'package:To3maa/zakat/presentation/shared/constant/app_fonts.dart';
-import 'package:To3maa/zakat/presentation/shared/constant/app_strings.dart';
-import 'package:To3maa/zakat/presentation/shared/constant/app_typography.dart';
-import 'package:To3maa/zakat/presentation/shared/style/app_colors.dart';
+import 'package:To3maa/core/shared/constant/app_typography.dart';
 import 'package:To3maa/zakat/presentation/ui/home_page/cubit/zakat_cubit.dart';
 import 'package:To3maa/zakat/presentation/ui/home_page/cubit/zakat_states.dart';
 import 'package:To3maa/zakat/presentation/ui/home_page/tabs/add_zakat/add_product_view.dart';
@@ -25,6 +21,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hijri/hijri_calendar.dart';
 import 'dart:ui' as ui;
 import 'package:intl/intl.dart';
+
+import '../../../../../../core/shared/constant/app_constants.dart';
+import '../../../../../../core/shared/constant/app_fonts.dart';
+import '../../../../../../core/shared/constant/app_strings.dart';
+import '../../../../../../core/shared/style/app_colors.dart';
 
 class AddZakatView extends StatefulWidget {
   const AddZakatView({super.key});

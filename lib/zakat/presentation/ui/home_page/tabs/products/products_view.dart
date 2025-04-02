@@ -6,12 +6,8 @@ import 'package:To3maa/zakat/domain/entities/product_image.dart';
 import 'package:To3maa/zakat/domain/requests/delete_product_request.dart';
 import 'package:To3maa/zakat/domain/requests/insert_product_request.dart';
 import 'package:To3maa/zakat/domain/requests/update_product_request.dart';
-import 'package:To3maa/zakat/presentation/shared/constant/app_assets.dart';
-import 'package:To3maa/zakat/presentation/shared/constant/app_constants.dart';
-import 'package:To3maa/zakat/presentation/shared/constant/app_fonts.dart';
-import 'package:To3maa/zakat/presentation/shared/constant/app_strings.dart';
-import 'package:To3maa/zakat/presentation/shared/constant/app_typography.dart';
-import 'package:To3maa/zakat/presentation/shared/style/app_colors.dart';
+import 'package:To3maa/core/shared/constant/app_assets.dart';
+import 'package:To3maa/core/shared/constant/app_typography.dart';
 import 'package:To3maa/zakat/presentation/ui/home_page/cubit/zakat_cubit.dart';
 import 'package:To3maa/zakat/presentation/ui/home_page/cubit/zakat_states.dart';
 import 'package:To3maa/zakat/presentation/ui/home_page/tabs/products/product_image_view.dart';
@@ -19,6 +15,10 @@ import 'package:To3maa/zakat/presentation/ui/home_page/tabs/products/product_vie
 import 'package:To3maa/zakat/presentation/ui_components/loading_dialog.dart';
 import 'package:To3maa/zakat/presentation/ui_components/text_field_widget.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../../../../core/shared/constant/app_constants.dart';
+import '../../../../../../core/shared/constant/app_fonts.dart';
+import '../../../../../../core/shared/constant/app_strings.dart';
+import '../../../../../../core/shared/style/app_colors.dart';
 
 class ProductsView extends StatefulWidget {
   const ProductsView({super.key});

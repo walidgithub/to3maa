@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:To3maa/core/utils/enums.dart';
 import 'package:To3maa/zakat/presentation/ui/home_page/tabs/cart/check_delete_dialog.dart';
 import 'package:animate_do/animate_do.dart';
@@ -8,17 +7,18 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:To3maa/zakat/domain/entities/cart_items.dart';
 import 'package:To3maa/zakat/domain/requests/delete_zakat_products_request.dart';
 import 'package:To3maa/zakat/domain/requests/delete_zakat_request.dart';
-import 'package:To3maa/zakat/presentation/shared/constant/app_constants.dart';
-import 'package:To3maa/zakat/presentation/shared/constant/app_fonts.dart';
-import 'package:To3maa/zakat/presentation/shared/constant/app_strings.dart';
-import 'package:To3maa/zakat/presentation/shared/constant/app_typography.dart';
-import 'package:To3maa/zakat/presentation/shared/style/app_colors.dart';
+import 'package:To3maa/core/shared/constant/app_typography.dart';
 import 'package:To3maa/zakat/presentation/ui/home_page/cubit/zakat_cubit.dart';
 import 'package:To3maa/zakat/presentation/ui/home_page/cubit/zakat_states.dart';
 import 'package:To3maa/zakat/presentation/ui/home_page/tabs/cart/cart_item_view.dart';
 import 'package:To3maa/zakat/presentation/ui_components/loading_dialog.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+
+import '../../../../../../core/shared/constant/app_constants.dart';
+import '../../../../../../core/shared/constant/app_fonts.dart';
+import '../../../../../../core/shared/constant/app_strings.dart';
+import '../../../../../../core/shared/style/app_colors.dart';
 
 class CartView extends StatefulWidget {
   const CartView({super.key});

@@ -1,6 +1,6 @@
 
-import '../../zakat/presentation/shared/constant/app_strings.dart';
 import '../error/failure.dart';
+import '../shared/constant/app_strings.dart';
 
 class ErrorHandler implements Exception {
   late Failure failure;

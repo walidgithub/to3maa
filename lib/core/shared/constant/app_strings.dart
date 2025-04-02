@@ -6,6 +6,7 @@ class AppStrings {
   static const String addNew = "أضــف جــديــد";
   static const String editProduct = "تــعــديــل";
   static const String cart = "الـعـربـة";
+  static const String remainTab = "الـمـتـبـقـى";
   static const String successDelete = "تـم الـحـذف بـنـجـاح";
   static const String successAdd = "تـمـت الإضـافـة بـنـجـاح";
   static const String successExport = "تـم استخراج التقرير بنجاح";
@@ -21,6 +22,7 @@ class AppStrings {
   static const String productName = "اسـم الـصـنـف";
   static const String productPrice = "سـعـر الصـاع";
   static const String sa3Weight = "وزن الصـاع بـالـكـيـلـو";
+  static const String sundries = "نـثـريـات";
 
   static const String package = "";
   static const String rice = "أرز";
