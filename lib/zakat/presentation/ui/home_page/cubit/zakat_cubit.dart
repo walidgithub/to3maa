@@ -2,10 +2,14 @@ import 'dart:async';
 
 import 'package:To3maa/core/utils/enums.dart';
 import 'package:To3maa/zakat/domain/requests/delete_product_request.dart';
+import 'package:To3maa/zakat/domain/requests/delete_purchase_request.dart';
+import 'package:To3maa/zakat/domain/requests/delete_sundry_request.dart';
 import 'package:To3maa/zakat/domain/requests/delete_zakat_products_request.dart';
 import 'package:To3maa/zakat/domain/requests/delete_zakat_request.dart';
 import 'package:To3maa/zakat/domain/requests/get_zakat_products_by_zakat_id_request.dart';
 import 'package:To3maa/zakat/domain/requests/insert_product_request.dart';
+import 'package:To3maa/zakat/domain/requests/insert_purchase_request.dart';
+import 'package:To3maa/zakat/domain/requests/insert_sundry_request.dart';
 import 'package:To3maa/zakat/domain/requests/insert_zakat_products_request.dart';
 import 'package:To3maa/zakat/domain/requests/insert_zakat_request.dart';
 import 'package:To3maa/zakat/domain/requests/reset_product_quantity_request.dart';
@@ -14,13 +18,19 @@ import 'package:To3maa/zakat/domain/requests/update_product_request.dart';
 import 'package:To3maa/zakat/domain/use_cases/base_usecase/base_usecase.dart';
 import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/delete_all_zakat_usecase.dart';
 import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/delete_product_usecase.dart';
+import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/delete_purchase_usecase.dart';
+import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/delete_sundry_usecase.dart';
 import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/delete_zakat_products_usecase.dart';
 import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/delete_zakat_usecase.dart';
 import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/get_all_products_usecase.dart';
+import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/get_all_purchases_usecase.dart';
+import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/get_all_sundries_usecase.dart';
 import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/get_all_zakat_usecase.dart';
 import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/get_zakat_products_by_kilos_usecase.dart';
 import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/get_zakat_products_by_zakat_id_usecase.dart';
 import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/insert_product_usecase.dart';
+import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/insert_purchase_usecase.dart';
+import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/insert_sundry_usecase.dart';
 import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/insert_zakat_products_usecase.dart';
 import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/insert_zakat_usecase.dart';
 import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/reset_product_quantity_usecase.dart';
@@ -31,16 +41,22 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ZakatCubit extends Cubit<ZakatState> {
   final DeleteProductUseCase deleteProductUseCase;
+  final DeleteSundryUseCase deleteSundryUseCase;
+  final DeletePurchaseUseCase deletePurchaseUseCase;
   final DeleteZakatProductsUseCase deleteZakatProductsUseCase;
   final DeleteZakatUseCase deleteZakatUseCase;
   final DeleteAllZakatUseCase deleteAllZakatUseCase;
   final GetAllProductsUseCase getAllProductsUseCase;
+  final GetAllSundriesUseCase getAllSundriesUseCase;
+  final GetAllPurchasesUseCase getAllPurchasesUseCase;
   final GetAllZakatUseCase getAllZakatUseCase;
   final GetZakatProductsByKilosUseCase getZakatProductsByKilosUseCase;
   final GetZakatProductsByZakatIdUseCase getZakatProductsByZakatIdUseCase;
   final InsertProductUseCase insertProductUseCase;
   final InsertZakatProductsUseCase insertZakatProductsUseCase;
   final InsertZakatUseCase insertZakatUseCase;
+  final InsertSundryUseCase insertSundryUseCase;
+  final InsertPurchaseUseCase insertPurchaseUseCase;
   final UpdateProductUseCase updateProductUseCase;
   final UpdateProductQuantityUseCase updateProductQuantityUseCase;
   final ResetProductQuantityUseCase resetProductQuantityUseCase;
@@ -60,6 +76,12 @@ class ZakatCubit extends Cubit<ZakatState> {
     this.updateProductUseCase,
     this.updateProductQuantityUseCase,
     this.resetProductQuantityUseCase,
+    this.insertSundryUseCase,
+    this.getAllPurchasesUseCase,
+    this.getAllSundriesUseCase,
+    this.deletePurchaseUseCase,
+    this.deleteSundryUseCase,
+    this.insertPurchaseUseCase,
   ) : super(const ZakatState());
 
   static ZakatCubit get(context) => BlocProvider.of(context);
@@ -76,6 +98,37 @@ class ZakatCubit extends Cubit<ZakatState> {
             zakatState: RequestState.insertError, zakatMessage: l.message)),
         (r) => emit(state.copyWith(
               zakatId: r,
+              zakatState: RequestState.insertDone,
+            )));
+  }
+
+  FutureOr<void> insertSundry(InsertSundryRequest insertSundryRequest) async {
+    emit(state.copyWith(
+        zakatState: RequestState.insertLoading, zakatMessage: '', zakatId: 0));
+
+    final result = await insertSundryUseCase(insertSundryRequest);
+
+    result.fold(
+        (l) => emit(state.copyWith(
+            zakatState: RequestState.insertError, zakatMessage: l.message)),
+        (r) => emit(state.copyWith(
+              sundryId: r,
+              zakatState: RequestState.insertDone,
+            )));
+  }
+
+  FutureOr<void> insertPurchase(
+      InsertPurchaseRequest insertPurchaseRequest) async {
+    emit(state.copyWith(
+        zakatState: RequestState.insertLoading, zakatMessage: '', zakatId: 0));
+
+    final result = await insertPurchaseUseCase(insertPurchaseRequest);
+
+    result.fold(
+        (l) => emit(state.copyWith(
+            zakatState: RequestState.insertError, zakatMessage: l.message)),
+        (r) => emit(state.copyWith(
+              purchaseId: r,
               zakatState: RequestState.insertDone,
             )));
   }
@@ -189,6 +242,37 @@ class ZakatCubit extends Cubit<ZakatState> {
             )));
   }
 
+  FutureOr<void> deleteSundry(DeleteSundryRequest deleteSundryRequest) async {
+    emit(state.copyWith(
+        zakatState: RequestState.deleteLoading, zakatMessage: '', zakatId: 0));
+
+    final result = await deleteSundryUseCase(deleteSundryRequest);
+
+    result.fold(
+        (l) => emit(state.copyWith(
+            zakatState: RequestState.deleteError, zakatMessage: l.message)),
+        (r) => emit(state.copyWith(
+              sundryId: r,
+              zakatState: RequestState.deleteDone,
+            )));
+  }
+
+  FutureOr<void> deletePurchase(
+      DeletePurchaseRequest deletePurchaseRequest) async {
+    emit(state.copyWith(
+        zakatState: RequestState.deleteLoading, zakatMessage: '', zakatId: 0));
+
+    final result = await deletePurchaseUseCase(deletePurchaseRequest);
+
+    result.fold(
+        (l) => emit(state.copyWith(
+            zakatState: RequestState.deleteError, zakatMessage: l.message)),
+        (r) => emit(state.copyWith(
+              purchaseId: r,
+              zakatState: RequestState.deleteDone,
+            )));
+  }
+
   FutureOr<void> deleteAllZakat() async {
     emit(state.copyWith(
         zakatState: RequestState.deleteLoading, zakatMessage: '', zakatId: 0));
@@ -254,6 +338,38 @@ class ZakatCubit extends Cubit<ZakatState> {
         (r) => emit(state.copyWith(
               zakatList: r,
               zakatState: RequestState.zakatLoaded,
+            )));
+  }
+
+  FutureOr<void> getAllSundries() async {
+    emit(state.copyWith(
+        zakatState: RequestState.sundriesLoading,
+        zakatMessage: '',
+        zakatList: []));
+
+    final result = await getAllSundriesUseCase(const NoParameters());
+    result.fold(
+        (l) => emit(state.copyWith(
+            zakatState: RequestState.sundriesError, zakatMessage: l.message)),
+        (r) => emit(state.copyWith(
+              sundriesList: r,
+              zakatState: RequestState.sundriesLoaded,
+            )));
+  }
+
+  FutureOr<void> getAllPurchases() async {
+    emit(state.copyWith(
+        zakatState: RequestState.purchasesLoading,
+        zakatMessage: '',
+        zakatList: []));
+
+    final result = await getAllPurchasesUseCase(const NoParameters());
+    result.fold(
+        (l) => emit(state.copyWith(
+            zakatState: RequestState.purchasesError, zakatMessage: l.message)),
+        (r) => emit(state.copyWith(
+              purchasesList: r,
+              zakatState: RequestState.purchasesLoaded,
             )));
   }
 

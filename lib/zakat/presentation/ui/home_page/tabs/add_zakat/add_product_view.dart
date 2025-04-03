@@ -1,4 +1,4 @@
-import 'package:To3maa/zakat/domain/responses/products_respose.dart';
+import 'package:To3maa/zakat/domain/responses/products_response.dart';
 import 'package:flutter/material.dart';
 import 'package:To3maa/core/shared/constant/app_typography.dart';
 import 'package:flutter/widgets.dart';

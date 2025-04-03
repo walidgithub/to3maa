@@ -1,5 +1,5 @@
-import 'package:To3maa/zakat/domain/responses/zakat_products_respose.dart';
-import 'package:To3maa/zakat/domain/responses/zakat_respose.dart';
+import 'package:To3maa/zakat/domain/responses/zakat_products_response.dart';
+import 'package:To3maa/zakat/domain/responses/zakat_response.dart';
 
 class Cart {
   int? id;

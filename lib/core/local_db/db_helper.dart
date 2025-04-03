@@ -1,12 +1,16 @@
 import 'package:To3maa/zakat/domain/models/products_model.dart';
+import 'package:To3maa/zakat/domain/models/purchases_model.dart';
+import 'package:To3maa/zakat/domain/models/sundries_model.dart';
 import 'package:To3maa/zakat/domain/models/zakat_model.dart';
 import 'package:To3maa/zakat/domain/models/zakat_products_by_kilos_model.dart';
 import 'package:To3maa/zakat/domain/models/zakat_products_model.dart';
 import 'package:To3maa/zakat/domain/requests/delete_product_request.dart';
+import 'package:To3maa/zakat/domain/requests/delete_purchase_request.dart';
 import 'package:To3maa/zakat/domain/requests/delete_zakat_products_request.dart';
 import 'package:To3maa/zakat/domain/requests/delete_zakat_request.dart';
 import 'package:To3maa/zakat/domain/requests/get_zakat_products_by_zakat_id_request.dart';
 import 'package:To3maa/zakat/domain/requests/insert_product_request.dart';
+import 'package:To3maa/zakat/domain/requests/insert_sundry_request.dart';
 import 'package:To3maa/zakat/domain/requests/insert_zakat_products_request.dart';
 import 'package:To3maa/zakat/domain/requests/insert_zakat_request.dart';
 import 'package:To3maa/zakat/domain/requests/reset_product_quantity_request.dart';
@@ -14,6 +18,9 @@ import 'package:To3maa/zakat/domain/requests/update_product_quantity_request.dar
 import 'package:To3maa/zakat/domain/requests/update_product_request.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+
+import '../../zakat/domain/requests/delete_sundry_request.dart';
+import '../../zakat/domain/requests/insert_purchase_request.dart';
 
 class DbHelper {
   Database? _db;
@@ -35,9 +42,9 @@ class DbHelper {
   Future<Database> initDB(String filePath) async {
     final dbPath = await getDatabasesPath();
     final path = join(dbPath, filePath);
-    return await openDatabase(path, version: 1, onCreate: createDB);
-    // return await openDatabase(path,
-    //     version: 4, onCreate: createDB, onUpgrade: onUpgrade);
+    // return await openDatabase(path, version: 1, onCreate: createDB);
+    return await openDatabase(path,
+        version: 5, onCreate: createDB, onUpgrade: onUpgrade);
   }
 
   Future createDB(Database db, int version) async {
@@ -49,15 +56,19 @@ class DbHelper {
 
     await db.execute(
         'create table productsData(id integer primary key autoincrement, productName varchar(255), productPrice varchar(10), productDesc varchar(255), productImage varchar(255), productQuantity integer, sa3Weight double)');
+
+    await db.execute("create table IF NOT EXISTS sundries(id integer primary key autoincrement, sundryName varchar(255), sundryPrice varchar(10))");
+
+    await db.execute("create table IF NOT EXISTS purchases(id integer primary key autoincrement, productName varchar(255), productQuantity integer, productPrice varchar(10), productImage varchar(255))");
   }
 
-  // Future onUpgrade(Database db, int oldVersion, int newVersion) async {
-  //   if (oldVersion < newVersion) {
-  //     await db.execute('alter table zakat ADD COLUMN hegriDate varchar(50)');
-  //     await db.execute(
-  //         'alter table zakatProducts ADD COLUMN hegriDate varchar(50)');
-  //   }
-  // }
+  Future onUpgrade(Database db, int oldVersion, int newVersion) async {
+    if (oldVersion < newVersion) {
+      await db.execute("create table IF NOT EXISTS sundries(id integer primary key autoincrement, sundryName varchar(255), sundryPrice varchar(10))");
+
+      await db.execute("create table IF NOT EXISTS purchases(id integer primary key autoincrement, productName varchar(255), productQuantity integer, productPrice varchar(10), productImage varchar(255))");
+    }
+  }
 
   // add -------------------------------------------
   Future<int> insertZakatData(InsertZakatRequest insertZakatRequest) async {
@@ -78,6 +89,18 @@ class DbHelper {
     insertedNewProduct =
         await db.insert('productsData', insertProductRequest.toJson());
     return insertedNewProduct!;
+  }
+
+  Future<int> insertSundryData(
+      InsertSundryRequest insertSundryRequest) async {
+    final db = _db!.database;
+    return await db.insert('sundries', insertSundryRequest.toJson());
+  }
+
+  Future<int> insertPurchaseData(
+      InsertPurchaseRequest insertPurchaseRequest) async {
+    final db = _db!.database;
+    return await db.insert('purchases', insertPurchaseRequest.toJson());
   }
 
   // update ------------------------------------------
@@ -123,6 +146,28 @@ class DbHelper {
 
     return db
         .delete('zakat', where: 'id = ?', whereArgs: [deleteZakatRequest.id]);
+  }
+
+  Future<int> deleteSundryData(DeleteSundryRequest deleteSundryRequest) async {
+    if (_db == null) {
+      await initDB(dbdName);
+    }
+
+    final db = _db!.database;
+
+    return db
+        .delete('sundries', where: 'id = ?', whereArgs: [deleteSundryRequest.id]);
+  }
+
+  Future<int> deletePurchaseData(DeletePurchaseRequest deletePurchaseRequest) async {
+    if (_db == null) {
+      await initDB(dbdName);
+    }
+
+    final db = _db!.database;
+
+    return db
+        .delete('purchases', where: 'id = ?', whereArgs: [deletePurchaseRequest.id]);
   }
 
   Future<int> deleteZakatProductsData(
@@ -172,6 +217,30 @@ class DbHelper {
   }
 
   // get data -------------------------------------------
+  Future<List<SundriesModel>> getAllSundries() async {
+    if (_db == null) {
+      await initDB(dbdName);
+    }
+
+    final db = _db!.database;
+
+    final result =
+    await db.rawQuery('SELECT * FROM sundries Order by id ASC');
+    return result.map((map) => SundriesModel.fromMap(map)).toList();
+  }
+
+  Future<List<PurchasesModel>> getAllPurchases() async {
+    if (_db == null) {
+      await initDB(dbdName);
+    }
+
+    final db = _db!.database;
+
+    final result =
+    await db.rawQuery('SELECT * FROM purchases Order by id ASC');
+    return result.map((map) => PurchasesModel.fromMap(map)).toList();
+  }
+
   Future<List<ProductsModel>> getAllProducts() async {
     if (_db == null) {
       await initDB(dbdName);

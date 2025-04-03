@@ -1,24 +1,32 @@
 import 'package:To3maa/core/local_db/db_helper.dart';
 import 'package:To3maa/zakat/domain/requests/delete_product_request.dart';
+import 'package:To3maa/zakat/domain/requests/delete_purchase_request.dart';
+import 'package:To3maa/zakat/domain/requests/delete_sundry_request.dart';
 import 'package:To3maa/zakat/domain/requests/delete_zakat_products_request.dart';
 import 'package:To3maa/zakat/domain/requests/delete_zakat_request.dart';
 import 'package:To3maa/zakat/domain/requests/get_zakat_products_by_zakat_id_request.dart';
 import 'package:To3maa/zakat/domain/requests/insert_product_request.dart';
+import 'package:To3maa/zakat/domain/requests/insert_purchase_request.dart';
+import 'package:To3maa/zakat/domain/requests/insert_sundry_request.dart';
 import 'package:To3maa/zakat/domain/requests/insert_zakat_products_request.dart';
 import 'package:To3maa/zakat/domain/requests/insert_zakat_request.dart';
 import 'package:To3maa/zakat/domain/requests/reset_product_quantity_request.dart';
 import 'package:To3maa/zakat/domain/requests/update_product_quantity_request.dart';
 import 'package:To3maa/zakat/domain/requests/update_product_request.dart';
-import 'package:To3maa/zakat/domain/responses/products_respose.dart';
+import 'package:To3maa/zakat/domain/responses/products_response.dart';
+import 'package:To3maa/zakat/domain/responses/purchases_response.dart';
+import 'package:To3maa/zakat/domain/responses/sundries_response.dart';
 import 'package:To3maa/zakat/domain/responses/zakat_products_by_kilos_response.dart';
-import 'package:To3maa/zakat/domain/responses/zakat_products_respose.dart';
-import 'package:To3maa/zakat/domain/responses/zakat_respose.dart';
+import 'package:To3maa/zakat/domain/responses/zakat_products_response.dart';
+import 'package:To3maa/zakat/domain/responses/zakat_response.dart';
 
 abstract class BaseDataSource {
   Future<int> insertZakatData(InsertZakatRequest insertZakatRequest);
   Future<int> insertZakatProductsData(
       InsertZakatProductsRequest insertZakatProductsRequest);
   Future<int> insertProductData(InsertProductRequest insertProductRequest);
+  Future<int> insertSundryData(InsertSundryRequest insertSundryRequest);
+  Future<int> insertPurchaseData(InsertPurchaseRequest insertPurchaseRequest);
 
   Future<int> updateProductData(UpdateProductRequest updateProductRequest);
   Future<int> updateProductQuantityData(
@@ -26,12 +34,16 @@ abstract class BaseDataSource {
   Future<int> resetProductQuantityData(
       ResetProductQuantityRequest resetProductQuantityRequest);
 
-  Future<int> deleteZakatData(DeleteZakatRequest deletetZakatRequest);
+  Future<int> deleteZakatData(DeleteZakatRequest deleteZakatRequest);
   Future<int> deleteAllZakatData();
   Future<int> deleteZakatProductsData(
-      DeleteZakatProductsRequest deletetZakatProductsRequest);
-  Future<int> deleteProductData(DeleteProductRequest deletetProductRequest);
+      DeleteZakatProductsRequest deleteZakatProductsRequest);
+  Future<int> deleteProductData(DeleteProductRequest deleteProductRequest);
+  Future<int> deleteSundryData(DeleteSundryRequest deleteSundryRequest);
+  Future<int> deletePurchaseData(DeletePurchaseRequest deletePurchaseRequest);
 
+  Future<List<SundriesResponse>> getAllSundries();
+  Future<List<PurchasesResponse>> getAllPurchases();
   Future<List<ProductsResponse>> getAllProducts();
   Future<List<ZakatResponse>> getAllZakat();
   Future<List<ZakatProductsResponse>> getZakatProductsByZatatId(
@@ -80,8 +92,8 @@ class ZakatDataSource extends BaseDataSource {
   }
 
   @override
-  Future<int> deleteZakatData(DeleteZakatRequest deletetZakatRequest) async {
-    final res = await _dbHelper.deleteZakatData(deletetZakatRequest);
+  Future<int> deleteZakatData(DeleteZakatRequest deleteZakatRequest) async {
+    final res = await _dbHelper.deleteZakatData(deleteZakatRequest);
     try {
       return res;
     } catch (e) {
@@ -91,9 +103,9 @@ class ZakatDataSource extends BaseDataSource {
 
   @override
   Future<int> deleteZakatProductsData(
-      DeleteZakatProductsRequest deletetZakatProductsRequest) async {
+      DeleteZakatProductsRequest deleteZakatProductsRequest) async {
     final res =
-        await _dbHelper.deleteZakatProductsData(deletetZakatProductsRequest);
+        await _dbHelper.deleteZakatProductsData(deleteZakatProductsRequest);
     try {
       return res;
     } catch (e) {
@@ -205,6 +217,70 @@ class ZakatDataSource extends BaseDataSource {
       ResetProductQuantityRequest resetProductQuantityRequest) async {
     final res =
         await _dbHelper.resetProductQuantityData(resetProductQuantityRequest);
+    try {
+      return res;
+    } catch (e) {
+      throw e.toString();
+    }
+  }
+
+  @override
+  Future<int> deletePurchaseData(DeletePurchaseRequest deletePurchaseRequest) async {
+    final res =
+        await _dbHelper.deletePurchaseData(deletePurchaseRequest);
+    try {
+      return res;
+    } catch (e) {
+      throw e.toString();
+    }
+  }
+
+  @override
+  Future<int> deleteSundryData(DeleteSundryRequest deleteSundryRequest) async  {
+    final res =
+        await _dbHelper.deleteSundryData(deleteSundryRequest);
+    try {
+      return res;
+    } catch (e) {
+      throw e.toString();
+    }
+  }
+
+  @override
+  Future<List<PurchasesResponse>> getAllPurchases() async  {
+    final res = await _dbHelper
+        .getAllPurchases();
+    try {
+      return res;
+    } catch (e) {
+      throw e.toString();
+    }
+  }
+
+  @override
+  Future<List<SundriesResponse>> getAllSundries() async  {
+    final res = await _dbHelper
+        .getAllSundries();
+    try {
+      return res;
+    } catch (e) {
+      throw e.toString();
+    }
+  }
+
+  @override
+  Future<int> insertPurchaseData(InsertPurchaseRequest insertPurchaseRequest) async  {
+    final res = await _dbHelper.insertPurchaseData(insertPurchaseRequest);
+    try {
+      return res;
+    } catch (e) {
+      throw e.toString();
+    }
+  }
+
+  @override
+  Future<int> insertSundryData(InsertSundryRequest insertSundryRequest) async  {
+    final res = await _dbHelper.insertSundryData(insertSundryRequest);
     try {
       return res;
     } catch (e) {

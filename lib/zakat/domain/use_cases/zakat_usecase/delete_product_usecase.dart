@@ -10,6 +10,6 @@ class DeleteProductUseCase extends BaseUsecase {
 
   @override
   Future<Either<Failure, int>> call(parameters) async {
-    return await baseRepository.deletetProductData(parameters);
+    return await baseRepository.deleteProductData(parameters);
   }
 }

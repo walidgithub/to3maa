@@ -4,13 +4,19 @@ import 'package:To3maa/zakat/data/repository/zakat_repository.dart';
 import 'package:To3maa/zakat/domain/repository/base_repository.dart';
 import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/delete_all_zakat_usecase.dart';
 import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/delete_product_usecase.dart';
+import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/delete_purchase_usecase.dart';
+import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/delete_sundry_usecase.dart';
 import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/delete_zakat_products_usecase.dart';
 import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/delete_zakat_usecase.dart';
 import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/get_all_products_usecase.dart';
+import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/get_all_purchases_usecase.dart';
+import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/get_all_sundries_usecase.dart';
 import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/get_all_zakat_usecase.dart';
 import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/get_zakat_products_by_kilos_usecase.dart';
 import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/get_zakat_products_by_zakat_id_usecase.dart';
 import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/insert_product_usecase.dart';
+import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/insert_purchase_usecase.dart';
+import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/insert_sundry_usecase.dart';
 import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/insert_zakat_products_usecase.dart';
 import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/insert_zakat_usecase.dart';
 import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/reset_product_quantity_usecase.dart';
@@ -28,7 +34,7 @@ class ServiceLocator {
 
     // Cubit
     sl.registerFactory(() => ZakatCubit(sl(), sl(), sl(), sl(), sl(), sl(),
-        sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl()));
+        sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl()));
 
     // Use Cases
     sl.registerLazySingleton<DeleteProductUseCase>(
@@ -40,6 +46,12 @@ class ServiceLocator {
     sl.registerLazySingleton<DeleteZakatUseCase>(
         () => DeleteZakatUseCase(sl()));
 
+    sl.registerLazySingleton<DeleteSundryUseCase>(
+            () => DeleteSundryUseCase(sl()));
+
+    sl.registerLazySingleton<DeletePurchaseUseCase>(
+            () => DeletePurchaseUseCase(sl()));
+
     sl.registerLazySingleton<DeleteAllZakatUseCase>(
         () => DeleteAllZakatUseCase(sl()));
 
@@ -49,6 +61,12 @@ class ServiceLocator {
     sl.registerLazySingleton<GetAllZakatUseCase>(
         () => GetAllZakatUseCase(sl()));
 
+    sl.registerLazySingleton<GetAllSundriesUseCase>(
+            () => GetAllSundriesUseCase(sl()));
+
+    sl.registerLazySingleton<GetAllPurchasesUseCase>(
+            () => GetAllPurchasesUseCase(sl()));
+
     sl.registerLazySingleton<GetZakatProductsByKilosUseCase>(
         () => GetZakatProductsByKilosUseCase(sl()));
 
@@ -57,6 +75,12 @@ class ServiceLocator {
 
     sl.registerLazySingleton<InsertProductUseCase>(
         () => InsertProductUseCase(sl()));
+
+    sl.registerLazySingleton<InsertSundryUseCase>(
+            () => InsertSundryUseCase(sl()));
+
+    sl.registerLazySingleton<InsertPurchaseUseCase>(
+            () => InsertPurchaseUseCase(sl()));
 
     sl.registerLazySingleton<InsertZakatProductsUseCase>(
         () => InsertZakatProductsUseCase(sl()));

@@ -10,8 +10,6 @@ class RouteGenerator {
     switch (settings.name) {
       case Routes.homeRoute:
         return MaterialPageRoute(builder: (_) => const HomePageView());
-      // case Routes.surahRoute:
-      //   return MaterialPageRoute(builder: (_) => SurahView(initialPage: settings.arguments as GoToPage));
       default:
         return unDefinedRoute();
     }

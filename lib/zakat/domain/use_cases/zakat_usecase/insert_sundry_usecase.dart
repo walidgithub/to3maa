@@ -3,13 +3,13 @@ import 'package:To3maa/core/error/failure.dart';
 import 'package:To3maa/zakat/domain/repository/base_repository.dart';
 import 'package:To3maa/zakat/domain/use_cases/base_usecase/base_usecase.dart';
 
-class DeleteAllZakatUseCase extends BaseUsecase<int, NoParameters> {
+class InsertSundryUseCase extends BaseUsecase {
   final BaseRepository baseRepository;
 
-  DeleteAllZakatUseCase(this.baseRepository);
+  InsertSundryUseCase(this.baseRepository);
 
   @override
-  Future<Either<Failure, int>> call(NoParameters parameters) async {
-    return await baseRepository.deleteAllZakatData();
+  Future<Either<Failure, int>> call(parameters) async {
+    return await baseRepository.insertSundryData(parameters);
   }
 }

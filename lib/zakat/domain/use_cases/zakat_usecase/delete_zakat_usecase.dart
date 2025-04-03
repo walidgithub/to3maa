@@ -10,6 +10,6 @@ class DeleteZakatUseCase extends BaseUsecase {
 
   @override
   Future<Either<Failure, int>> call(parameters) async {
-    return await baseRepository.deletetZakatData(parameters);
+    return await baseRepository.deleteZakatData(parameters);
   }
 }

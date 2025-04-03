@@ -1,4 +1,10 @@
+import 'package:To3maa/zakat/domain/requests/delete_purchase_request.dart';
+import 'package:To3maa/zakat/domain/requests/delete_sundry_request.dart';
+import 'package:To3maa/zakat/domain/requests/insert_purchase_request.dart';
+import 'package:To3maa/zakat/domain/requests/insert_sundry_request.dart';
 import 'package:To3maa/zakat/domain/requests/reset_product_quantity_request.dart';
+import 'package:To3maa/zakat/domain/responses/purchases_response.dart';
+import 'package:To3maa/zakat/domain/responses/sundries_response.dart';
 import 'package:dartz/dartz.dart';
 import 'package:To3maa/core/error/error_handler.dart';
 import 'package:To3maa/core/error/failure.dart';
@@ -13,10 +19,10 @@ import 'package:To3maa/zakat/domain/requests/insert_zakat_products_request.dart'
 import 'package:To3maa/zakat/domain/requests/insert_zakat_request.dart';
 import 'package:To3maa/zakat/domain/requests/update_product_quantity_request.dart';
 import 'package:To3maa/zakat/domain/requests/update_product_request.dart';
-import 'package:To3maa/zakat/domain/responses/products_respose.dart';
+import 'package:To3maa/zakat/domain/responses/products_response.dart';
 import 'package:To3maa/zakat/domain/responses/zakat_products_by_kilos_response.dart';
-import 'package:To3maa/zakat/domain/responses/zakat_products_respose.dart';
-import 'package:To3maa/zakat/domain/responses/zakat_respose.dart';
+import 'package:To3maa/zakat/domain/responses/zakat_products_response.dart';
+import 'package:To3maa/zakat/domain/responses/zakat_response.dart';
 
 class ZakatRepository extends BaseRepository {
   final BaseDataSource _baseDataSource;
@@ -26,11 +32,11 @@ class ZakatRepository extends BaseRepository {
   );
 
   @override
-  Future<Either<Failure, int>> deletetProductData(
-      DeleteProductRequest deletetProductRequest) async {
+  Future<Either<Failure, int>> deleteProductData(
+      DeleteProductRequest deleteProductRequest) async {
     try {
       final result =
-          await _baseDataSource.deleteProductData(deletetProductRequest);
+          await _baseDataSource.deleteProductData(deleteProductRequest);
       return Right(result);
     } catch (error) {
       return Left(ErrorHandler.handle(error).failure);
@@ -38,10 +44,10 @@ class ZakatRepository extends BaseRepository {
   }
 
   @override
-  Future<Either<Failure, int>> deletetZakatData(
-      DeleteZakatRequest deletetZakatRequest) async {
+  Future<Either<Failure, int>> deleteZakatData(
+      DeleteZakatRequest deleteZakatRequest) async {
     try {
-      final result = await _baseDataSource.deleteZakatData(deletetZakatRequest);
+      final result = await _baseDataSource.deleteZakatData(deleteZakatRequest);
       return Right(result);
     } catch (error) {
       return Left(ErrorHandler.handle(error).failure);
@@ -49,7 +55,7 @@ class ZakatRepository extends BaseRepository {
   }
 
   @override
-  Future<Either<Failure, int>> deletetAllZakatData() async {
+  Future<Either<Failure, int>> deleteAllZakatData() async {
     try {
       final result = await _baseDataSource.deleteAllZakatData();
       return Right(result);
@@ -59,11 +65,11 @@ class ZakatRepository extends BaseRepository {
   }
 
   @override
-  Future<Either<Failure, int>> deletetZakatProductsData(
-      DeleteZakatProductsRequest deletetZakatProductsRequest) async {
+  Future<Either<Failure, int>> deleteZakatProductsData(
+      DeleteZakatProductsRequest deleteZakatProductsRequest) async {
     try {
       final result = await _baseDataSource
-          .deleteZakatProductsData(deletetZakatProductsRequest);
+          .deleteZakatProductsData(deleteZakatProductsRequest);
       return Right(result);
     } catch (error) {
       return Left(ErrorHandler.handle(error).failure);
@@ -181,6 +187,68 @@ class ZakatRepository extends BaseRepository {
     try {
       final result = await _baseDataSource
           .resetProductQuantityData(resetProductQuantityRequest);
+      return Right(result);
+    } catch (error) {
+      return Left(ErrorHandler.handle(error).failure);
+    }
+  }
+
+  @override
+  Future<Either<Failure, int>> deletePurchaseData(DeletePurchaseRequest deletePurchaseRequest) async {
+    try {
+      final result =
+      await _baseDataSource.deletePurchaseData(deletePurchaseRequest);
+      return Right(result);
+    } catch (error) {
+      return Left(ErrorHandler.handle(error).failure);
+    }
+  }
+
+  @override
+  Future<Either<Failure, int>> deleteSundryData(DeleteSundryRequest deleteSundryRequest) async {
+    try {
+      final result =
+      await _baseDataSource.deleteSundryData(deleteSundryRequest);
+      return Right(result);
+    } catch (error) {
+      return Left(ErrorHandler.handle(error).failure);
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<PurchasesResponse>>> getAllPurchases() async {
+    try {
+      final result = await _baseDataSource.getAllPurchases();
+      return Right(result);
+    } catch (error) {
+      return Left(ErrorHandler.handle(error).failure);
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<SundriesResponse>>> getAllSundries() async {
+    try {
+      final result = await _baseDataSource.getAllSundries();
+      return Right(result);
+    } catch (error) {
+      return Left(ErrorHandler.handle(error).failure);
+    }
+  }
+
+  @override
+  Future<Either<Failure, int>> insertPurchaseData(InsertPurchaseRequest insertPurchaseRequest) async {
+    try {
+      final result = await _baseDataSource.insertPurchaseData(insertPurchaseRequest);
+      return Right(result);
+    } catch (error) {
+      return Left(ErrorHandler.handle(error).failure);
+    }
+  }
+
+  @override
+  Future<Either<Failure, int>> insertSundryData(InsertSundryRequest insertSundryRequest) async {
+    try {
+      final result = await _baseDataSource.insertSundryData(insertSundryRequest);
       return Right(result);
     } catch (error) {
       return Left(ErrorHandler.handle(error).failure);
