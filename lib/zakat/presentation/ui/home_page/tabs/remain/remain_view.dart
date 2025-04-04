@@ -1,9 +1,12 @@
 import 'package:To3maa/zakat/domain/requests/insert_sundry_request.dart';
+import 'package:To3maa/zakat/presentation/ui/home_page/tabs/remain/purchases_view.dart';
+import 'package:To3maa/zakat/presentation/ui/home_page/tabs/remain/sundries_view.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../../../core/router/app_router.dart';
 import '../../../../../../core/shared/constant/app_constants.dart';
 import '../../../../../../core/shared/constant/app_fonts.dart';
 import '../../../../../../core/shared/constant/app_strings.dart';
@@ -35,6 +38,8 @@ class _RemainViewState extends State<RemainView> {
   final ScrollController _scrollController = ScrollController();
 
   bool sundries = true;
+  bool showAllSundries = true;
+  var scaffoldKey = GlobalKey<ScaffoldState>();
 
   String productImage = '';
 
@@ -43,6 +48,10 @@ class _RemainViewState extends State<RemainView> {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
+        key: scaffoldKey,
+        drawer: SizedBox(
+            width: MediaQuery.of(context).size.width * 0.75,
+            child: showAllSundries ? const SundriesView() : const PurchasesView()),
         appBar: AppBar(
           backgroundColor: AppColors.cWhite,
           automaticallyImplyLeading: false,
@@ -328,7 +337,9 @@ class _RemainViewState extends State<RemainView> {
                                                 )),
                                           ),
                                           GestureDetector(
-                                            onTap: () {},
+                                            onTap: () {
+
+                                            },
                                             child: Container(
                                                 width: 90.w,
                                                 height: 50.w,
@@ -512,7 +523,12 @@ class _RemainViewState extends State<RemainView> {
                                                 )),
                                           ),
                                           GestureDetector(
-                                            onTap: () {},
+                                            onTap: () async {
+                                              await Future.delayed(const Duration(
+                                                  milliseconds: 700));
+                                              scaffoldKey.currentState
+                                                  ?.openDrawer();
+                                            },
                                             child: Container(
                                                 width: 90.w,
                                                 height: 50.w,

@@ -57,6 +57,7 @@ class AppStrings {
 
   static const String noProducts = "لـم يـتـم تـسـجـيـل مـنـتـجـات بـعـد.";
   static const String noCarts = "لـم يـتـم إضـافـة زكــاة بـعـد.";
+  static const String noSundries = "لـم يـتـم إضـافـة نـثـريـات بـعـد.";
 
   static const String someThingWentWrong = "حـدث خـطـأ مـا";
 
