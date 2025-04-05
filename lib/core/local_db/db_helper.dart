@@ -226,6 +226,7 @@ class DbHelper {
 
     final result =
     await db.rawQuery('SELECT * FROM sundries Order by id ASC');
+
     return result.map((map) => SundriesModel.fromMap(map)).toList();
   }
 

@@ -22,7 +22,7 @@ class AppStrings {
   static const String productName = "اسـم الـصـنـف";
   static const String productPrice = "سـعـر الصـاع";
   static const String productPriceWKilo = "سـعـر الكـيـلو";
-  static const String quantityByKilo = "الـكـمـيـة بالـكـيـلو";
+  static const String quantityByKilo = "الـكـمـيـة";
   static const String sa3Weight = "وزن الصـاع بـالـكـيـلـو";
   static const String sundries = "نـثـريـات";
   static const String sundryName = "الاســم";
@@ -58,6 +58,7 @@ class AppStrings {
   static const String noProducts = "لـم يـتـم تـسـجـيـل مـنـتـجـات بـعـد.";
   static const String noCarts = "لـم يـتـم إضـافـة زكــاة بـعـد.";
   static const String noSundries = "لـم يـتـم إضـافـة نـثـريـات بـعـد.";
+  static const String noPurchases = "لـم يـتـم إضـافـة مـشـتـريـات بـعـد.";
 
   static const String someThingWentWrong = "حـدث خـطـأ مـا";
 

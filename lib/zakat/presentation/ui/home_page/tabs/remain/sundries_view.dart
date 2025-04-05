@@ -1,10 +1,9 @@
-import 'package:To3maa/zakat/domain/models/sundries_model.dart';
+import 'package:To3maa/zakat/domain/requests/delete_sundry_request.dart';
 import 'package:To3maa/zakat/presentation/ui/home_page/tabs/remain/sundry_view.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import '../../../../../../core/shared/constant/app_constants.dart';
 import '../../../../../../core/shared/constant/app_fonts.dart';
 import '../../../../../../core/shared/constant/app_strings.dart';
@@ -33,8 +32,15 @@ class _SundriesViewState extends State<SundriesView> {
     super.initState();
   }
 
-  getAllSundries() {
-    ZakatCubit.get(context).getAllSundries();
+  getAllSundries() async {
+    await ZakatCubit.get(context).getAllSundries();
+  }
+
+  double getTotalSundryPrice(List<SundriesResponse> items) {
+    return items.fold(0.0, (total, item) {
+      final price = double.tryParse(item.sundryPrice ?? '');
+      return total + (price ?? 0.0);
+    });
   }
 
   @override
@@ -54,11 +60,11 @@ class _SundriesViewState extends State<SundriesView> {
           ),
           BlocConsumer<ZakatCubit, ZakatState>(
               listener: (context, state) async {
-                if (state.zakatState == RequestState.zakatLoading) {
+                if (state.zakatState == RequestState.sundriesLoading) {
                   showLoading();
-                } else if (state.zakatState == RequestState.zakatError) {
+                } else if (state.zakatState == RequestState.sundriesError) {
                   hideLoading();
-                } else if (state.zakatState == RequestState.zakatLoaded) {
+                } else if (state.zakatState == RequestState.sundriesLoaded) {
                   sundriesList = state.sundriesList;
                   hideLoading();
                 } else if (state.zakatState == RequestState.deleteLoading) {
@@ -66,11 +72,14 @@ class _SundriesViewState extends State<SundriesView> {
                 } else if (state.zakatState == RequestState.deleteError) {
                   hideLoading();
                 } else if (state.zakatState == RequestState.deleteDone) {
+                  getAllSundries();
                   hideLoading();
+                  Navigator.of(context)
+                      .pop(false);
                 }
               }, builder: (context, state) {
             return SizedBox(
-              height: MediaQuery.sizeOf(context).height - 200.h,
+              height: MediaQuery.sizeOf(context).height -50.h,
               child: Column(
                 children: [
                   SizedBox(
@@ -109,10 +118,11 @@ class _SundriesViewState extends State<SundriesView> {
                                               actions: [
                                                 TextButton(
                                                     onPressed: () async {
-                                                      // await ZakatCubit.get(
-                                                      //     cartContext)
-                                                      //     .deleteZakat(
-                                                      //     deleteZakatRequest);
+                                                      DeleteSundryRequest deleteSundryRequest = DeleteSundryRequest(id: sundriesList[index].id);
+                                                      await ZakatCubit.get(
+                                                          cartContext)
+                                                          .deleteSundry(
+                                                          deleteSundryRequest);
                                                     },
                                                     child: Text(AppStrings.yes,
                                                         style: AppTypography
@@ -143,7 +153,7 @@ class _SundriesViewState extends State<SundriesView> {
                     height: 5.h,
                   ),
                   Container(
-                    height: 110.h,
+                    height: 50.h,
                     width: MediaQuery.sizeOf(context).width * 0.75,
                     padding:
                     EdgeInsets.symmetric(vertical: 10.h, horizontal: 10.w),
@@ -167,7 +177,7 @@ class _SundriesViewState extends State<SundriesView> {
                             Row(
                               children: [
                                 Text(
-                                  "100",
+                                  getTotalSundryPrice(sundriesList).toString(),
                                   style: AppTypography.kLight16.copyWith(
                                       fontWeight: FontWeight.bold,
                                       color: AppColors.cBlack),

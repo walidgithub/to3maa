@@ -55,6 +55,15 @@ class _SundryViewState extends State<SundryView> {
                           Row(
                             children: [
                               Text(
+                                "${AppStrings.sundryPrice}:",
+                                style: AppTypography.kLight16.copyWith(
+                                    fontFamily: AppFonts.boldFontFamily,
+                                    color: AppColors.cBlack),
+                              ),
+                              SizedBox(
+                                width: 5.w,
+                              ),
+                              Text(
                                 widget.sundryPrice,
                                 style: AppTypography.kLight16.copyWith(
                                     fontWeight: FontWeight.bold,
@@ -77,19 +86,19 @@ class _SundryViewState extends State<SundryView> {
                           Row(
                             children: [
                               Text(
-                                widget.sundryName,
+                                "${AppStrings.sundryName}:",
                                 style: AppTypography.kLight16.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    color: AppColors.cNumber),
+                                    fontFamily: AppFonts.boldFontFamily,
+                                    color: AppColors.cBlack),
                               ),
                               SizedBox(
                                 width: 5.w,
                               ),
                               Text(
-                                AppStrings.sundryName,
+                                widget.sundryName,
                                 style: AppTypography.kLight16.copyWith(
-                                    fontFamily: AppFonts.boldFontFamily,
-                                    color: AppColors.cBlack),
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColors.cNumber),
                               ),
                             ],
                           ),

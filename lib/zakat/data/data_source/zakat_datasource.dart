@@ -60,8 +60,8 @@ class ZakatDataSource extends BaseDataSource {
 
   @override
   Future<int> deleteProductData(
-      DeleteProductRequest deletetProductRequest) async {
-    final res = await _dbHelper.deleteProductData(deletetProductRequest);
+      DeleteProductRequest deleteProductRequest) async {
+    final res = await _dbHelper.deleteProductData(deleteProductRequest);
     try {
       return res;
     } catch (e) {

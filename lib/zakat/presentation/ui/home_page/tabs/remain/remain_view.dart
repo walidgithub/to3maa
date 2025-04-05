@@ -337,8 +337,14 @@ class _RemainViewState extends State<RemainView> {
                                                 )),
                                           ),
                                           GestureDetector(
-                                            onTap: () {
-
+                                            onTap: () async {
+                                              setState(() {
+                                                showAllSundries = false;
+                                              });
+                                              await Future.delayed(const Duration(
+                                                  milliseconds: 700));
+                                              scaffoldKey.currentState
+                                                  ?.openDrawer();
                                             },
                                             child: Container(
                                                 width: 90.w,
@@ -524,6 +530,9 @@ class _RemainViewState extends State<RemainView> {
                                           ),
                                           GestureDetector(
                                             onTap: () async {
+                                              setState(() {
+                                                showAllSundries = true;
+                                              });
                                               await Future.delayed(const Duration(
                                                   milliseconds: 700));
                                               scaffoldKey.currentState
