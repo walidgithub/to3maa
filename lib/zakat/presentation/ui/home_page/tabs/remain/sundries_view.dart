@@ -50,13 +50,42 @@ class _SundriesViewState extends State<SundriesView> {
       child:
       Column(
         children: [
-          FadeInLeft(
-            duration: Duration(milliseconds: AppConstants.animation),
-            child: Text(
-              AppStrings.sundries,
-              style: AppTypography.kLight20
-                  .copyWith(fontFamily: AppFonts.boldFontFamily),
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              FadeInLeft(
+                duration: Duration(milliseconds: AppConstants.animation),
+                child: Text(
+                  AppStrings.sundries,
+                  style: AppTypography.kLight20
+                      .copyWith(fontFamily: AppFonts.boldFontFamily),
+                ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).pop();
+                },
+                child: Container(
+                  width: 30.w,
+                  height: 30.w,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                        width: 2.w, color: AppColors.cPrimary),
+                    borderRadius:
+                    BorderRadius.circular(AppConstants.radius),
+                    color: AppColors.cWhite,
+                    shape: BoxShape.rectangle,
+                  ),
+                  child: Center(
+                    child: Icon(
+                      Icons.arrow_forward_ios,
+                      size: 20.w,
+                      color: AppColors.cButton,
+                    ),
+                  ),
+                ),
+              )
+            ],
           ),
           BlocConsumer<ZakatCubit, ZakatState>(
               listener: (context, state) async {

@@ -15,6 +15,7 @@ class AddProductView extends StatefulWidget {
   final String productPrice;
   final String productDesc;
   final int productQuantity;
+  final int membersCount;
   final Function increaseQunatity;
   final Function decreaseQunatity;
   final double allValue;
@@ -26,6 +27,7 @@ class AddProductView extends StatefulWidget {
     required this.productPrice,
     required this.productDesc,
     required this.productQuantity,
+    required this.membersCount,
     required this.increaseQunatity,
     required this.decreaseQunatity,
     required this.allValue,
@@ -42,6 +44,10 @@ class _AddProductViewState extends State<AddProductView> {
   }
 
   int? _itemQuantity;
+
+  int getTotalProductQuantity(List<ProductsResponse> products) {
+    return products.fold(0, (sum, product) => sum + (product.productQuantity ?? 0));
+  }
 
   @override
   void initState() {
@@ -152,6 +158,10 @@ class _AddProductViewState extends State<AddProductView> {
                           double remain =
                               widget.allValue - usedAmount(widget.productsList) - double.parse(widget.productPrice);
                           if (remain.isNegative) {
+                            return;
+                          }
+
+                          if (widget.membersCount < getTotalProductQuantity(widget.productsList) + 1) {
                             return;
                           }
 

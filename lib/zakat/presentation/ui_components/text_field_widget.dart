@@ -4,9 +4,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../../../core/shared/style/app_colors.dart';
 
 Widget textFieldWidget(TextEditingController textController, String labelText,
-    TextInputType textInputType, Function(String) onChanged) {
+    TextInputType textInputType, Function(String) onChanged, bool focus) {
   return TextField(
-      // autofocus: true,
+      autofocus: focus,
       onChanged: onChanged,
       inputFormatters: [
         LengthLimitingTextInputFormatter(50),

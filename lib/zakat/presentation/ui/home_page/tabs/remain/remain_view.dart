@@ -250,7 +250,7 @@ class _RemainViewState extends State<RemainView> {
                                           _productNameController,
                                           AppStrings.productName,
                                           TextInputType.text,
-                                          (String textVal) {}),
+                                          (String textVal) {},true),
                                       SizedBox(
                                         height:
                                             AppConstants.heightBetweenElements,
@@ -259,7 +259,7 @@ class _RemainViewState extends State<RemainView> {
                                           _productPriceController,
                                           AppStrings.productPriceWKilo,
                                           TextInputType.number,
-                                          (String textVal) {}),
+                                          (String textVal) {},false),
                                       SizedBox(
                                         height: 10.h,
                                       ),
@@ -267,7 +267,7 @@ class _RemainViewState extends State<RemainView> {
                                           _productQuantityController,
                                           AppStrings.quantityByKilo,
                                           TextInputType.number,
-                                          (String textVal) {}),
+                                          (String textVal) {},false),
                                       SizedBox(
                                         height: 10.h,
                                       ),
@@ -277,6 +277,7 @@ class _RemainViewState extends State<RemainView> {
                                         children: [
                                           GestureDetector(
                                             onTap: () {
+                                              FocusScope.of(context).unfocus();
                                               if (_productPriceController.text
                                                           .trim() !=
                                                       "" &&
@@ -460,7 +461,8 @@ class _RemainViewState extends State<RemainView> {
                                           _sundryNameController,
                                           AppStrings.sundryName,
                                           TextInputType.text,
-                                          (String textVal) {}),
+                                          (String textVal) {},
+                                      true),
                                       SizedBox(
                                         height: 10.h,
                                       ),
@@ -468,7 +470,8 @@ class _RemainViewState extends State<RemainView> {
                                           _sundryPriceController,
                                           AppStrings.sundryPrice,
                                           TextInputType.number,
-                                          (String textVal) {}),
+                                          (String textVal) {},
+                                      false),
                                       SizedBox(
                                         height:
                                             AppConstants.heightBetweenElements,
@@ -479,6 +482,7 @@ class _RemainViewState extends State<RemainView> {
                                         children: [
                                           GestureDetector(
                                             onTap: () {
+                                              FocusScope.of(context).unfocus();
                                               if (_sundryPriceController.text
                                                           .trim() !=
                                                       "" &&

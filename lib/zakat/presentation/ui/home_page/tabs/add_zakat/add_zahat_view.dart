@@ -26,6 +26,7 @@ import '../../../../../../core/shared/constant/app_constants.dart';
 import '../../../../../../core/shared/constant/app_fonts.dart';
 import '../../../../../../core/shared/constant/app_strings.dart';
 import '../../../../../../core/shared/style/app_colors.dart';
+import '../../../../../domain/responses/products_response.dart';
 
 class AddZakatView extends StatefulWidget {
   const AddZakatView({super.key});
@@ -91,6 +92,11 @@ class _AddZakatViewState extends State<AddZakatView> {
 
   Future<void> getAllZakat() async {
     await ZakatCubit.get(context).getAllZakat();
+  }
+
+  int getQuantityFromTextField(TextEditingController controller) {
+    String value = controller.text.trim();
+    return int.tryParse(value) ?? 0;
   }
 
   double calcRemain(var products) {
@@ -201,7 +207,7 @@ class _AddZakatViewState extends State<AddZakatView> {
                     }
                   } else {
                   }
-                }),
+                },true),
                 SizedBox(
                   height: AppConstants.heightBetweenElements,
                 ),
@@ -219,7 +225,7 @@ class _AddZakatViewState extends State<AddZakatView> {
                       int.parse(_membersCountController.text),
                       int.parse(_zakatValueController.text),
                       state.productsList);
-                }),
+                },false),
                 showError
                     ? Text(
                         errorMessage,
@@ -321,6 +327,7 @@ class _AddZakatViewState extends State<AddZakatView> {
                                         ),
                                 itemBuilder: (BuildContext context, int index) {
                                   return AddProductView(
+                                    membersCount: getQuantityFromTextField(_membersCountController),
                                     productName:
                                         state.productsList[index].productName!,
                                     productImage:

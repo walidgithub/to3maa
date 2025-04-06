@@ -371,7 +371,7 @@ class _ProductsViewState extends State<ProductsView> {
                       _productNameController,
                       AppStrings.productName,
                       TextInputType.text,
-                      (String textVal) {}),
+                      (String textVal) {},true),
                   SizedBox(
                     height: AppConstants.heightBetweenElements,
                   ),
@@ -379,12 +379,12 @@ class _ProductsViewState extends State<ProductsView> {
                       _productPriceController,
                       AppStrings.productPrice,
                       TextInputType.number,
-                      (String textVal) {}),
+                      (String textVal) {},false),
                   SizedBox(
                     height: AppConstants.heightBetweenElements,
                   ),
                   textFieldWidget(_sa3WeightController, AppStrings.sa3Weight,
-                      TextInputType.number, (String textVal) {}),
+                      TextInputType.number, (String textVal) {},false),
                   SizedBox(
                     height: AppConstants.heightBetweenElements,
                   ),
@@ -392,7 +392,7 @@ class _ProductsViewState extends State<ProductsView> {
                       _productDescController,
                       AppStrings.productDesc,
                       TextInputType.text,
-                      (String textVal) {}),
+                      (String textVal) {},false),
                   SizedBox(
                     height: 10.h,
                   ),

@@ -16,6 +16,8 @@ class AppStrings {
   static const String zakatValue = "قــيـمـة الـزكــاة";
   static const String membersCount = "عــدد الأفــراد";
   static const String suggested = "أصـنـاف مـقـتـرحـة";
+  static const String zakat = "الـزكـاة:";
+  static const String buyFromRemain = "مـن المـتـبقى:";
 
   static const String add = "إضــافــة";
   static const String productDesc = "الوصــف";
@@ -25,7 +27,7 @@ class AppStrings {
   static const String quantityByKilo = "الـكـمـيـة";
   static const String sa3Weight = "وزن الصـاع بـالـكـيـلـو";
   static const String sundries = "نـثـريـات";
-  static const String sundryName = "الاســم";
+  static const String sundryName = "الـبـنـد";
   static const String sundryPrice = "الـسـعـر";
   static const String buyProducts = "مـشـتـريـات";
   static const String getAll = "عـرض الـكـل";

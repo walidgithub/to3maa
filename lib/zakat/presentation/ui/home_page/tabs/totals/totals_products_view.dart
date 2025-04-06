@@ -10,6 +10,7 @@ import '../../../../../../core/shared/style/app_colors.dart';
 import '../../../../../../core/utils/functions.dart';
 
 class TotalsProductsView extends StatefulWidget {
+  final int productId;
   final String productImage;
   final String productName;
   final String productPrice;
@@ -18,6 +19,7 @@ class TotalsProductsView extends StatefulWidget {
   final int sumProductQuantity;
   const TotalsProductsView(
       {super.key,
+      required this.productId,
       required this.productImage,
       required this.productName,
       required this.productPrice,
@@ -35,13 +37,13 @@ class _TotalsProductsViewState extends State<TotalsProductsView> {
     return FadeInUp(
       duration: Duration(milliseconds: AppConstants.animation),
       child: SizedBox(
-        height: 120.h,
+        height: widget.productDesc != "" ? 210.h : 190.h,
         child: Stack(
           alignment: Alignment.bottomCenter,
           children: [
             Container(
               width: MediaQuery.sizeOf(context).width * 0.75,
-              height: 100.h,
+              height: widget.productDesc != "" ? 190.h : 170.h,
               padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 10.w),
               decoration: BoxDecoration(
                 color: AppColors.cBackGround,
@@ -68,6 +70,28 @@ class _TotalsProductsViewState extends State<TotalsProductsView> {
                   Row(
                     children: [
                       Text(
+                        AppStrings.membersCount,
+                        style: AppTypography.kLight16.copyWith(
+                            fontFamily: AppFonts.boldFontFamily,
+                            color: AppColors.cBlack),
+                      ),
+                      SizedBox(
+                        width: 5.w,
+                      ),
+                      Text(
+                        calculateMembersCount(widget.sumProductQuantity * widget.sa3Weight, widget.productPrice),
+                        style: AppTypography.kLight16.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.cNumber),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 10.h,
+                  ),
+                  Row(
+                    children: [
+                      Text(
                         widget.productPrice.toString(),
                         style: AppTypography.kLight16.copyWith(
                             fontWeight: FontWeight.bold,
@@ -85,13 +109,81 @@ class _TotalsProductsViewState extends State<TotalsProductsView> {
                     ],
                   ),
                   SizedBox(
+                    height: 10.h,
+                  ),
+                  Row(
+                    children: [
+                      Text(
+                        AppStrings.zakat,
+                        style: AppTypography.kLight16.copyWith(
+                            fontFamily: AppFonts.boldFontFamily,
+                            color: AppColors.cBlack),
+                      ),
+                      SizedBox(
+                        width: 5.w,
+                      ),
+                      Text(
+                        formatWeight(widget.sumProductQuantity * widget.sa3Weight).toString(),
+                        style: AppTypography.kLight14.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.cNumber),
+                      ),
+                      SizedBox(
+                        width: 5.w,
+                      ),
+                      Text(
+                        formatWeightString(widget.sumProductQuantity *
+                            widget.sa3Weight).toString() ==
+                            "ton"
+                            ? AppStrings.ton
+                            : AppStrings.kilo,
+                        style: AppTypography.kLight14
+                            .copyWith(fontFamily: AppFonts.boldFontFamily),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 10.h,
+                  ),
+                  Row(
+                    children: [
+                      Text(
+                        AppStrings.buyFromRemain,
+                        style: AppTypography.kLight16.copyWith(
+                            fontFamily: AppFonts.boldFontFamily,
+                            color: AppColors.cBlack),
+                      ),
+                      SizedBox(
+                        width: 5.w,
+                      ),
+                      Text(
+                        formatWeight(widget.sumProductQuantity * widget.sa3Weight).toString(),
+                        style: AppTypography.kLight14.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.cNumber),
+                      ),
+                      SizedBox(
+                        width: 5.w,
+                      ),
+                      Text(
+                        formatWeightString(widget.sumProductQuantity *
+                            widget.sa3Weight).toString() ==
+                            "ton"
+                            ? AppStrings.ton
+                            : AppStrings.kilo,
+                        style: AppTypography.kLight14
+                            .copyWith(fontFamily: AppFonts.boldFontFamily),
+                      ),
+                    ],
+                  ),
+                  widget.productDesc != "" ? SizedBox(
                     width: MediaQuery.sizeOf(context).width * 0.30,
                     child: Text(widget.productDesc,
                         style: AppTypography.kLight14.copyWith(
                             fontFamily: AppFonts.boldFontFamily,
                             color: AppColors.cGray),
                         overflow: TextOverflow.ellipsis),
-                  )
+                  ) : Container()
                 ],
               ),
             ),
@@ -115,32 +207,6 @@ class _TotalsProductsViewState extends State<TotalsProductsView> {
                     width: widget.productImage == 'assets/images/package.png'
                         ? 60.w
                         : 120.w,
-                  ),
-                )),
-            Positioned(
-                bottom: 3.h,
-                left: 15.w,
-                child: SizedBox(
-                  width: 120.w,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Text(
-                        formatWeight(widget.sumProductQuantity * widget.sa3Weight).toString(),
-                        style: AppTypography.kLight14.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.cNumber),
-                      ),
-                      Text(
-                        formatWeightString(widget.sumProductQuantity *
-                                        widget.sa3Weight).toString() ==
-                                "ton"
-                            ? AppStrings.ton
-                            : AppStrings.kilo,
-                        style: AppTypography.kLight14
-                            .copyWith(fontFamily: AppFonts.boldFontFamily),
-                      ),
-                    ],
                   ),
                 )),
           ],

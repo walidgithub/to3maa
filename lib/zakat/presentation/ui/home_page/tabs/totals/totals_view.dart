@@ -220,6 +220,8 @@ class _TotalsViewState extends State<TotalsView> {
                                         ),
                                 itemBuilder: (BuildContext context, int index) {
                                   return TotalsProductsView(
+                                      productId:
+                                      zakatByKilos[index].id,
                                       productName:
                                           zakatByKilos[index].productName,
                                       productImage:

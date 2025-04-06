@@ -2,6 +2,7 @@ import 'package:To3maa/zakat/domain/responses/zakat_products_by_kilos_response.d
 
 class ZakatProductsByKilosModel extends ZakatProductsByKilosResponse {
   const ZakatProductsByKilosModel({
+    required super.id,
     required super.productName,
     required super.productPrice,
     required super.productDesc,
@@ -13,6 +14,7 @@ class ZakatProductsByKilosModel extends ZakatProductsByKilosResponse {
 
   factory ZakatProductsByKilosModel.fromMap(Map<String, dynamic> map) {
     return ZakatProductsByKilosModel(
+      id: map['id'],
       productName: map['productName'],
       productPrice: map['productPrice'],
       productDesc: map['productDesc'],
