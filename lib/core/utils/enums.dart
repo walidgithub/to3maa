@@ -6,6 +6,7 @@ enum RequestState {
   sundriesLoading,
   purchasesLoading,
   getZakatProductsByKilosLoading,
+  getPurchasesByKilosLoading,
   getZakatProductsByZakatIdLoading,
   //------------------
   zakatLoaded,
@@ -14,6 +15,7 @@ enum RequestState {
   sundriesLoaded,
   purchasesLoaded,
   getZakatProductsByKilosLoaded,
+  getPurchasesByKilosLoaded,
   getZakatProductsByZakatIdLoaded,
   //------------------
   zakatError,
@@ -22,6 +24,7 @@ enum RequestState {
   sundriesError,
   purchasesError,
   getZakatProductsByKilosError,
+  getPurchasesByKilosError,
   getZakatProductsByZakatIdError,
   //------------------
   insertLoading,

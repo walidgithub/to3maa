@@ -1,4 +1,5 @@
 import 'package:To3maa/zakat/domain/models/products_model.dart';
+import 'package:To3maa/zakat/domain/models/purchases_by_kilos_model.dart';
 import 'package:To3maa/zakat/domain/models/purchases_model.dart';
 import 'package:To3maa/zakat/domain/models/sundries_model.dart';
 import 'package:To3maa/zakat/domain/models/zakat_model.dart';
@@ -16,6 +17,7 @@ import 'package:To3maa/zakat/domain/requests/insert_zakat_request.dart';
 import 'package:To3maa/zakat/domain/requests/reset_product_quantity_request.dart';
 import 'package:To3maa/zakat/domain/requests/update_product_quantity_request.dart';
 import 'package:To3maa/zakat/domain/requests/update_product_request.dart';
+import 'package:To3maa/zakat/domain/responses/purchases_by_kilos_response.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -193,6 +195,26 @@ class DbHelper {
     return db.delete('zakat');
   }
 
+  Future<int> deleteAllSundriesData() async {
+    if (_db == null) {
+      await initDB(dbdName);
+    }
+
+    final db = _db!.database;
+
+    return db.delete('sundries');
+  }
+
+  Future<int> deleteAllPurchasesData() async {
+    if (_db == null) {
+      await initDB(dbdName);
+    }
+
+    final db = _db!.database;
+
+    return db.delete('purchases');
+  }
+
   Future<int> deleteAllZakatProductsData() async {
     if (_db == null) {
       await initDB(dbdName);
@@ -230,6 +252,23 @@ class DbHelper {
     return result.map((map) => SundriesModel.fromMap(map)).toList();
   }
 
+  Future<double> getTotalOfSundries() async {
+    if (_db == null) {
+      await initDB(dbdName);
+    }
+
+    final db = _db!.database;
+
+    final result =
+    await db.rawQuery('SELECT SUM(sundryPrice) FROM sundries');
+
+    if (result.isNotEmpty && result[0]['SUM(sundryPrice)'] != null) {
+      return result[0]['SUM(sundryPrice)'] as double;
+    }
+
+    return 0.0;
+  }
+
   Future<List<PurchasesModel>> getAllPurchases() async {
     if (_db == null) {
       await initDB(dbdName);
@@ -240,6 +279,23 @@ class DbHelper {
     final result =
     await db.rawQuery('SELECT * FROM purchases Order by id ASC');
     return result.map((map) => PurchasesModel.fromMap(map)).toList();
+  }
+
+  Future<double> getTotalOfPurchases() async {
+    if (_db == null) {
+      await initDB(dbdName);
+    }
+
+    final db = _db!.database;
+
+    final result =
+    await db.rawQuery('SELECT SUM(productPrice) FROM purchases');
+
+    if (result.isNotEmpty && result[0]['SUM(productPrice)'] != null) {
+      return result[0]['SUM(productPrice)'] as double;
+    }
+
+    return 0.0;
   }
 
   Future<List<ProductsModel>> getAllProducts() async {
@@ -291,5 +347,17 @@ class DbHelper {
     final result = await db.rawQuery(
         'SELECT id, productName, productPrice, productDesc, productImage, sa3Weight, hegriDate, SUM(productQuantity) as sumProductQuantity FROM zakatProducts GROUP BY productName');
     return result.map((map) => ZakatProductsByKilosModel.fromMap(map)).toList();
+  }
+
+  Future<List<PurchasesByKilosResponse>> getAllPurchasesByKilos() async {
+    if (_db == null) {
+      await initDB(dbdName);
+    }
+
+    final db = _db!.database;
+
+    final result = await db.rawQuery(
+        'SELECT id, productName, productPrice, SUM(productQuantity) as sumPurchasesQuantity FROM purchases GROUP BY productName');
+    return result.map((map) => PurchasesByKilosModel.fromMap(map)).toList();
   }
 }

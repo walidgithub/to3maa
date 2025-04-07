@@ -12,6 +12,8 @@ import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/get_all_products_use
 import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/get_all_purchases_usecase.dart';
 import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/get_all_sundries_usecase.dart';
 import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/get_all_zakat_usecase.dart';
+import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/get_total_of_purchases_usecase.dart';
+import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/get_total_of_sundries_usecase.dart';
 import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/get_zakat_products_by_kilos_usecase.dart';
 import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/get_zakat_products_by_zakat_id_usecase.dart';
 import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/insert_product_usecase.dart';
@@ -25,6 +27,8 @@ import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/update_product_useca
 import 'package:To3maa/zakat/presentation/ui/home_page/cubit/zakat_cubit.dart';
 import 'package:get_it/get_it.dart';
 
+import '../../zakat/domain/use_cases/zakat_usecase/get_purchases_by_kilos_usecase.dart';
+
 final sl = GetIt.instance;
 
 class ServiceLocator {
@@ -34,7 +38,7 @@ class ServiceLocator {
 
     // Cubit
     sl.registerFactory(() => ZakatCubit(sl(), sl(), sl(), sl(), sl(), sl(),
-        sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl()));
+        sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl()));
 
     // Use Cases
     sl.registerLazySingleton<DeleteProductUseCase>(
@@ -69,6 +73,15 @@ class ServiceLocator {
 
     sl.registerLazySingleton<GetZakatProductsByKilosUseCase>(
         () => GetZakatProductsByKilosUseCase(sl()));
+
+    sl.registerLazySingleton<GetPurchasesByKilosUseCase>(
+            () => GetPurchasesByKilosUseCase(sl()));
+
+    sl.registerLazySingleton<GetTotalOfSundriesUseCase>(
+            () => GetTotalOfSundriesUseCase(sl()));
+
+    sl.registerLazySingleton<GetTotalOfPurchasesUseCase>(
+            () => GetTotalOfPurchasesUseCase(sl()));
 
     sl.registerLazySingleton<GetZakatProductsByZakatIdUseCase>(
         () => GetZakatProductsByZakatIdUseCase(sl()));

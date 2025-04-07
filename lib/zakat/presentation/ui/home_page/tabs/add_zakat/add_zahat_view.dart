@@ -207,7 +207,7 @@ class _AddZakatViewState extends State<AddZakatView> {
                     }
                   } else {
                   }
-                },true),
+                },true,true),
                 SizedBox(
                   height: AppConstants.heightBetweenElements,
                 ),
@@ -225,7 +225,7 @@ class _AddZakatViewState extends State<AddZakatView> {
                       int.parse(_membersCountController.text),
                       int.parse(_zakatValueController.text),
                       state.productsList);
-                },false),
+                },false,true),
                 showError
                     ? Text(
                         errorMessage,

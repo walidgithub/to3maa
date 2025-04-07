@@ -50,3 +50,5 @@ List<ProductImages> productImages = [
       activeImage: false,
       imageName: AppStrings.favaBeans),
 ];
+
+List<ProductImages> alreadyProducts = [];

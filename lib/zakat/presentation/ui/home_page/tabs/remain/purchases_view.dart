@@ -48,6 +48,9 @@ class _PurchasesViewState extends State<PurchasesView> {
   Widget build(BuildContext context) {
     return Drawer(
       backgroundColor: AppColors.cWhite,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.zero,
+      ),
       child:
       Column(
         children: [
@@ -117,62 +120,64 @@ class _PurchasesViewState extends State<PurchasesView> {
                   ),
                   Expanded(
                       child: purchasesList.isNotEmpty
-                          ? ListView.separated(
-                          itemCount: purchasesList.length,
-                          shrinkWrap: true,
-                          scrollDirection: Axis.vertical,
-                          physics: const NeverScrollableScrollPhysics(),
-                          separatorBuilder:
-                              (BuildContext cartContext, int index) =>
-                              SizedBox(
-                                height: 20.h,
-                              ),
-                          itemBuilder:
-                              (BuildContext cartContext, int index) {
-                            return PurchaseView(
-                              index: purchasesList.length - index,
-                              productName: purchasesList[index].productName!,
-                              productPrice: purchasesList[index].productPrice!,
-                              productQuantity: purchasesList[index].productQuantity!,
-                              id: purchasesList[index].id,
-                              deleteCart: () async {
-                                await showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return Directionality(
-                                        textDirection: TextDirection.rtl,
-                                        child: AlertDialog(
-                                          title: Text(AppStrings.warning,
-                                              style: AppTypography.kBold20),
-                                          content: const Text(
-                                              AppStrings.checkToDelete),
-                                          actions: [
-                                            TextButton(
-                                                onPressed: () async {
-                                                  DeletePurchaseRequest deletePurchaseRequest = DeletePurchaseRequest(id: purchasesList[index].id);
-                                                  await ZakatCubit.get(
-                                                      cartContext)
-                                                      .deletePurchase(
-                                                      deletePurchaseRequest);
-                                                },
-                                                child: Text(AppStrings.yes,
-                                                    style: AppTypography
-                                                        .kLight16)),
-                                            TextButton(
-                                                onPressed: () {
-                                                  Navigator.of(context)
-                                                      .pop(false);
-                                                },
-                                                child: Text(AppStrings.no,
-                                                    style: AppTypography
-                                                        .kLight16)),
-                                          ],
-                                        ),
-                                      );
-                                    });
-                              },
-                            );
-                          })
+                          ? SingleChildScrollView(
+                            child: ListView.separated(
+                            itemCount: purchasesList.length,
+                            shrinkWrap: true,
+                            scrollDirection: Axis.vertical,
+                            physics: const NeverScrollableScrollPhysics(),
+                            separatorBuilder:
+                                (BuildContext cartContext, int index) =>
+                                SizedBox(
+                                  height: 20.h,
+                                ),
+                            itemBuilder:
+                                (BuildContext cartContext, int index) {
+                              return PurchaseView(
+                                index: purchasesList.length - index,
+                                productName: purchasesList[index].productName!,
+                                productPrice: purchasesList[index].productPrice!,
+                                productQuantity: purchasesList[index].productQuantity!,
+                                id: purchasesList[index].id,
+                                deleteCart: () async {
+                                  await showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return Directionality(
+                                          textDirection: TextDirection.rtl,
+                                          child: AlertDialog(
+                                            title: Text(AppStrings.warning,
+                                                style: AppTypography.kBold20),
+                                            content: const Text(
+                                                AppStrings.checkToDelete),
+                                            actions: [
+                                              TextButton(
+                                                  onPressed: () async {
+                                                    DeletePurchaseRequest deletePurchaseRequest = DeletePurchaseRequest(id: purchasesList[index].id);
+                                                    await ZakatCubit.get(
+                                                        cartContext)
+                                                        .deletePurchase(
+                                                        deletePurchaseRequest);
+                                                  },
+                                                  child: Text(AppStrings.yes,
+                                                      style: AppTypography
+                                                          .kLight16)),
+                                              TextButton(
+                                                  onPressed: () {
+                                                    Navigator.of(context)
+                                                        .pop(false);
+                                                  },
+                                                  child: Text(AppStrings.no,
+                                                      style: AppTypography
+                                                          .kLight16)),
+                                            ],
+                                          ),
+                                        );
+                                      });
+                                },
+                              );
+                            }),
+                          )
                           : const Center(
                         child: Text(
                           AppStrings.noPurchases,

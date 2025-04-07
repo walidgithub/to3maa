@@ -5,8 +5,7 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import '../../../../../../core/router/app_router.dart';
+import '../../../../../../core/di/di.dart';
 import '../../../../../../core/shared/constant/app_constants.dart';
 import '../../../../../../core/shared/constant/app_fonts.dart';
 import '../../../../../../core/shared/constant/app_strings.dart';
@@ -51,7 +50,8 @@ class _RemainViewState extends State<RemainView> {
         key: scaffoldKey,
         drawer: SizedBox(
             width: MediaQuery.of(context).size.width * 0.75,
-            child: showAllSundries ? const SundriesView() : const PurchasesView()),
+            child:
+                showAllSundries ? const SundriesView() : const PurchasesView()),
         appBar: AppBar(
           backgroundColor: AppColors.cWhite,
           automaticallyImplyLeading: false,
@@ -250,7 +250,9 @@ class _RemainViewState extends State<RemainView> {
                                           _productNameController,
                                           AppStrings.productName,
                                           TextInputType.text,
-                                          (String textVal) {},true),
+                                          (String textVal) {},
+                                          false,
+                                          false),
                                       SizedBox(
                                         height:
                                             AppConstants.heightBetweenElements,
@@ -259,7 +261,9 @@ class _RemainViewState extends State<RemainView> {
                                           _productPriceController,
                                           AppStrings.productPriceWKilo,
                                           TextInputType.number,
-                                          (String textVal) {},false),
+                                          (String textVal) {},
+                                          true,
+                                          true),
                                       SizedBox(
                                         height: 10.h,
                                       ),
@@ -267,7 +271,9 @@ class _RemainViewState extends State<RemainView> {
                                           _productQuantityController,
                                           AppStrings.quantityByKilo,
                                           TextInputType.number,
-                                          (String textVal) {},false),
+                                          (String textVal) {},
+                                          false,
+                                          true),
                                       SizedBox(
                                         height: 10.h,
                                       ),
@@ -342,10 +348,8 @@ class _RemainViewState extends State<RemainView> {
                                               setState(() {
                                                 showAllSundries = false;
                                               });
-                                              await Future.delayed(const Duration(
-                                                  milliseconds: 700));
-                                              scaffoldKey.currentState
-                                                  ?.openDrawer();
+                                              FocusScope.of(context).requestFocus(FocusNode());
+                                              scaffoldKey.currentState?.openDrawer();
                                             },
                                             child: Container(
                                                 width: 90.w,
@@ -379,50 +383,69 @@ class _RemainViewState extends State<RemainView> {
                                       SizedBox(
                                         height: 10.h,
                                       ),
-                                      Expanded(
-                                          child: Scrollbar(
-                                        thumbVisibility: true,
-                                        controller: _scrollController,
-                                        child: GridView.builder(
-                                            padding: const EdgeInsets.only(
-                                                right: 8, left: 8),
-                                            scrollDirection: Axis.vertical,
-                                            shrinkWrap: true,
-                                            controller: _scrollController,
-                                            gridDelegate:
-                                                const SliverGridDelegateWithMaxCrossAxisExtent(
-                                                    maxCrossAxisExtent: 200,
-                                                    childAspectRatio: 1,
-                                                    crossAxisSpacing: 20,
-                                                    mainAxisSpacing: 20),
-                                            itemCount: productImages.length,
-                                            itemBuilder: (_, index) {
-                                              return ProductImageView(
-                                                imagePath: productImages[index]
-                                                    .imagePath!,
-                                                activeImage:
-                                                    productImages[index]
-                                                        .activeImage!,
-                                                imageName: productImages[index]
-                                                    .imageName!,
-                                                makeActive: (String imagePath) {
-                                                  productImage = imagePath;
-                                                  setState(() {
-                                                    for (var n
-                                                        in productImages) {
-                                                      n.activeImage = false;
-                                                    }
-                                                    productImages[index]
-                                                        .activeImage = true;
-                                                    _productNameController
-                                                            .text =
-                                                        productImages[index]
-                                                            .imageName!;
-                                                  });
-                                                },
-                                              );
-                                            }),
-                                      )),
+                                      BlocProvider(
+                                        create: (context) => sl<ZakatCubit>()..getAllProducts(),
+                                        child: BlocConsumer<ZakatCubit, ZakatState>(
+                                            listener: (context, state) async {
+                                          if (state.zakatState ==
+                                              RequestState.productsLoading) {
+                                            showLoading();
+                                          } else if (state.zakatState ==
+                                              RequestState.productsError) {
+                                            hideLoading();
+                                          } else if (state.zakatState ==
+                                              RequestState.productsLoaded) {
+                                            alreadyProducts.clear();
+                                            for (var n in state.productsList) {
+                                              alreadyProducts.add(ProductImages(activeImage: false,imageName: n.productName,imagePath: n.productImage));
+                                            }
+                                            hideLoading();
+                                          }
+                                        }, builder: (context, state) {
+                                          return Expanded(
+                                              child: alreadyProducts.isNotEmpty ? Scrollbar(
+                                                thumbVisibility: true,
+                                                controller: _scrollController,
+                                                child: GridView.builder(
+                                                    padding: const EdgeInsets.only(
+                                                        right: 8, left: 8),
+                                                    scrollDirection: Axis.vertical,
+                                                    shrinkWrap: true,
+                                                    controller: _scrollController,
+                                                    gridDelegate:
+                                                    const SliverGridDelegateWithMaxCrossAxisExtent(
+                                                        maxCrossAxisExtent: 200,
+                                                        childAspectRatio: 1,
+                                                        crossAxisSpacing: 20,
+                                                        mainAxisSpacing: 20),
+                                                    itemCount: alreadyProducts.length,
+                                                    itemBuilder: (_, index) {
+                                                      return ProductImageView(
+                                                        imagePath: alreadyProducts[index].imagePath!,
+                                                        activeImage: alreadyProducts[index].activeImage!,
+                                                        imageName: alreadyProducts[index].imageName!,
+                                                        makeActive: (String imagePath) {
+                                                          productImage = imagePath;
+                                                          setState(() {
+                                                            for (var n in alreadyProducts) {
+                                                              n.activeImage = false;
+                                                            }
+                                                            alreadyProducts[index].activeImage = true;
+                                                            _productNameController.text =
+                                                            alreadyProducts[index].imageName!;
+                                                          });
+                                                        },
+                                                      );
+                                                    }),
+                                              ) : const Center(
+                                                child: Text(
+                                                  AppStrings.noProducts,
+                                                  style: TextStyle(
+                                                      fontFamily: AppFonts.qabasFontFamily),
+                                                ),
+                                              ));
+                                        }),
+                                      ),
                                       SizedBox(
                                         height: 20.h,
                                       ),
@@ -462,7 +485,8 @@ class _RemainViewState extends State<RemainView> {
                                           AppStrings.sundryName,
                                           TextInputType.text,
                                           (String textVal) {},
-                                      true),
+                                          true,
+                                          true),
                                       SizedBox(
                                         height: 10.h,
                                       ),
@@ -471,7 +495,8 @@ class _RemainViewState extends State<RemainView> {
                                           AppStrings.sundryPrice,
                                           TextInputType.number,
                                           (String textVal) {},
-                                      false),
+                                          false,
+                                          true),
                                       SizedBox(
                                         height:
                                             AppConstants.heightBetweenElements,
@@ -537,10 +562,8 @@ class _RemainViewState extends State<RemainView> {
                                               setState(() {
                                                 showAllSundries = true;
                                               });
-                                              await Future.delayed(const Duration(
-                                                  milliseconds: 700));
-                                              scaffoldKey.currentState
-                                                  ?.openDrawer();
+                                              FocusScope.of(context).requestFocus(FocusNode());
+                                              scaffoldKey.currentState?.openDrawer();
                                             },
                                             child: Container(
                                                 width: 90.w,

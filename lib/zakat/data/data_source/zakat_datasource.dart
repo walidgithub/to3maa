@@ -20,6 +20,8 @@ import 'package:To3maa/zakat/domain/responses/zakat_products_by_kilos_response.d
 import 'package:To3maa/zakat/domain/responses/zakat_products_response.dart';
 import 'package:To3maa/zakat/domain/responses/zakat_response.dart';
 
+import '../../domain/responses/purchases_by_kilos_response.dart';
+
 abstract class BaseDataSource {
   Future<int> insertZakatData(InsertZakatRequest insertZakatRequest);
   Future<int> insertZakatProductsData(
@@ -49,6 +51,10 @@ abstract class BaseDataSource {
   Future<List<ZakatProductsResponse>> getZakatProductsByZatatId(
       GetZakatProductsByZatatIdRequest getZakatProductsByZatatIdRequest);
   Future<List<ZakatProductsByKilosResponse>> getAllZakatProductsByKilos();
+  Future<List<PurchasesByKilosResponse>> getAllPurchasesByKilos();
+
+  Future<double> getTotalOfPurchases();
+  Future<double> getTotalOfSundries();
 }
 
 class ZakatDataSource extends BaseDataSource {
@@ -73,6 +79,8 @@ class ZakatDataSource extends BaseDataSource {
   Future<int> deleteAllZakatData() async {
     final res = await _dbHelper.deleteAllZakatData().then((res) async {
       await _dbHelper.deleteAllZakatProductsData();
+      await _dbHelper.deleteAllSundriesData();
+      await _dbHelper.deleteAllPurchasesData();
     });
     try {
       return res;
@@ -137,6 +145,17 @@ class ZakatDataSource extends BaseDataSource {
   Future<List<ZakatProductsByKilosResponse>>
       getAllZakatProductsByKilos() async {
     final res = await _dbHelper.getAllZakatProductsByKilos();
+    try {
+      return res;
+    } catch (e) {
+      throw e.toString();
+    }
+  }
+
+  @override
+  Future<List<PurchasesByKilosResponse>>
+  getAllPurchasesByKilos() async {
+    final res = await _dbHelper.getAllPurchasesByKilos();
     try {
       return res;
     } catch (e) {
@@ -281,6 +300,26 @@ class ZakatDataSource extends BaseDataSource {
   @override
   Future<int> insertSundryData(InsertSundryRequest insertSundryRequest) async  {
     final res = await _dbHelper.insertSundryData(insertSundryRequest);
+    try {
+      return res;
+    } catch (e) {
+      throw e.toString();
+    }
+  }
+
+  @override
+  Future<double> getTotalOfPurchases() async {
+    final res = await _dbHelper.getTotalOfPurchases();
+    try {
+      return res;
+    } catch (e) {
+      throw e.toString();
+    }
+  }
+
+  @override
+  Future<double> getTotalOfSundries() async {
+    final res = await _dbHelper.getTotalOfSundries();
     try {
       return res;
     } catch (e) {

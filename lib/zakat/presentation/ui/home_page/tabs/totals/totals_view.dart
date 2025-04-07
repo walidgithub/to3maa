@@ -15,6 +15,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:hijri/hijri_calendar.dart';
 import 'dart:ui' as ui;
 import '../../../../../domain/entities/cart_items.dart';
+import '../../../../../domain/models/purchases_by_kilos_model.dart';
+import '../../../../../domain/responses/purchases_by_kilos_response.dart';
 import 'export_class.dart';
 import 'package:intl/intl.dart';
 import '../../../../../../core/shared/constant/app_constants.dart';
@@ -31,6 +33,7 @@ class TotalsView extends StatefulWidget {
 
 class _TotalsViewState extends State<TotalsView> {
   List<ZakatProductsByKilosResponse> zakatByKilos = [];
+  List<PurchasesByKilosResponse> purchasesByKilos = [];
   HijriCalendar hijriDate = HijriCalendar.now();
   DatesResponse? selectedDate;
   List<DatesResponse> datesList = [];
@@ -39,6 +42,7 @@ class _TotalsViewState extends State<TotalsView> {
   @override
   void initState() {
     getZakatByKilos();
+    getPurchasesByKilos();
     for (var x in cartItems) {
       cart.add(Cart(
           id: x.id,
@@ -135,6 +139,10 @@ class _TotalsViewState extends State<TotalsView> {
     await ZakatCubit.get(context).getZakatProductsByKilos();
   }
 
+  Future<void> getPurchasesByKilos() async {
+    await ZakatCubit.get(context).getPurchasesByKilos();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Directionality(
@@ -166,6 +174,16 @@ class _TotalsViewState extends State<TotalsView> {
                 RequestState.getZakatProductsByKilosLoaded) {
               zakatByKilos = state.zakatProductsByKiloList;
               hideLoading();
+            } else if (state.zakatState ==
+                RequestState.getPurchasesByKilosLoading) {
+              showLoading();
+            } else if (state.zakatState ==
+                RequestState.getPurchasesByKilosError) {
+              hideLoading();
+            } else if (state.zakatState ==
+                RequestState.getPurchasesByKilosLoaded) {
+              purchasesByKilos = state.purchasesByKiloList;
+              hideLoading();
             }
           }, builder: (context, state) {
             return Column(
@@ -175,7 +193,13 @@ class _TotalsViewState extends State<TotalsView> {
                 ),
                 Row(
                   children: [
-                    Text("استخراج البيانات الحالية", style: const TextStyle(fontFamily: AppFonts.boldFontFamily).copyWith(fontWeight: FontWeight.bold,fontSize: 18.sp),),
+                    Text(
+                      "استخراج البيانات الحالية",
+                      style:
+                          const TextStyle(fontFamily: AppFonts.boldFontFamily)
+                              .copyWith(
+                                  fontWeight: FontWeight.bold, fontSize: 18.sp),
+                    ),
                     SizedBox(
                       width: 20.w,
                     ),
@@ -220,8 +244,7 @@ class _TotalsViewState extends State<TotalsView> {
                                         ),
                                 itemBuilder: (BuildContext context, int index) {
                                   return TotalsProductsView(
-                                      productId:
-                                      zakatByKilos[index].id,
+                                      productId: zakatByKilos[index].id,
                                       productName:
                                           zakatByKilos[index].productName,
                                       productImage:
@@ -231,6 +254,16 @@ class _TotalsViewState extends State<TotalsView> {
                                       sa3Weight: zakatByKilos[index].sa3Weight,
                                       productDesc:
                                           zakatByKilos[index].productDesc,
+                                      sumPurchasesQuantity: purchasesByKilos
+                                          .firstWhere(
+                                            (e) => e.productName == zakatByKilos[index].productName,
+                                        orElse: () => const PurchasesByKilosModel(
+                                          id: 0,
+                                          productName: "",
+                                          productPrice: "",
+                                          sumPurchasesQuantity: 0,
+                                        ),
+                                      ).sumPurchasesQuantity ?? 0,
                                       sumProductQuantity: zakatByKilos[index]
                                           .sumProductQuantity!);
                                 }),

@@ -24,6 +24,8 @@ import 'package:To3maa/zakat/domain/responses/zakat_products_by_kilos_response.d
 import 'package:To3maa/zakat/domain/responses/zakat_products_response.dart';
 import 'package:To3maa/zakat/domain/responses/zakat_response.dart';
 
+import '../../domain/responses/purchases_by_kilos_response.dart';
+
 class ZakatRepository extends BaseRepository {
   final BaseDataSource _baseDataSource;
 
@@ -116,6 +118,17 @@ class ZakatRepository extends BaseRepository {
       getAllZakatProductsByKilos() async {
     try {
       final result = await _baseDataSource.getAllZakatProductsByKilos();
+      return Right(result);
+    } catch (error) {
+      return Left(ErrorHandler.handle(error).failure);
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<PurchasesByKilosResponse>>>
+  getAllPurchasesByKilos() async {
+    try {
+      final result = await _baseDataSource.getAllPurchasesByKilos();
       return Right(result);
     } catch (error) {
       return Left(ErrorHandler.handle(error).failure);
@@ -249,6 +262,26 @@ class ZakatRepository extends BaseRepository {
   Future<Either<Failure, int>> insertSundryData(InsertSundryRequest insertSundryRequest) async {
     try {
       final result = await _baseDataSource.insertSundryData(insertSundryRequest);
+      return Right(result);
+    } catch (error) {
+      return Left(ErrorHandler.handle(error).failure);
+    }
+  }
+
+  @override
+  Future<Either<Failure, double>> getTotalOfPurchases() async {
+    try {
+      final result = await _baseDataSource.getTotalOfPurchases();
+      return Right(result);
+    } catch (error) {
+      return Left(ErrorHandler.handle(error).failure);
+    }
+  }
+
+  @override
+  Future<Either<Failure, double>> getTotalOfSundries() async {
+    try {
+      final result = await _baseDataSource.getTotalOfSundries();
       return Right(result);
     } catch (error) {
       return Left(ErrorHandler.handle(error).failure);

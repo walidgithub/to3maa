@@ -7,10 +7,13 @@ import 'package:To3maa/zakat/domain/responses/zakat_products_by_kilos_response.d
 import 'package:To3maa/zakat/domain/responses/zakat_products_response.dart';
 import 'package:To3maa/zakat/domain/responses/zakat_response.dart';
 
+import '../../../../domain/responses/purchases_by_kilos_response.dart';
+
 class ZakatState extends Equatable {
   final List<ProductsResponse> productsList;
   final List<ZakatResponse> zakatList;
   final List<ZakatProductsByKilosResponse> zakatProductsByKiloList;
+  final List<PurchasesByKilosResponse> purchasesByKiloList;
   final List<ZakatProductsResponse> zakatProductsByZakatIdList;
   final List<SundriesResponse> sundriesList;
   final List<PurchasesResponse> purchasesList;
@@ -19,6 +22,8 @@ class ZakatState extends Equatable {
   final int purchaseId;
   final int zakatProductId;
   final int productId;
+  final double sundriesTotal;
+  final double purchasesTotal;
   final RequestState zakatState;
   final String zakatMessage;
 
@@ -28,12 +33,15 @@ class ZakatState extends Equatable {
     this.sundriesList = const [],
     this.purchasesList = const [],
     this.zakatProductsByKiloList = const [],
+    this.purchasesByKiloList = const [],
     this.zakatProductsByZakatIdList = const [],
     this.zakatId = 0,
     this.zakatProductId = 0,
     this.productId = 0,
     this.sundryId = 0,
     this.purchaseId = 0,
+    this.sundriesTotal = 0.0,
+    this.purchasesTotal = 0.0,
     this.zakatState = RequestState.initialState,
     this.zakatMessage = '',
   });
@@ -44,12 +52,15 @@ class ZakatState extends Equatable {
     List<SundriesResponse>? sundriesList,
     List<PurchasesResponse>? purchasesList,
     List<ZakatProductsByKilosResponse>? zakatProductsByKiloList,
+    List<PurchasesByKilosResponse>? purchasesByKiloList,
     List<ZakatProductsResponse>? zakatProductsByZakatIdList,
     int? zakatId,
     int? sundryId,
     int? purchaseId,
     int? zakatProductId,
     int? productId,
+    double? sundriesTotal,
+    double? purchasesTotal,
     RequestState? zakatState,
     String? zakatMessage,
   }) {
@@ -60,11 +71,15 @@ class ZakatState extends Equatable {
       purchasesList: purchasesList ?? this.purchasesList,
       zakatProductsByKiloList:
           zakatProductsByKiloList ?? this.zakatProductsByKiloList,
+      purchasesByKiloList:
+      purchasesByKiloList ?? this.purchasesByKiloList,
       zakatProductsByZakatIdList:
           zakatProductsByZakatIdList ?? this.zakatProductsByZakatIdList,
       zakatId: zakatId ?? this.zakatId,
       sundryId: sundryId ?? this.sundryId,
       purchaseId: purchaseId ?? this.purchaseId,
+      sundriesTotal: sundriesTotal ?? this.sundriesTotal,
+      purchasesTotal: purchasesTotal ?? this.purchasesTotal,
       zakatProductId: zakatProductId ?? this.zakatProductId,
       productId: productId ?? this.productId,
       zakatState: zakatState ?? this.zakatState,
@@ -79,12 +94,15 @@ class ZakatState extends Equatable {
     sundriesList,
     purchasesList,
         zakatProductsByKiloList,
+    purchasesByKiloList,
         zakatProductsByZakatIdList,
         zakatId,
     sundryId,
     purchaseId,
         zakatProductId,
         productId,
+    purchasesTotal,
+    sundriesTotal,
         zakatState,
         zakatMessage
       ];

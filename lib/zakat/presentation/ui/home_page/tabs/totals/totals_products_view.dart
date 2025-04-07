@@ -17,6 +17,7 @@ class TotalsProductsView extends StatefulWidget {
   final String productDesc;
   final double sa3Weight;
   final int sumProductQuantity;
+  final int sumPurchasesQuantity;
   const TotalsProductsView(
       {super.key,
       required this.productId,
@@ -25,6 +26,7 @@ class TotalsProductsView extends StatefulWidget {
       required this.productPrice,
       required this.sa3Weight,
       required this.productDesc,
+      required this.sumPurchasesQuantity,
       required this.sumProductQuantity});
 
   @override
@@ -157,7 +159,7 @@ class _TotalsProductsViewState extends State<TotalsProductsView> {
                         width: 5.w,
                       ),
                       Text(
-                        formatWeight(widget.sumProductQuantity * widget.sa3Weight).toString(),
+                        formatWeight(widget.sumPurchasesQuantity).toString(),
                         style: AppTypography.kLight14.copyWith(
                             fontWeight: FontWeight.bold,
                             color: AppColors.cNumber),
@@ -166,8 +168,7 @@ class _TotalsProductsViewState extends State<TotalsProductsView> {
                         width: 5.w,
                       ),
                       Text(
-                        formatWeightString(widget.sumProductQuantity *
-                            widget.sa3Weight).toString() ==
+                        formatWeightString(widget.sumPurchasesQuantity).toString() ==
                             "ton"
                             ? AppStrings.ton
                             : AppStrings.kilo,

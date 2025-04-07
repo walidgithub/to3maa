@@ -39,6 +39,8 @@ import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/update_product_useca
 import 'package:To3maa/zakat/presentation/ui/home_page/cubit/zakat_states.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../domain/use_cases/zakat_usecase/get_purchases_by_kilos_usecase.dart';
+
 class ZakatCubit extends Cubit<ZakatState> {
   final DeleteProductUseCase deleteProductUseCase;
   final DeleteSundryUseCase deleteSundryUseCase;
@@ -51,6 +53,7 @@ class ZakatCubit extends Cubit<ZakatState> {
   final GetAllPurchasesUseCase getAllPurchasesUseCase;
   final GetAllZakatUseCase getAllZakatUseCase;
   final GetZakatProductsByKilosUseCase getZakatProductsByKilosUseCase;
+  final GetPurchasesByKilosUseCase getPurchasesByKilosUseCase;
   final GetZakatProductsByZakatIdUseCase getZakatProductsByZakatIdUseCase;
   final InsertProductUseCase insertProductUseCase;
   final InsertZakatProductsUseCase insertZakatProductsUseCase;
@@ -82,6 +85,7 @@ class ZakatCubit extends Cubit<ZakatState> {
     this.deletePurchaseUseCase,
     this.deleteSundryUseCase,
     this.insertPurchaseUseCase,
+      this.getPurchasesByKilosUseCase
   ) : super(const ZakatState());
 
   static ZakatCubit get(context) => BlocProvider.of(context);
@@ -406,6 +410,24 @@ class ZakatCubit extends Cubit<ZakatState> {
               zakatProductsByKiloList: r,
               zakatState: RequestState.getZakatProductsByKilosLoaded,
             )));
+  }
+
+  FutureOr<void> getPurchasesByKilos() async {
+    emit(state.copyWith(
+        zakatState: RequestState.getPurchasesByKilosLoading,
+        zakatMessage: '',
+        purchasesByKiloList: []));
+
+    final result = await getPurchasesByKilosUseCase(const NoParameters());
+
+    result.fold(
+            (l) => emit(state.copyWith(
+            zakatState: RequestState.getPurchasesByKilosError,
+            zakatMessage: l.message)),
+            (r) => emit(state.copyWith(
+              purchasesByKiloList: r,
+          zakatState: RequestState.getPurchasesByKilosLoaded,
+        )));
   }
 
   FutureOr<void> getZakatProductsByZakatId(

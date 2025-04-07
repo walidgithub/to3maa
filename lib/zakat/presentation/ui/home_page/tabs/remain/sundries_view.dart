@@ -47,6 +47,9 @@ class _SundriesViewState extends State<SundriesView> {
   Widget build(BuildContext context) {
     return Drawer(
       backgroundColor: AppColors.cWhite,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.zero,
+      ),
       child:
       Column(
         children: [
@@ -116,61 +119,63 @@ class _SundriesViewState extends State<SundriesView> {
                   ),
                   Expanded(
                       child: sundriesList.isNotEmpty
-                          ? ListView.separated(
-                              itemCount: sundriesList.length,
-                              shrinkWrap: true,
-                              scrollDirection: Axis.vertical,
-                              physics: const NeverScrollableScrollPhysics(),
-                              separatorBuilder:
-                                  (BuildContext cartContext, int index) =>
-                                  SizedBox(
-                                    height: 20.h,
-                                  ),
-                              itemBuilder:
-                                  (BuildContext cartContext, int index) {
-                                return SundryView(
-                                  index: sundriesList.length - index,
-                                  sundryName: sundriesList[index].sundryName!,
-                                  sundryPrice: sundriesList[index].sundryPrice!,
-                                  id: sundriesList[index].id,
-                                  deleteCart: () async {
-                                    await showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return Directionality(
-                                            textDirection: TextDirection.rtl,
-                                            child: AlertDialog(
-                                              title: Text(AppStrings.warning,
-                                                  style: AppTypography.kBold20),
-                                              content: const Text(
-                                                  AppStrings.checkToDelete),
-                                              actions: [
-                                                TextButton(
-                                                    onPressed: () async {
-                                                      DeleteSundryRequest deleteSundryRequest = DeleteSundryRequest(id: sundriesList[index].id);
-                                                      await ZakatCubit.get(
-                                                          cartContext)
-                                                          .deleteSundry(
-                                                          deleteSundryRequest);
-                                                    },
-                                                    child: Text(AppStrings.yes,
-                                                        style: AppTypography
-                                                            .kLight16)),
-                                                TextButton(
-                                                    onPressed: () {
-                                                      Navigator.of(context)
-                                                          .pop(false);
-                                                    },
-                                                    child: Text(AppStrings.no,
-                                                        style: AppTypography
-                                                            .kLight16)),
-                                              ],
-                                            ),
-                                          );
-                                        });
-                                  },
-                                );
-                              })
+                          ? SingleChildScrollView(
+                            child: ListView.separated(
+                                itemCount: sundriesList.length,
+                                shrinkWrap: true,
+                                scrollDirection: Axis.vertical,
+                                physics: const NeverScrollableScrollPhysics(),
+                                separatorBuilder:
+                                    (BuildContext cartContext, int index) =>
+                                    SizedBox(
+                                      height: 20.h,
+                                    ),
+                                itemBuilder:
+                                    (BuildContext cartContext, int index) {
+                                  return SundryView(
+                                    index: sundriesList.length - index,
+                                    sundryName: sundriesList[index].sundryName!,
+                                    sundryPrice: sundriesList[index].sundryPrice!,
+                                    id: sundriesList[index].id,
+                                    deleteCart: () async {
+                                      await showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return Directionality(
+                                              textDirection: TextDirection.rtl,
+                                              child: AlertDialog(
+                                                title: Text(AppStrings.warning,
+                                                    style: AppTypography.kBold20),
+                                                content: const Text(
+                                                    AppStrings.checkToDelete),
+                                                actions: [
+                                                  TextButton(
+                                                      onPressed: () async {
+                                                        DeleteSundryRequest deleteSundryRequest = DeleteSundryRequest(id: sundriesList[index].id);
+                                                        await ZakatCubit.get(
+                                                            cartContext)
+                                                            .deleteSundry(
+                                                            deleteSundryRequest);
+                                                      },
+                                                      child: Text(AppStrings.yes,
+                                                          style: AppTypography
+                                                              .kLight16)),
+                                                  TextButton(
+                                                      onPressed: () {
+                                                        Navigator.of(context)
+                                                            .pop(false);
+                                                      },
+                                                      child: Text(AppStrings.no,
+                                                          style: AppTypography
+                                                              .kLight16)),
+                                                ],
+                                              ),
+                                            );
+                                          });
+                                    },
+                                  );
+                                }),
+                          )
                           : const Center(
                         child: Text(
                           AppStrings.noSundries,

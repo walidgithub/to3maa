@@ -22,6 +22,8 @@ import 'package:To3maa/zakat/domain/responses/zakat_products_by_kilos_response.d
 import 'package:To3maa/zakat/domain/responses/zakat_products_response.dart';
 import 'package:To3maa/zakat/domain/responses/zakat_response.dart';
 
+import '../responses/purchases_by_kilos_response.dart';
+
 abstract class BaseRepository {
   Future<Either<Failure, int>> insertZakatData(
       InsertZakatRequest insertZakatRequest);
@@ -62,4 +64,9 @@ abstract class BaseRepository {
           GetZakatProductsByZatatIdRequest getZakatProductsByZatatIdRequest);
   Future<Either<Failure, List<ZakatProductsByKilosResponse>>>
       getAllZakatProductsByKilos();
+  Future<Either<Failure, List<PurchasesByKilosResponse>>>
+  getAllPurchasesByKilos();
+
+  Future<Either<Failure, double>> getTotalOfPurchases();
+  Future<Either<Failure, double>> getTotalOfSundries();
 }
