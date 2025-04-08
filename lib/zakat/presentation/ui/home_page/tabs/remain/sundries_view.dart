@@ -16,7 +16,8 @@ import '../../cubit/zakat_cubit.dart';
 import '../../cubit/zakat_states.dart';
 
 class SundriesView extends StatefulWidget {
-  const SundriesView({super.key});
+  Function deleteSundry;
+  SundriesView({super.key, required this.deleteSundry});
 
   @override
   State<SundriesView> createState() => _SundriesViewState();
@@ -156,6 +157,7 @@ class _SundriesViewState extends State<SundriesView> {
                                                             cartContext)
                                                             .deleteSundry(
                                                             deleteSundryRequest);
+                                                        widget.deleteSundry();
                                                       },
                                                       child: Text(AppStrings.yes,
                                                           style: AppTypography

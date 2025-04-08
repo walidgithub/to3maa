@@ -1,4 +1,3 @@
-import 'package:To3maa/zakat/domain/requests/delete_product_request.dart';
 import 'package:To3maa/zakat/domain/requests/delete_purchase_request.dart';
 import 'package:To3maa/zakat/presentation/ui/home_page/tabs/remain/purchase_view.dart';
 import 'package:animate_do/animate_do.dart';
@@ -17,7 +16,8 @@ import '../../cubit/zakat_cubit.dart';
 import '../../cubit/zakat_states.dart';
 
 class PurchasesView extends StatefulWidget {
-  const PurchasesView({super.key});
+  Function deletePurchase;
+  PurchasesView({super.key, required this.deletePurchase});
 
   @override
   State<PurchasesView> createState() => _PurchasesViewState();
@@ -158,6 +158,8 @@ class _PurchasesViewState extends State<PurchasesView> {
                                                         cartContext)
                                                         .deletePurchase(
                                                         deletePurchaseRequest);
+
+                                                    widget.deletePurchase();
                                                   },
                                                   child: Text(AppStrings.yes,
                                                       style: AppTypography

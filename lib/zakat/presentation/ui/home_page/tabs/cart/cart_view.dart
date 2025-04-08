@@ -31,12 +31,16 @@ class _CartViewState extends State<CartView> {
   @override
   void initState() {
     getAllZakat();
+    getTotalOfPurchases();
+    getTotalOfSundries();
     super.initState();
   }
 
   List<Cart> cart = [];
 
   int membersCountText = 0;
+  double purchasesTotal = 0.0;
+  double sundriesTotal = 0.0;
 
   void getTotalMembersCount(List<Cart> carts) {
     setState(() {
@@ -51,6 +55,14 @@ class _CartViewState extends State<CartView> {
 
   Future<void> deleteAll() async {
     await ZakatCubit.get(context).deleteAllZakat();
+  }
+
+  Future<void> getTotalOfPurchases() async {
+    await ZakatCubit.get(context).getTotalOfPurchases();
+  }
+
+  Future<void> getTotalOfSundries() async {
+    await ZakatCubit.get(context).getTotalOfSundries();
   }
 
   double getTotal() {
@@ -113,6 +125,20 @@ class _CartViewState extends State<CartView> {
           } else if (state.zakatState == RequestState.deleteError) {
             hideLoading();
           } else if (state.zakatState == RequestState.deleteDone) {
+            hideLoading();
+          } else if (state.zakatState == RequestState.sundriesLoading) {
+            showLoading();
+          } else if (state.zakatState == RequestState.sundriesLoaded) {
+            sundriesTotal = state.sundriesTotal;
+            hideLoading();
+          } else if (state.zakatState == RequestState.sundriesError) {
+            hideLoading();
+          } else if (state.zakatState == RequestState.purchasesLoading) {
+            showLoading();
+          } else if (state.zakatState == RequestState.purchasesLoaded) {
+            purchasesTotal = state.purchasesTotal;
+            hideLoading();
+          } else if (state.zakatState == RequestState.purchasesError) {
             hideLoading();
           }
         }, builder: (context, state) {
@@ -213,6 +239,9 @@ class _CartViewState extends State<CartView> {
                                                       await getAllZakat();
                                                       getTotalMembersCount(
                                                           cart);
+                                                      getTotalOfPurchases();
+                                                      getTotalOfSundries();
+
                                                       setState(() {});
                                                       Navigator.of(context)
                                                           .pop(false);
@@ -348,7 +377,7 @@ class _CartViewState extends State<CartView> {
                               Row(
                                 children: [
                                   Text(
-                                    getRemain().toString(),
+                                    (getRemain() - sundriesTotal - purchasesTotal).toString(),
                                     style: AppTypography.kLight16.copyWith(
                                         fontWeight: FontWeight.bold,
                                         color: AppColors.cBlack),

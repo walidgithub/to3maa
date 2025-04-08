@@ -39,10 +39,15 @@ class _TotalsViewState extends State<TotalsView> {
   List<DatesResponse> datesList = [];
   List<Cart> cart = [];
 
+  double purchasesTotal = 0.0;
+  double sundriesTotal = 0.0;
+
   @override
   void initState() {
     getZakatByKilos();
     getPurchasesByKilos();
+    getTotalOfPurchases();
+    getTotalOfSundries();
     for (var x in cartItems) {
       cart.add(Cart(
           id: x.id,
@@ -58,6 +63,14 @@ class _TotalsViewState extends State<TotalsView> {
       selectedDate = datesList[0];
     }
     super.initState();
+  }
+
+  Future<void> getTotalOfPurchases() async {
+    await ZakatCubit.get(context).getTotalOfPurchases();
+  }
+
+  Future<void> getTotalOfSundries() async {
+    await ZakatCubit.get(context).getTotalOfSundries();
   }
 
   List<DatesResponse> extractHijriYears(List<Cart> carts) {
@@ -183,6 +196,20 @@ class _TotalsViewState extends State<TotalsView> {
             } else if (state.zakatState ==
                 RequestState.getPurchasesByKilosLoaded) {
               purchasesByKilos = state.purchasesByKiloList;
+              hideLoading();
+            } else if (state.zakatState == RequestState.sundriesLoading) {
+              showLoading();
+            } else if (state.zakatState == RequestState.sundriesLoaded) {
+              sundriesTotal = state.sundriesTotal;
+              hideLoading();
+            } else if (state.zakatState == RequestState.sundriesError) {
+              hideLoading();
+            } else if (state.zakatState == RequestState.purchasesLoading) {
+              showLoading();
+            } else if (state.zakatState == RequestState.purchasesLoaded) {
+              purchasesTotal = state.purchasesTotal;
+              hideLoading();
+            } else if (state.zakatState == RequestState.purchasesError) {
               hideLoading();
             }
           }, builder: (context, state) {
@@ -336,7 +363,7 @@ class _TotalsViewState extends State<TotalsView> {
                               Row(
                                 children: [
                                   Text(
-                                    getRemain().toString(),
+                                    (getRemain() - sundriesTotal - purchasesTotal).toString(),
                                     style: AppTypography.kLight16.copyWith(
                                         fontWeight: FontWeight.bold,
                                         color: AppColors.cBlack),

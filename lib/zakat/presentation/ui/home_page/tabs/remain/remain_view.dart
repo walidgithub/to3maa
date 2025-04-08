@@ -12,6 +12,7 @@ import '../../../../../../core/shared/constant/app_strings.dart';
 import '../../../../../../core/shared/constant/app_typography.dart';
 import '../../../../../../core/shared/style/app_colors.dart';
 import '../../../../../../core/utils/enums.dart';
+import '../../../../../domain/entities/cart_items.dart';
 import '../../../../../domain/entities/product_image.dart';
 import '../../../../../domain/requests/insert_purchase_request.dart';
 import '../../../../ui_components/loading_dialog.dart';
@@ -41,6 +42,31 @@ class _RemainViewState extends State<RemainView> {
   var scaffoldKey = GlobalKey<ScaffoldState>();
 
   String productImage = '';
+  double purchasesTotal = 0.0;
+  double sundriesTotal = 0.0;
+
+  @override
+  void initState() {
+    getTotalOfSundries();
+    getTotalOfPurchases();
+    super.initState();
+  }
+
+  Future<void> getTotalOfPurchases() async {
+    await ZakatCubit.get(context).getTotalOfPurchases();
+  }
+
+  Future<void> getTotalOfSundries() async {
+    await ZakatCubit.get(context).getTotalOfSundries();
+  }
+
+  double getRemain() {
+    double remain = 0.0;
+    for (var x in cartItems) {
+      remain = remain + double.parse(x.remainValue);
+    }
+    return remain;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +77,15 @@ class _RemainViewState extends State<RemainView> {
         drawer: SizedBox(
             width: MediaQuery.of(context).size.width * 0.75,
             child:
-                showAllSundries ? const SundriesView() : const PurchasesView()),
+                showAllSundries ? SundriesView(
+                  deleteSundry: () {
+                    getTotalOfSundries();
+                  },
+                ) : PurchasesView(
+                  deletePurchase: () {
+                    getTotalOfPurchases();
+                  },
+                )),
         appBar: AppBar(
           backgroundColor: AppColors.cWhite,
           automaticallyImplyLeading: false,
@@ -66,543 +100,636 @@ class _RemainViewState extends State<RemainView> {
           ),
         ),
         backgroundColor: AppColors.cWhite,
-        body: Column(
-          children: [
-            SizedBox(
-              height: 10.h,
-            ),
-            Row(
+        body: BlocConsumer<ZakatCubit, ZakatState>(
+          listener: (context, state) {
+            if (state.zakatState == RequestState.sundriesLoading) {
+              showLoading();
+            } else if (state.zakatState == RequestState.sundriesLoaded) {
+              sundriesTotal = state.sundriesTotal;
+              hideLoading();
+            } else if (state.zakatState == RequestState.sundriesError) {
+              hideLoading();
+            } else if (state.zakatState == RequestState.purchasesLoading) {
+              showLoading();
+            } else if (state.zakatState == RequestState.purchasesLoaded) {
+              purchasesTotal = state.purchasesTotal;
+              hideLoading();
+            } else if (state.zakatState == RequestState.purchasesError) {
+              hideLoading();
+            }
+          },
+          builder: (context, state) {
+            return Column(
               children: [
-                Text(
-                  AppStrings.remain,
-                  style: AppTypography.kBold18.copyWith(
-                    color: AppColors.cBlack,
-                    fontFamily: AppFonts.qabasFontFamily,
-                  ),
+                SizedBox(
+                  height: 10.h,
                 ),
                 Row(
                   children: [
                     Text(
-                      "100",
-                      style: AppTypography.kLight16.copyWith(
-                          fontWeight: FontWeight.bold, color: AppColors.cBlack),
+                      AppStrings.remain,
+                      style: AppTypography.kBold18.copyWith(
+                        color: AppColors.cBlack,
+                        fontFamily: AppFonts.qabasFontFamily,
+                      ),
                     ),
-                    SizedBox(
-                      width: 5.w,
-                    ),
-                    Text(
-                      AppStrings.currency,
-                      style: AppTypography.kLight16.copyWith(
-                          fontFamily: AppFonts.boldFontFamily,
-                          color: AppColors.cBlack),
+                    Row(
+                      children: [
+                        Text(
+                          (getRemain() - sundriesTotal - purchasesTotal).toString(),
+                          style: AppTypography.kLight16.copyWith(
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.cBlack),
+                        ),
+                        SizedBox(
+                          width: 5.w,
+                        ),
+                        Text(
+                          AppStrings.currency,
+                          style: AppTypography.kLight16.copyWith(
+                              fontFamily: AppFonts.boldFontFamily,
+                              color: AppColors.cBlack),
+                        ),
+                      ],
                     ),
                   ],
                 ),
-              ],
-            ),
-            // -------------------------------------------------------------------------------
-            const Divider(),
-            SizedBox(
-              height: 10.h,
-            ),
-            GestureDetector(
-              onHorizontalDragUpdate: (details) {
-                if (details.primaryDelta! > 1.0) {
-                  setState(() {
-                    sundries = true;
-                  });
-                } else {
-                  setState(() {
-                    sundries = false;
-                  });
-                }
-              },
-              child: Column(
-                children: [
-                  Column(
+                // -------------------------------------------------------------------------------
+                const Divider(),
+                SizedBox(
+                  height: 10.h,
+                ),
+                GestureDetector(
+                  onHorizontalDragUpdate: (details) {
+                    if (details.primaryDelta! > 1.0) {
+                      setState(() {
+                        sundries = true;
+                      });
+                    } else {
+                      setState(() {
+                        sundries = false;
+                      });
+                    }
+                  },
+                  child: Column(
                     children: [
-                      Row(
+                      Column(
                         children: [
-                          GestureDetector(
-                            onTap: () {
-                              if (!sundries) {
-                                setState(() {
-                                  sundries = !sundries;
-                                });
-                              }
-                            },
-                            child: Container(
-                              height: 70.h,
-                              width: MediaQuery.sizeOf(context).width / 3,
-                              padding: const EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                  border: Border(
-                                      bottom: BorderSide(
-                                color: sundries
-                                    ? AppColors.cGray
-                                    : AppColors.cTransparent,
-                                width: 5,
-                              ))),
-                              child: Center(
-                                child: Text(
-                                  AppStrings.sundries,
-                                  style: AppTypography.kBold18
-                                      .copyWith(color: AppColors.cTitle),
-                                ),
-                              ),
-                            ),
-                          ),
-                          Container(
-                            height: 45.h,
-                            width: 1.5.w,
-                            color: AppColors.cGray,
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              if (sundries) {
-                                setState(() {
-                                  sundries = !sundries;
-                                });
-                              }
-                            },
-                            child: Container(
-                              height: 70.h,
-                              width: MediaQuery.sizeOf(context).width / 3,
-                              padding: const EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                  color: AppColors.cTransparent,
-                                  border: Border(
-                                      bottom: BorderSide(
+                          Row(
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  if (!sundries) {
+                                    setState(() {
+                                      sundries = !sundries;
+                                    });
+                                  }
+                                },
+                                child: Container(
+                                  height: 70.h,
+                                  width: MediaQuery.sizeOf(context).width / 3,
+                                  padding: const EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                      border: Border(
+                                          bottom: BorderSide(
                                     color: sundries
-                                        ? AppColors.cTransparent
-                                        : AppColors.cGray,
+                                        ? AppColors.cGray
+                                        : AppColors.cTransparent,
                                     width: 5,
                                   ))),
-                              child: Center(
-                                child: Text(
-                                  AppStrings.buyProducts,
-                                  style: AppTypography.kBold18
-                                      .copyWith(color: AppColors.cTitle),
+                                  child: Center(
+                                    child: Text(
+                                      AppStrings.sundries,
+                                      style: AppTypography.kBold18
+                                          .copyWith(color: AppColors.cTitle),
+                                    ),
+                                  ),
                                 ),
                               ),
-                            ),
+                              Container(
+                                height: 45.h,
+                                width: 1.5.w,
+                                color: AppColors.cGray,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  if (sundries) {
+                                    setState(() {
+                                      sundries = !sundries;
+                                    });
+                                  }
+                                },
+                                child: Container(
+                                  height: 70.h,
+                                  width: MediaQuery.sizeOf(context).width / 3,
+                                  padding: const EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                      color: AppColors.cTransparent,
+                                      border: Border(
+                                          bottom: BorderSide(
+                                        color: sundries
+                                            ? AppColors.cTransparent
+                                            : AppColors.cGray,
+                                        width: 5,
+                                      ))),
+                                  child: Center(
+                                    child: Text(
+                                      AppStrings.buyProducts,
+                                      style: AppTypography.kBold18
+                                          .copyWith(color: AppColors.cTitle),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
+                          Container(
+                              width: MediaQuery.sizeOf(context).width - 10.w,
+                              decoration: const BoxDecoration(
+                                  border: Border(
+                                      bottom: BorderSide(
+                                color: AppColors.cGray,
+                                width: 1,
+                              ))))
                         ],
                       ),
-                      Container(
-                          width: MediaQuery.sizeOf(context).width - 10.w,
-                          decoration: const BoxDecoration(
-                              border: Border(
-                                  bottom: BorderSide(
-                            color: AppColors.cGray,
-                            width: 1,
-                          ))))
+                      SizedBox(
+                        height: 20.h,
+                      ),
+                      GestureDetector(
+                        onHorizontalDragUpdate: (details) {
+                          if (details.primaryDelta! > 1.0) {
+                            setState(() {
+                              sundries = true;
+                            });
+                          } else {
+                            setState(() {
+                              sundries = false;
+                            });
+                          }
+                        },
+                        child: SizedBox(
+                            width: MediaQuery.sizeOf(context).width,
+                            height: MediaQuery.sizeOf(context).height / 1.5,
+                            child: !sundries
+                                ? BlocConsumer<ZakatCubit, ZakatState>(
+                                    listener: (context, state) async {
+                                      if (state.zakatState ==
+                                          RequestState.insertLoading) {
+                                        showLoading();
+                                      } else if (state.zakatState ==
+                                          RequestState.insertError) {
+                                        hideLoading();
+                                      } else if (state.zakatState ==
+                                          RequestState.insertDone) {
+                                        hideLoading();
+                                        _productQuantityController.text = "";
+                                        _productNameController.text = "";
+                                        _productPriceController.text = "";
+                                        final snackBar = SnackBar(
+                                          duration: Duration(
+                                              milliseconds: AppConstants
+                                                  .durationOfSnackBar),
+                                          content:
+                                              const Text(AppStrings.successAdd),
+                                        );
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(snackBar);
+                                        getTotalOfPurchases();
+                                        getTotalOfSundries();
+                                      }
+                                    },
+                                    builder: (context, state) {
+                                      return Column(
+                                        children: [
+                                          textFieldWidget(
+                                              _productNameController,
+                                              AppStrings.productName,
+                                              TextInputType.text,
+                                              (String textVal) {},
+                                              false,
+                                              false),
+                                          SizedBox(
+                                            height: AppConstants
+                                                .heightBetweenElements,
+                                          ),
+                                          textFieldWidget(
+                                              _productPriceController,
+                                              AppStrings.productPriceWKilo,
+                                              TextInputType.number,
+                                              (String textVal) {},
+                                              true,
+                                              true),
+                                          SizedBox(
+                                            height: 10.h,
+                                          ),
+                                          textFieldWidget(
+                                              _productQuantityController,
+                                              AppStrings.quantityByKilo,
+                                              TextInputType.number,
+                                              (String textVal) {},
+                                              false,
+                                              true),
+                                          SizedBox(
+                                            height: 10.h,
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              GestureDetector(
+                                                onTap: () {
+                                                  FocusScope.of(context)
+                                                      .unfocus();
+                                                  double? price = double.tryParse(_productPriceController.text.trim());
+                                                  if ((getRemain() - sundriesTotal - purchasesTotal) < price!) {
+                                                    return;
+                                                  }
+                                                  if (_productPriceController
+                                                              .text
+                                                              .trim() !=
+                                                          "" &&
+                                                      _productNameController
+                                                              .text
+                                                              .trim() !=
+                                                          "" &&
+                                                      _productQuantityController
+                                                              .text
+                                                              .trim() !=
+                                                          "") {
+                                                    InsertPurchaseRequest
+                                                        insertPurchaseRequest =
+                                                        InsertPurchaseRequest(
+                                                            productQuantity:
+                                                                int.parse(
+                                                                    _productQuantityController
+                                                                        .text
+                                                                        .trim()),
+                                                            productPrice:
+                                                                _productPriceController
+                                                                    .text
+                                                                    .trim(),
+                                                            productName:
+                                                                _productNameController
+                                                                    .text
+                                                                    .trim(),
+                                                            productImage:
+                                                                productImage);
+                                                    ZakatCubit.get(context)
+                                                        .insertPurchase(
+                                                            insertPurchaseRequest);
+                                                  }
+                                                },
+                                                child: Container(
+                                                    width: 70.w,
+                                                    height: 50.w,
+                                                    decoration: BoxDecoration(
+                                                      border: Border.all(
+                                                          width: 2.w,
+                                                          color: AppColors
+                                                              .cPrimary),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              AppConstants
+                                                                  .radius),
+                                                      color: AppColors.cWhite,
+                                                      shape: BoxShape.rectangle,
+                                                    ),
+                                                    child: Center(
+                                                      child: Text(
+                                                        AppStrings.save,
+                                                        style: AppTypography
+                                                            .kLight14
+                                                            .copyWith(
+                                                          fontFamily: AppFonts
+                                                              .qabasFontFamily,
+                                                          color:
+                                                              AppColors.cButton,
+                                                        ),
+                                                      ),
+                                                    )),
+                                              ),
+                                              GestureDetector(
+                                                onTap: () async {
+                                                  setState(() {
+                                                    showAllSundries = false;
+                                                  });
+                                                  FocusScope.of(context)
+                                                      .requestFocus(
+                                                          FocusNode());
+                                                  scaffoldKey.currentState
+                                                      ?.openDrawer();
+                                                },
+                                                child: Container(
+                                                    width: 90.w,
+                                                    height: 50.w,
+                                                    decoration: BoxDecoration(
+                                                      border: Border.all(
+                                                          width: 2.w,
+                                                          color: AppColors
+                                                              .cPrimary),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              AppConstants
+                                                                  .radius),
+                                                      color: AppColors.cWhite,
+                                                      shape: BoxShape.rectangle,
+                                                    ),
+                                                    child: Center(
+                                                      child: Text(
+                                                        AppStrings.getAll,
+                                                        style: AppTypography
+                                                            .kLight14
+                                                            .copyWith(
+                                                          fontFamily: AppFonts
+                                                              .qabasFontFamily,
+                                                          color:
+                                                              AppColors.cTitle,
+                                                        ),
+                                                      ),
+                                                    )),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 10.h,
+                                          ),
+                                          BlocProvider(
+                                            create: (context) =>
+                                                sl<ZakatCubit>()
+                                                  ..getAllProducts(),
+                                            child: BlocConsumer<ZakatCubit,
+                                                    ZakatState>(
+                                                listener:
+                                                    (context, state) async {
+                                              if (state.zakatState ==
+                                                  RequestState
+                                                      .productsLoading) {
+                                                showLoading();
+                                              } else if (state.zakatState ==
+                                                  RequestState.productsError) {
+                                                hideLoading();
+                                              } else if (state.zakatState ==
+                                                  RequestState.productsLoaded) {
+                                                alreadyProducts.clear();
+                                                for (var n
+                                                    in state.productsList) {
+                                                  alreadyProducts.add(
+                                                      ProductImages(
+                                                          activeImage: false,
+                                                          imageName:
+                                                              n.productName,
+                                                          imagePath:
+                                                              n.productImage));
+                                                }
+                                                hideLoading();
+                                              }
+                                            }, builder: (context, state) {
+                                              return Expanded(
+                                                  child:
+                                                      alreadyProducts.isNotEmpty
+                                                          ? Scrollbar(
+                                                              thumbVisibility:
+                                                                  true,
+                                                              controller:
+                                                                  _scrollController,
+                                                              child: GridView
+                                                                  .builder(
+                                                                      padding: const EdgeInsets
+                                                                          .only(
+                                                                          right:
+                                                                              8,
+                                                                          left:
+                                                                              8),
+                                                                      scrollDirection:
+                                                                          Axis
+                                                                              .vertical,
+                                                                      shrinkWrap:
+                                                                          true,
+                                                                      controller:
+                                                                          _scrollController,
+                                                                      gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                                                                          maxCrossAxisExtent:
+                                                                              200,
+                                                                          childAspectRatio:
+                                                                              1,
+                                                                          crossAxisSpacing:
+                                                                              20,
+                                                                          mainAxisSpacing:
+                                                                              20),
+                                                                      itemCount:
+                                                                          alreadyProducts
+                                                                              .length,
+                                                                      itemBuilder:
+                                                                          (_, index) {
+                                                                        return ProductImageView(
+                                                                          imagePath:
+                                                                              alreadyProducts[index].imagePath!,
+                                                                          activeImage:
+                                                                              alreadyProducts[index].activeImage!,
+                                                                          imageName:
+                                                                              alreadyProducts[index].imageName!,
+                                                                          makeActive:
+                                                                              (String imagePath) {
+                                                                            productImage =
+                                                                                imagePath;
+                                                                            setState(() {
+                                                                              for (var n in alreadyProducts) {
+                                                                                n.activeImage = false;
+                                                                              }
+                                                                              alreadyProducts[index].activeImage = true;
+                                                                              _productNameController.text = alreadyProducts[index].imageName!;
+                                                                            });
+                                                                          },
+                                                                        );
+                                                                      }),
+                                                            )
+                                                          : const Center(
+                                                              child: Text(
+                                                                AppStrings
+                                                                    .noProducts,
+                                                                style: TextStyle(
+                                                                    fontFamily:
+                                                                        AppFonts
+                                                                            .qabasFontFamily),
+                                                              ),
+                                                            ));
+                                            }),
+                                          ),
+                                          SizedBox(
+                                            height: 20.h,
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  )
+                                : BlocConsumer<ZakatCubit, ZakatState>(
+                                    listener: (context, state) async {
+                                      if (state.zakatState ==
+                                          RequestState.insertLoading) {
+                                        showLoading();
+                                      } else if (state.zakatState ==
+                                          RequestState.insertError) {
+                                        hideLoading();
+                                      } else if (state.zakatState ==
+                                          RequestState.insertDone) {
+                                        hideLoading();
+                                        _sundryNameController.text = "";
+                                        _sundryPriceController.text = "";
+                                        final snackBar = SnackBar(
+                                          duration: Duration(
+                                              milliseconds: AppConstants
+                                                  .durationOfSnackBar),
+                                          content:
+                                              const Text(AppStrings.successAdd),
+                                        );
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(snackBar);
+                                        getTotalOfPurchases();
+                                        getTotalOfSundries();
+                                      }
+                                    },
+                                    builder: (context, state) {
+                                      return Column(
+                                        children: [
+                                          textFieldWidget(
+                                              _sundryNameController,
+                                              AppStrings.sundryName,
+                                              TextInputType.text,
+                                              (String textVal) {},
+                                              true,
+                                              true),
+                                          SizedBox(
+                                            height: 10.h,
+                                          ),
+                                          textFieldWidget(
+                                              _sundryPriceController,
+                                              AppStrings.sundryPrice,
+                                              TextInputType.number,
+                                              (String textVal) {},
+                                              false,
+                                              true),
+                                          SizedBox(
+                                            height: AppConstants
+                                                .heightBetweenElements,
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              GestureDetector(
+                                                onTap: () {
+                                                  FocusScope.of(context)
+                                                      .unfocus();
+                                                  double? price = double.tryParse(_sundryPriceController.text.trim());
+                                                  if ((getRemain() - sundriesTotal - purchasesTotal) < price!) {
+                                                    return;
+                                                  }
+                                                  if (_sundryPriceController
+                                                              .text
+                                                              .trim() !=
+                                                          "" &&
+                                                      _sundryNameController.text
+                                                              .trim() !=
+                                                          "") {
+                                                    InsertSundryRequest
+                                                        insertSundryRequest =
+                                                        InsertSundryRequest(
+                                                            sundryPrice:
+                                                                _sundryPriceController
+                                                                    .text
+                                                                    .trim(),
+                                                            sundryName:
+                                                                _sundryNameController
+                                                                    .text
+                                                                    .trim());
+                                                    ZakatCubit.get(context)
+                                                        .insertSundry(
+                                                            insertSundryRequest);
+                                                  }
+                                                },
+                                                child: Container(
+                                                    width: 70.w,
+                                                    height: 50.w,
+                                                    decoration: BoxDecoration(
+                                                      border: Border.all(
+                                                          width: 2.w,
+                                                          color: AppColors
+                                                              .cPrimary),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              AppConstants
+                                                                  .radius),
+                                                      color: AppColors.cWhite,
+                                                      shape: BoxShape.rectangle,
+                                                    ),
+                                                    child: Center(
+                                                      child: Text(
+                                                        AppStrings.save,
+                                                        style: AppTypography
+                                                            .kLight14
+                                                            .copyWith(
+                                                          fontFamily: AppFonts
+                                                              .qabasFontFamily,
+                                                          color:
+                                                              AppColors.cButton,
+                                                        ),
+                                                      ),
+                                                    )),
+                                              ),
+                                              GestureDetector(
+                                                onTap: () async {
+                                                  setState(() {
+                                                    showAllSundries = true;
+                                                  });
+                                                  FocusScope.of(context)
+                                                      .requestFocus(
+                                                          FocusNode());
+                                                  scaffoldKey.currentState
+                                                      ?.openDrawer();
+                                                },
+                                                child: Container(
+                                                    width: 90.w,
+                                                    height: 50.w,
+                                                    decoration: BoxDecoration(
+                                                      border: Border.all(
+                                                          width: 2.w,
+                                                          color: AppColors
+                                                              .cPrimary),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              AppConstants
+                                                                  .radius),
+                                                      color: AppColors.cWhite,
+                                                      shape: BoxShape.rectangle,
+                                                    ),
+                                                    child: Center(
+                                                      child: Text(
+                                                        AppStrings.getAll,
+                                                        style: AppTypography
+                                                            .kLight14
+                                                            .copyWith(
+                                                          fontFamily: AppFonts
+                                                              .qabasFontFamily,
+                                                          color:
+                                                              AppColors.cTitle,
+                                                        ),
+                                                      ),
+                                                    )),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  )),
+                      )
                     ],
                   ),
-                  SizedBox(
-                    height: 20.h,
-                  ),
-                  GestureDetector(
-                    onHorizontalDragUpdate: (details) {
-                      if (details.primaryDelta! > 1.0) {
-                        setState(() {
-                          sundries = true;
-                        });
-                      } else {
-                        setState(() {
-                          sundries = false;
-                        });
-                      }
-                    },
-                    child: SizedBox(
-                        width: MediaQuery.sizeOf(context).width,
-                        height: MediaQuery.sizeOf(context).height / 1.5,
-                        child: !sundries
-                            ? BlocConsumer<ZakatCubit, ZakatState>(
-                                listener: (context, state) async {
-                                  if (state.zakatState ==
-                                      RequestState.insertLoading) {
-                                    showLoading();
-                                  } else if (state.zakatState ==
-                                      RequestState.insertError) {
-                                    hideLoading();
-                                  } else if (state.zakatState ==
-                                      RequestState.insertDone) {
-                                    hideLoading();
-                                    _productQuantityController.text = "";
-                                    _productNameController.text = "";
-                                    _productPriceController.text = "";
-                                    final snackBar = SnackBar(
-                                      duration: Duration(
-                                          milliseconds:
-                                              AppConstants.durationOfSnackBar),
-                                      content:
-                                          const Text(AppStrings.successAdd),
-                                    );
-                                    ScaffoldMessenger.of(context)
-                                        .showSnackBar(snackBar);
-                                  }
-                                },
-                                builder: (context, state) {
-                                  return Column(
-                                    children: [
-                                      textFieldWidget(
-                                          _productNameController,
-                                          AppStrings.productName,
-                                          TextInputType.text,
-                                          (String textVal) {},
-                                          false,
-                                          false),
-                                      SizedBox(
-                                        height:
-                                            AppConstants.heightBetweenElements,
-                                      ),
-                                      textFieldWidget(
-                                          _productPriceController,
-                                          AppStrings.productPriceWKilo,
-                                          TextInputType.number,
-                                          (String textVal) {},
-                                          true,
-                                          true),
-                                      SizedBox(
-                                        height: 10.h,
-                                      ),
-                                      textFieldWidget(
-                                          _productQuantityController,
-                                          AppStrings.quantityByKilo,
-                                          TextInputType.number,
-                                          (String textVal) {},
-                                          false,
-                                          true),
-                                      SizedBox(
-                                        height: 10.h,
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          GestureDetector(
-                                            onTap: () {
-                                              FocusScope.of(context).unfocus();
-                                              if (_productPriceController.text
-                                                          .trim() !=
-                                                      "" &&
-                                                  _productNameController.text
-                                                          .trim() !=
-                                                      "" &&
-                                                  _productQuantityController
-                                                          .text
-                                                          .trim() !=
-                                                      "") {
-                                                InsertPurchaseRequest
-                                                    insertPurchaseRequest =
-                                                    InsertPurchaseRequest(
-                                                        productQuantity: int.parse(
-                                                            _productQuantityController
-                                                                .text
-                                                                .trim()),
-                                                        productPrice:
-                                                            _productPriceController
-                                                                .text
-                                                                .trim(),
-                                                        productName:
-                                                            _productNameController
-                                                                .text
-                                                                .trim(),
-                                                        productImage:
-                                                            productImage);
-                                                ZakatCubit.get(context)
-                                                    .insertPurchase(
-                                                        insertPurchaseRequest);
-                                              }
-                                            },
-                                            child: Container(
-                                                width: 70.w,
-                                                height: 50.w,
-                                                decoration: BoxDecoration(
-                                                  border: Border.all(
-                                                      width: 2.w,
-                                                      color:
-                                                          AppColors.cPrimary),
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          AppConstants.radius),
-                                                  color: AppColors.cWhite,
-                                                  shape: BoxShape.rectangle,
-                                                ),
-                                                child: Center(
-                                                  child: Text(
-                                                    AppStrings.save,
-                                                    style: AppTypography
-                                                        .kLight14
-                                                        .copyWith(
-                                                      fontFamily: AppFonts
-                                                          .qabasFontFamily,
-                                                      color: AppColors.cButton,
-                                                    ),
-                                                  ),
-                                                )),
-                                          ),
-                                          GestureDetector(
-                                            onTap: () async {
-                                              setState(() {
-                                                showAllSundries = false;
-                                              });
-                                              FocusScope.of(context).requestFocus(FocusNode());
-                                              scaffoldKey.currentState?.openDrawer();
-                                            },
-                                            child: Container(
-                                                width: 90.w,
-                                                height: 50.w,
-                                                decoration: BoxDecoration(
-                                                  border: Border.all(
-                                                      width: 2.w,
-                                                      color:
-                                                          AppColors.cPrimary),
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          AppConstants.radius),
-                                                  color: AppColors.cWhite,
-                                                  shape: BoxShape.rectangle,
-                                                ),
-                                                child: Center(
-                                                  child: Text(
-                                                    AppStrings.getAll,
-                                                    style: AppTypography
-                                                        .kLight14
-                                                        .copyWith(
-                                                      fontFamily: AppFonts
-                                                          .qabasFontFamily,
-                                                      color: AppColors.cTitle,
-                                                    ),
-                                                  ),
-                                                )),
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: 10.h,
-                                      ),
-                                      BlocProvider(
-                                        create: (context) => sl<ZakatCubit>()..getAllProducts(),
-                                        child: BlocConsumer<ZakatCubit, ZakatState>(
-                                            listener: (context, state) async {
-                                          if (state.zakatState ==
-                                              RequestState.productsLoading) {
-                                            showLoading();
-                                          } else if (state.zakatState ==
-                                              RequestState.productsError) {
-                                            hideLoading();
-                                          } else if (state.zakatState ==
-                                              RequestState.productsLoaded) {
-                                            alreadyProducts.clear();
-                                            for (var n in state.productsList) {
-                                              alreadyProducts.add(ProductImages(activeImage: false,imageName: n.productName,imagePath: n.productImage));
-                                            }
-                                            hideLoading();
-                                          }
-                                        }, builder: (context, state) {
-                                          return Expanded(
-                                              child: alreadyProducts.isNotEmpty ? Scrollbar(
-                                                thumbVisibility: true,
-                                                controller: _scrollController,
-                                                child: GridView.builder(
-                                                    padding: const EdgeInsets.only(
-                                                        right: 8, left: 8),
-                                                    scrollDirection: Axis.vertical,
-                                                    shrinkWrap: true,
-                                                    controller: _scrollController,
-                                                    gridDelegate:
-                                                    const SliverGridDelegateWithMaxCrossAxisExtent(
-                                                        maxCrossAxisExtent: 200,
-                                                        childAspectRatio: 1,
-                                                        crossAxisSpacing: 20,
-                                                        mainAxisSpacing: 20),
-                                                    itemCount: alreadyProducts.length,
-                                                    itemBuilder: (_, index) {
-                                                      return ProductImageView(
-                                                        imagePath: alreadyProducts[index].imagePath!,
-                                                        activeImage: alreadyProducts[index].activeImage!,
-                                                        imageName: alreadyProducts[index].imageName!,
-                                                        makeActive: (String imagePath) {
-                                                          productImage = imagePath;
-                                                          setState(() {
-                                                            for (var n in alreadyProducts) {
-                                                              n.activeImage = false;
-                                                            }
-                                                            alreadyProducts[index].activeImage = true;
-                                                            _productNameController.text =
-                                                            alreadyProducts[index].imageName!;
-                                                          });
-                                                        },
-                                                      );
-                                                    }),
-                                              ) : const Center(
-                                                child: Text(
-                                                  AppStrings.noProducts,
-                                                  style: TextStyle(
-                                                      fontFamily: AppFonts.qabasFontFamily),
-                                                ),
-                                              ));
-                                        }),
-                                      ),
-                                      SizedBox(
-                                        height: 20.h,
-                                      ),
-                                    ],
-                                  );
-                                },
-                              )
-                            : BlocConsumer<ZakatCubit, ZakatState>(
-                                listener: (context, state) async {
-                                  if (state.zakatState ==
-                                      RequestState.insertLoading) {
-                                    showLoading();
-                                  } else if (state.zakatState ==
-                                      RequestState.insertError) {
-                                    hideLoading();
-                                  } else if (state.zakatState ==
-                                      RequestState.insertDone) {
-                                    hideLoading();
-                                    _sundryNameController.text = "";
-                                    _sundryPriceController.text = "";
-                                    final snackBar = SnackBar(
-                                      duration: Duration(
-                                          milliseconds:
-                                              AppConstants.durationOfSnackBar),
-                                      content:
-                                          const Text(AppStrings.successAdd),
-                                    );
-                                    ScaffoldMessenger.of(context)
-                                        .showSnackBar(snackBar);
-                                  }
-                                },
-                                builder: (context, state) {
-                                  return Column(
-                                    children: [
-                                      textFieldWidget(
-                                          _sundryNameController,
-                                          AppStrings.sundryName,
-                                          TextInputType.text,
-                                          (String textVal) {},
-                                          true,
-                                          true),
-                                      SizedBox(
-                                        height: 10.h,
-                                      ),
-                                      textFieldWidget(
-                                          _sundryPriceController,
-                                          AppStrings.sundryPrice,
-                                          TextInputType.number,
-                                          (String textVal) {},
-                                          false,
-                                          true),
-                                      SizedBox(
-                                        height:
-                                            AppConstants.heightBetweenElements,
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          GestureDetector(
-                                            onTap: () {
-                                              FocusScope.of(context).unfocus();
-                                              if (_sundryPriceController.text
-                                                          .trim() !=
-                                                      "" &&
-                                                  _sundryNameController.text
-                                                          .trim() !=
-                                                      "") {
-                                                InsertSundryRequest
-                                                    insertSundryRequest =
-                                                    InsertSundryRequest(
-                                                        sundryPrice:
-                                                            _sundryPriceController
-                                                                .text
-                                                                .trim(),
-                                                        sundryName:
-                                                            _sundryNameController
-                                                                .text
-                                                                .trim());
-                                                ZakatCubit.get(context)
-                                                    .insertSundry(
-                                                        insertSundryRequest);
-                                              }
-                                            },
-                                            child: Container(
-                                                width: 70.w,
-                                                height: 50.w,
-                                                decoration: BoxDecoration(
-                                                  border: Border.all(
-                                                      width: 2.w,
-                                                      color:
-                                                          AppColors.cPrimary),
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          AppConstants.radius),
-                                                  color: AppColors.cWhite,
-                                                  shape: BoxShape.rectangle,
-                                                ),
-                                                child: Center(
-                                                  child: Text(
-                                                    AppStrings.save,
-                                                    style: AppTypography
-                                                        .kLight14
-                                                        .copyWith(
-                                                      fontFamily: AppFonts
-                                                          .qabasFontFamily,
-                                                      color: AppColors.cButton,
-                                                    ),
-                                                  ),
-                                                )),
-                                          ),
-                                          GestureDetector(
-                                            onTap: () async {
-                                              setState(() {
-                                                showAllSundries = true;
-                                              });
-                                              FocusScope.of(context).requestFocus(FocusNode());
-                                              scaffoldKey.currentState?.openDrawer();
-                                            },
-                                            child: Container(
-                                                width: 90.w,
-                                                height: 50.w,
-                                                decoration: BoxDecoration(
-                                                  border: Border.all(
-                                                      width: 2.w,
-                                                      color:
-                                                          AppColors.cPrimary),
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          AppConstants.radius),
-                                                  color: AppColors.cWhite,
-                                                  shape: BoxShape.rectangle,
-                                                ),
-                                                child: Center(
-                                                  child: Text(
-                                                    AppStrings.getAll,
-                                                    style: AppTypography
-                                                        .kLight14
-                                                        .copyWith(
-                                                      fontFamily: AppFonts
-                                                          .qabasFontFamily,
-                                                      color: AppColors.cTitle,
-                                                    ),
-                                                  ),
-                                                )),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  );
-                                },
-                              )),
-                  )
-                ],
-              ),
-            ),
-          ],
+                ),
+              ],
+            );
+          },
         ),
       ),
     );

@@ -259,11 +259,22 @@ class DbHelper {
 
     final db = _db!.database;
 
-    final result =
-    await db.rawQuery('SELECT SUM(sundryPrice) FROM sundries');
+    try {
+      final result =
+      await db.rawQuery('SELECT SUM(sundryPrice) as total FROM sundries');
 
-    if (result.isNotEmpty && result[0]['SUM(sundryPrice)'] != null) {
-      return result[0]['SUM(sundryPrice)'] as double;
+      print('Raw result: $result');
+
+      if (result.isNotEmpty && result[0]['total'] != null) {
+        final sum = result[0]['total'];
+        if (sum is num) {
+          return sum.toDouble();
+        } else {
+          return double.tryParse(sum.toString()) ?? 0.0;
+        }
+      }
+    } catch (e) {
+      print('Error: $e');
     }
 
     return 0.0;
@@ -288,11 +299,20 @@ class DbHelper {
 
     final db = _db!.database;
 
-    final result =
-    await db.rawQuery('SELECT SUM(productPrice) FROM purchases');
+    try {
+      final result =
+      await db.rawQuery('SELECT SUM(productPrice) as total FROM purchases');
 
-    if (result.isNotEmpty && result[0]['SUM(productPrice)'] != null) {
-      return result[0]['SUM(productPrice)'] as double;
+      if (result.isNotEmpty && result[0]['total'] != null) {
+        final sum = result[0]['total'];
+        if (sum is num) {
+          return sum.toDouble();
+        } else {
+          return double.tryParse(sum.toString()) ?? 0.0;
+        }
+      }
+    } catch (e) {
+      print('Error: $e');
     }
 
     return 0.0;

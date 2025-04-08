@@ -26,6 +26,8 @@ import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/get_all_products_use
 import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/get_all_purchases_usecase.dart';
 import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/get_all_sundries_usecase.dart';
 import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/get_all_zakat_usecase.dart';
+import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/get_total_of_purchases_usecase.dart';
+import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/get_total_of_sundries_usecase.dart';
 import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/get_zakat_products_by_kilos_usecase.dart';
 import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/get_zakat_products_by_zakat_id_usecase.dart';
 import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/insert_product_usecase.dart';
@@ -63,30 +65,34 @@ class ZakatCubit extends Cubit<ZakatState> {
   final UpdateProductUseCase updateProductUseCase;
   final UpdateProductQuantityUseCase updateProductQuantityUseCase;
   final ResetProductQuantityUseCase resetProductQuantityUseCase;
+  final GetTotalOfPurchasesUseCase getTotalOfPurchasesUseCase;
+  final GetTotalOfSundriesUseCase getTotalOfSundriesUseCase;
 
   ZakatCubit(
-    this.deleteProductUseCase,
-    this.deleteZakatProductsUseCase,
-    this.deleteZakatUseCase,
-    this.deleteAllZakatUseCase,
-    this.getAllProductsUseCase,
-    this.getAllZakatUseCase,
-    this.getZakatProductsByKilosUseCase,
-    this.getZakatProductsByZakatIdUseCase,
-    this.insertProductUseCase,
-    this.insertZakatProductsUseCase,
-    this.insertZakatUseCase,
-    this.updateProductUseCase,
-    this.updateProductQuantityUseCase,
-    this.resetProductQuantityUseCase,
-    this.insertSundryUseCase,
-    this.getAllPurchasesUseCase,
-    this.getAllSundriesUseCase,
-    this.deletePurchaseUseCase,
-    this.deleteSundryUseCase,
-    this.insertPurchaseUseCase,
-      this.getPurchasesByKilosUseCase
-  ) : super(const ZakatState());
+      this.deleteProductUseCase,
+      this.deleteZakatProductsUseCase,
+      this.deleteZakatUseCase,
+      this.deleteAllZakatUseCase,
+      this.getAllProductsUseCase,
+      this.getAllZakatUseCase,
+      this.getZakatProductsByKilosUseCase,
+      this.getZakatProductsByZakatIdUseCase,
+      this.insertProductUseCase,
+      this.insertZakatProductsUseCase,
+      this.insertZakatUseCase,
+      this.updateProductUseCase,
+      this.updateProductQuantityUseCase,
+      this.resetProductQuantityUseCase,
+      this.insertSundryUseCase,
+      this.getAllPurchasesUseCase,
+      this.getAllSundriesUseCase,
+      this.deletePurchaseUseCase,
+      this.deleteSundryUseCase,
+      this.insertPurchaseUseCase,
+      this.getPurchasesByKilosUseCase,
+      this.getTotalOfSundriesUseCase,
+      this.getTotalOfPurchasesUseCase)
+      : super(const ZakatState());
 
   static ZakatCubit get(context) => BlocProvider.of(context);
 
@@ -345,6 +351,38 @@ class ZakatCubit extends Cubit<ZakatState> {
             )));
   }
 
+  FutureOr<void> getTotalOfPurchases() async {
+    emit(state.copyWith(
+        zakatState: RequestState.purchasesLoading,
+        zakatMessage: '',
+        purchasesTotal: 0.0));
+
+    final result = await getTotalOfPurchasesUseCase(const NoParameters());
+    result.fold(
+        (l) => emit(state.copyWith(
+            zakatState: RequestState.purchasesError, zakatMessage: l.message)),
+        (r) => emit(state.copyWith(
+              purchasesTotal: r,
+              zakatState: RequestState.purchasesLoaded,
+            )));
+  }
+
+  FutureOr<void> getTotalOfSundries() async {
+    emit(state.copyWith(
+        zakatState: RequestState.sundriesLoading,
+        zakatMessage: '',
+        sundriesTotal: 0.0));
+
+    final result = await getTotalOfSundriesUseCase(const NoParameters());
+    result.fold(
+        (l) => emit(state.copyWith(
+            zakatState: RequestState.sundriesError, zakatMessage: l.message)),
+        (r) => emit(state.copyWith(
+              sundriesTotal: r,
+              zakatState: RequestState.sundriesLoaded,
+            )));
+  }
+
   FutureOr<void> getAllSundries() async {
     emit(state.copyWith(
         zakatState: RequestState.sundriesLoading,
@@ -421,13 +459,13 @@ class ZakatCubit extends Cubit<ZakatState> {
     final result = await getPurchasesByKilosUseCase(const NoParameters());
 
     result.fold(
-            (l) => emit(state.copyWith(
+        (l) => emit(state.copyWith(
             zakatState: RequestState.getPurchasesByKilosError,
             zakatMessage: l.message)),
-            (r) => emit(state.copyWith(
+        (r) => emit(state.copyWith(
               purchasesByKiloList: r,
-          zakatState: RequestState.getPurchasesByKilosLoaded,
-        )));
+              zakatState: RequestState.getPurchasesByKilosLoaded,
+            )));
   }
 
   FutureOr<void> getZakatProductsByZakatId(
