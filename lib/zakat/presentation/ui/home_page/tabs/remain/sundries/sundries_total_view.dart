@@ -40,13 +40,6 @@ class _SundriesTotalViewState extends State<SundriesTotalView> {
     await ZakatCubit.get(context).getAllSundries();
   }
 
-  double getTotalSundryPrice(List<SundriesResponse> items) {
-    return items.fold(0.0, (total, item) {
-      final price = double.tryParse(item.sundryPrice ?? '');
-      return total + (price ?? 0.0);
-    });
-  }
-
   Future<void> getTotalOfSundries() async {
     await ZakatCubit.get(context).getTotalOfSundries();
   }

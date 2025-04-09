@@ -40,13 +40,6 @@ class _PurchasesDetailsViewState extends State<PurchasesDetailsView> {
     await ZakatCubit.get(context).getAllPurchases();
   }
 
-  double getTotalPurchasesPrice(List<PurchasesResponse> items) {
-    return items.fold(0.0, (total, item) {
-      final price = double.tryParse(item.productPrice ?? '');
-      return total + (price ?? 0.0);
-    });
-  }
-
   Future<void> getTotalOfPurchases() async {
     await ZakatCubit.get(context).getTotalOfPurchases();
   }

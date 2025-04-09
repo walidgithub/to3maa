@@ -363,6 +363,15 @@ class _RemainViewState extends State<RemainView> {
                                                           sundriesTotal -
                                                           purchasesTotal) <
                                                       price!) {
+                                                    final snackBar = SnackBar(
+                                                      duration: Duration(
+                                                          milliseconds: AppConstants
+                                                              .durationOfSnackBar),
+                                                      content:
+                                                      const Text(AppStrings.creditNotEnough),
+                                                    );
+                                                    ScaffoldMessenger.of(context)
+                                                        .showSnackBar(snackBar);
                                                     return;
                                                   }
                                                   if (_productPriceController
@@ -694,6 +703,15 @@ class _RemainViewState extends State<RemainView> {
                                                           sundriesTotal -
                                                           purchasesTotal) <
                                                       price!) {
+                                                    final snackBar = SnackBar(
+                                                      duration: Duration(
+                                                          milliseconds: AppConstants
+                                                              .durationOfSnackBar),
+                                                      content:
+                                                      const Text(AppStrings.creditNotEnough),
+                                                    );
+                                                    ScaffoldMessenger.of(context)
+                                                        .showSnackBar(snackBar);
                                                     return;
                                                   }
                                                   if (_sundryPriceController

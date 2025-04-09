@@ -44,48 +44,32 @@ class _PurchasesTotalViewState extends State<PurchasesTotalView> {
     await ZakatCubit.get(context).getAllPurchases();
   }
 
-  double getTotalPurchasesPrice(List<PurchasesResponse> items) {
-    return items.fold(0.0, (total, item) {
-      final price = double.tryParse(item.productPrice ?? '');
-      return total + (price ?? 0.0);
-    });
-  }
-
   List<SummedProduct> summarizePurchases(List<PurchasesResponse> purchasesList) {
     final Map<String, SummedProduct> grouped = {};
 
     for (var item in purchasesList) {
-      final name = item.productName ?? 'Unknown';
-      final quantity = item.productQuantity?.toDouble() ?? 0.0;
-      final unitPrice = double.tryParse(item.productPrice ?? '0') ?? 0.0;
-      final totalPrice = unitPrice * quantity; // quantity * unit price for total price
+      final name = item.productName?.trim() ?? 'Unknown';
+      final quantity = double.tryParse(item.productQuantity?.toString() ?? '0') ?? 0.0;
+      final unitPrice = double.tryParse(item.productPrice?.toString() ?? '0') ?? 0.0;
+      final totalPrice = unitPrice * quantity;
 
       if (grouped.containsKey(name)) {
         final existing = grouped[name]!;
         grouped[name] = SummedProduct(
           productName: name,
-          totalProductQuantity: existing.totalProductQuantity + quantity, // Sum of quantities
-          totalProductPrice: existing.totalProductPrice + totalPrice, // Sum of price * quantity
+          totalProductQuantity: existing.totalProductQuantity + quantity,
+          totalProductPrice: existing.totalProductPrice + totalPrice,
         );
       } else {
         grouped[name] = SummedProduct(
           productName: name,
-          totalProductQuantity: quantity,  // First entry, just use the quantity
-          totalProductPrice: totalPrice,   // First entry, just use quantity * price
+          totalProductQuantity: quantity,
+          totalProductPrice: totalPrice,
         );
       }
     }
 
     return grouped.values.toList();
-  }
-
-
-  double getTotalPurchasePrice() {
-    return 100.0;
-  }
-
-  double getTotalPurchaseQuantity() {
-    return 100.0;
   }
 
   @override
@@ -178,7 +162,7 @@ class _PurchasesTotalViewState extends State<PurchasesTotalView> {
                                 (BuildContext cartContext, int index) {
                               return PurchaseTotalView(
                                 productName: purchasesTotalList[index].productName,
-                                productTotalQuantity: purchasesTotalList[index].totalProductPrice,
+                                productTotalQuantity: purchasesTotalList[index].totalProductQuantity,
                                 productTotalPrice: purchasesTotalList[index].totalProductPrice,
                               );
                             }),

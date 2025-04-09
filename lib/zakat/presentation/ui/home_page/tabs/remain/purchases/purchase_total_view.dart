@@ -82,7 +82,7 @@ class _PurchaseTotalViewState extends State<PurchaseTotalView> {
                                 width: 5.w,
                               ),
                               Text(
-                                "${widget.productTotalQuantity / widget.productTotalPrice}",
+                                (widget.productTotalPrice / widget.productTotalQuantity).toStringAsFixed(2),
                                 style: AppTypography.kLight16.copyWith(
                                     fontWeight: FontWeight.bold,
                                     color: AppColors.cNumber),
