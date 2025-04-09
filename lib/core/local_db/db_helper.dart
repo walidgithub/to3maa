@@ -301,7 +301,7 @@ class DbHelper {
 
     try {
       final result =
-      await db.rawQuery('SELECT SUM(productPrice) as total FROM purchases');
+      await db.rawQuery('SELECT SUM(productPrice * productQuantity) as total FROM purchases');
 
       if (result.isNotEmpty && result[0]['total'] != null) {
         final sum = result[0]['total'];

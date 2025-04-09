@@ -1,6 +1,6 @@
-class TabItems {
+class TabItem {
   String? title;
   String? icon;
   bool? activeTab;
-  TabItems({this.title, this.icon, this.activeTab});
+  TabItem({this.title, this.icon, this.activeTab});
 }

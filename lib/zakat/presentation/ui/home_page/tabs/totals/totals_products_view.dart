@@ -39,153 +39,19 @@ class _TotalsProductsViewState extends State<TotalsProductsView> {
     return FadeInUp(
       duration: Duration(milliseconds: AppConstants.animation),
       child: SizedBox(
-        height: widget.productDesc != "" ? 210.h : 190.h,
+        height: widget.productDesc != "" ? 230.h : 210.h,
         child: Stack(
           alignment: Alignment.bottomCenter,
           children: [
             Container(
               width: MediaQuery.sizeOf(context).width * 0.75,
-              height: widget.productDesc != "" ? 190.h : 170.h,
+              height: widget.productDesc != "" ? 210.h : 190.h,
               padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 10.w),
               decoration: BoxDecoration(
                 color: AppColors.cBackGround,
                 borderRadius: BorderRadius.only(
                     topRight: Radius.circular(AppConstants.radius),
                     bottomLeft: Radius.circular(AppConstants.radius)),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    height: 5.h,
-                  ),
-                  SizedBox(
-                    width: MediaQuery.sizeOf(context).width * 0.30,
-                    child: Text(widget.productName,
-                        style: AppTypography.kLight20
-                            .copyWith(fontFamily: AppFonts.boldFontFamily),
-                        overflow: TextOverflow.ellipsis),
-                  ),
-                  SizedBox(
-                    height: 10.h,
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        AppStrings.membersCount,
-                        style: AppTypography.kLight16.copyWith(
-                            fontFamily: AppFonts.boldFontFamily,
-                            color: AppColors.cBlack),
-                      ),
-                      SizedBox(
-                        width: 5.w,
-                      ),
-                      Text(
-                        calculateMembersCount(widget.sumProductQuantity * widget.sa3Weight, widget.productPrice),
-                        style: AppTypography.kLight16.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.cNumber),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 10.h,
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        widget.productPrice.toString(),
-                        style: AppTypography.kLight16.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.cNumber),
-                      ),
-                      SizedBox(
-                        width: 5.w,
-                      ),
-                      Text(
-                        AppStrings.currency,
-                        style: AppTypography.kLight16.copyWith(
-                            fontFamily: AppFonts.boldFontFamily,
-                            color: AppColors.cBlack),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 10.h,
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        AppStrings.zakat,
-                        style: AppTypography.kLight16.copyWith(
-                            fontFamily: AppFonts.boldFontFamily,
-                            color: AppColors.cBlack),
-                      ),
-                      SizedBox(
-                        width: 5.w,
-                      ),
-                      Text(
-                        formatWeight(widget.sumProductQuantity * widget.sa3Weight).toString(),
-                        style: AppTypography.kLight14.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.cNumber),
-                      ),
-                      SizedBox(
-                        width: 5.w,
-                      ),
-                      Text(
-                        formatWeightString(widget.sumProductQuantity *
-                            widget.sa3Weight).toString() ==
-                            "ton"
-                            ? AppStrings.ton
-                            : AppStrings.kilo,
-                        style: AppTypography.kLight14
-                            .copyWith(fontFamily: AppFonts.boldFontFamily),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 10.h,
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        AppStrings.buyFromRemain,
-                        style: AppTypography.kLight16.copyWith(
-                            fontFamily: AppFonts.boldFontFamily,
-                            color: AppColors.cBlack),
-                      ),
-                      SizedBox(
-                        width: 5.w,
-                      ),
-                      Text(
-                        formatWeight(widget.sumPurchasesQuantity).toString(),
-                        style: AppTypography.kLight14.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.cNumber),
-                      ),
-                      SizedBox(
-                        width: 5.w,
-                      ),
-                      Text(
-                        formatWeightString(widget.sumPurchasesQuantity).toString() ==
-                            "ton"
-                            ? AppStrings.ton
-                            : AppStrings.kilo,
-                        style: AppTypography.kLight14
-                            .copyWith(fontFamily: AppFonts.boldFontFamily),
-                      ),
-                    ],
-                  ),
-                  widget.productDesc != "" ? SizedBox(
-                    width: MediaQuery.sizeOf(context).width * 0.30,
-                    child: Text(widget.productDesc,
-                        style: AppTypography.kLight14.copyWith(
-                            fontFamily: AppFonts.boldFontFamily,
-                            color: AppColors.cGray),
-                        overflow: TextOverflow.ellipsis),
-                  ) : Container()
-                ],
               ),
             ),
             Positioned(
@@ -210,6 +76,143 @@ class _TotalsProductsViewState extends State<TotalsProductsView> {
                         : 120.w,
                   ),
                 )),
+            Positioned(
+              top: 30.h,
+                right: 10.w,
+                child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  height: 5.h,
+                ),
+                SizedBox(
+                  width: MediaQuery.sizeOf(context).width * 0.30,
+                  child: Text(widget.productName,
+                      style: AppTypography.kLight20
+                          .copyWith(fontFamily: AppFonts.boldFontFamily),
+                      overflow: TextOverflow.ellipsis),
+                ),
+                SizedBox(
+                  height: 10.h,
+                ),
+                Row(
+                  children: [
+                    Text(
+                      AppStrings.membersCount,
+                      style: AppTypography.kLight16.copyWith(
+                          fontFamily: AppFonts.boldFontFamily,
+                          color: AppColors.cBlack),
+                    ),
+                    SizedBox(
+                      width: 5.w,
+                    ),
+                    Text(
+                      calculateMembersCount(widget.sumProductQuantity * widget.sa3Weight, widget.productPrice),
+                      style: AppTypography.kLight16.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.cNumber),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 10.h,
+                ),
+                Row(
+                  children: [
+                    Text(
+                      widget.productPrice.toString(),
+                      style: AppTypography.kLight16.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.cNumber),
+                    ),
+                    SizedBox(
+                      width: 5.w,
+                    ),
+                    Text(
+                      AppStrings.currency,
+                      style: AppTypography.kLight16.copyWith(
+                          fontFamily: AppFonts.boldFontFamily,
+                          color: AppColors.cBlack),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 10.h,
+                ),
+                Row(
+                  children: [
+                    Text(
+                      AppStrings.zakat,
+                      style: AppTypography.kLight16.copyWith(
+                          fontFamily: AppFonts.boldFontFamily,
+                          color: AppColors.cBlack),
+                    ),
+                    SizedBox(
+                      width: 5.w,
+                    ),
+                    Text(
+                      formatWeight(widget.sumProductQuantity * widget.sa3Weight).toString(),
+                      style: AppTypography.kLight14.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.cNumber),
+                    ),
+                    SizedBox(
+                      width: 5.w,
+                    ),
+                    Text(
+                      formatWeightString(widget.sumProductQuantity *
+                          widget.sa3Weight).toString() ==
+                          "ton"
+                          ? AppStrings.ton
+                          : AppStrings.kilo,
+                      style: AppTypography.kLight14
+                          .copyWith(fontFamily: AppFonts.boldFontFamily),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 10.h,
+                ),
+                Row(
+                  children: [
+                    Text(
+                      AppStrings.buyFromRemain,
+                      style: AppTypography.kLight16.copyWith(
+                          fontFamily: AppFonts.boldFontFamily,
+                          color: AppColors.cBlack),
+                    ),
+                    SizedBox(
+                      width: 5.w,
+                    ),
+                    Text(
+                      formatWeight(widget.sumPurchasesQuantity).toString(),
+                      style: AppTypography.kLight14.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.cNumber),
+                    ),
+                    SizedBox(
+                      width: 5.w,
+                    ),
+                    Text(
+                      formatWeightString(widget.sumPurchasesQuantity).toString() ==
+                          "ton"
+                          ? AppStrings.ton
+                          : AppStrings.kilo,
+                      style: AppTypography.kLight14
+                          .copyWith(fontFamily: AppFonts.boldFontFamily),
+                    ),
+                  ],
+                ),
+                widget.productDesc != "" ? SizedBox(
+                  width: MediaQuery.sizeOf(context).width * 0.30,
+                  child: Text(widget.productDesc,
+                      style: AppTypography.kLight14.copyWith(
+                          fontFamily: AppFonts.boldFontFamily,
+                          color: AppColors.cGray),
+                      overflow: TextOverflow.ellipsis),
+                ) : Container()
+              ],
+            ))
           ],
         ),
       ),

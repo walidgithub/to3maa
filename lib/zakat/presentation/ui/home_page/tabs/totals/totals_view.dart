@@ -197,19 +197,19 @@ class _TotalsViewState extends State<TotalsView> {
                 RequestState.getPurchasesByKilosLoaded) {
               purchasesByKilos = state.purchasesByKiloList;
               hideLoading();
-            } else if (state.zakatState == RequestState.sundriesLoading) {
+            } else if (state.zakatState == RequestState.totalSundriesLoading) {
               showLoading();
-            } else if (state.zakatState == RequestState.sundriesLoaded) {
+            } else if (state.zakatState == RequestState.totalSundriesLoaded) {
               sundriesTotal = state.sundriesTotal;
               hideLoading();
-            } else if (state.zakatState == RequestState.sundriesError) {
+            } else if (state.zakatState == RequestState.totalSundriesError) {
               hideLoading();
-            } else if (state.zakatState == RequestState.purchasesLoading) {
+            } else if (state.zakatState == RequestState.totalPurchasesLoading) {
               showLoading();
-            } else if (state.zakatState == RequestState.purchasesLoaded) {
+            } else if (state.zakatState == RequestState.totalPurchasesLoaded) {
               purchasesTotal = state.purchasesTotal;
               hideLoading();
-            } else if (state.zakatState == RequestState.purchasesError) {
+            } else if (state.zakatState == RequestState.totalPurchasesError) {
               hideLoading();
             }
           }, builder: (context, state) {

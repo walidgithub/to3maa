@@ -353,33 +353,33 @@ class ZakatCubit extends Cubit<ZakatState> {
 
   FutureOr<void> getTotalOfPurchases() async {
     emit(state.copyWith(
-        zakatState: RequestState.purchasesLoading,
+        zakatState: RequestState.totalPurchasesLoading,
         zakatMessage: '',
         purchasesTotal: 0.0));
 
     final result = await getTotalOfPurchasesUseCase(const NoParameters());
     result.fold(
         (l) => emit(state.copyWith(
-            zakatState: RequestState.purchasesError, zakatMessage: l.message)),
+            zakatState: RequestState.totalPurchasesError, zakatMessage: l.message)),
         (r) => emit(state.copyWith(
               purchasesTotal: r,
-              zakatState: RequestState.purchasesLoaded,
+              zakatState: RequestState.totalPurchasesLoaded,
             )));
   }
 
   FutureOr<void> getTotalOfSundries() async {
     emit(state.copyWith(
-        zakatState: RequestState.sundriesLoading,
+        zakatState: RequestState.totalSundriesLoading,
         zakatMessage: '',
         sundriesTotal: 0.0));
 
     final result = await getTotalOfSundriesUseCase(const NoParameters());
     result.fold(
         (l) => emit(state.copyWith(
-            zakatState: RequestState.sundriesError, zakatMessage: l.message)),
+            zakatState: RequestState.totalSundriesError, zakatMessage: l.message)),
         (r) => emit(state.copyWith(
               sundriesTotal: r,
-              zakatState: RequestState.sundriesLoaded,
+              zakatState: RequestState.totalSundriesLoaded,
             )));
   }
 

@@ -1,47 +1,54 @@
 import 'package:To3maa/zakat/domain/requests/delete_purchase_request.dart';
-import 'package:To3maa/zakat/presentation/ui/home_page/tabs/remain/purchase_view.dart';
+import 'package:To3maa/zakat/presentation/ui/home_page/tabs/remain/purchases/purchase_details_view.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../../../../core/shared/constant/app_constants.dart';
-import '../../../../../../core/shared/constant/app_fonts.dart';
-import '../../../../../../core/shared/constant/app_strings.dart';
-import '../../../../../../core/shared/constant/app_typography.dart';
-import '../../../../../../core/shared/style/app_colors.dart';
-import '../../../../../../core/utils/enums.dart';
-import '../../../../../domain/responses/purchases_response.dart';
-import '../../../../ui_components/loading_dialog.dart';
-import '../../cubit/zakat_cubit.dart';
-import '../../cubit/zakat_states.dart';
+import '../../../../../../../core/shared/constant/app_constants.dart';
+import '../../../../../../../core/shared/constant/app_fonts.dart';
+import '../../../../../../../core/shared/constant/app_strings.dart';
+import '../../../../../../../core/shared/constant/app_typography.dart';
+import '../../../../../../../core/shared/style/app_colors.dart';
+import '../../../../../../../core/utils/enums.dart';
+import '../../../../../../domain/responses/purchases_response.dart';
+import '../../../../../ui_components/loading_dialog.dart';
+import '../../../cubit/zakat_cubit.dart';
+import '../../../cubit/zakat_states.dart';
 
-class PurchasesView extends StatefulWidget {
+class PurchasesDetailsView extends StatefulWidget {
   Function deletePurchase;
-  PurchasesView({super.key, required this.deletePurchase});
+  PurchasesDetailsView({super.key, required this.deletePurchase});
 
   @override
-  State<PurchasesView> createState() => _PurchasesViewState();
+  State<PurchasesDetailsView> createState() => _PurchasesDetailsViewState();
 }
 
-class _PurchasesViewState extends State<PurchasesView> {
+class _PurchasesDetailsViewState extends State<PurchasesDetailsView> {
 
   List<PurchasesResponse> purchasesList = [];
 
   @override
   void initState() {
     getAllPurchases();
+    getTotalOfPurchases();
     super.initState();
   }
+
+  double purchasesTotal = 0.0;
 
   getAllPurchases() async {
     await ZakatCubit.get(context).getAllPurchases();
   }
 
-  double getTotalSundryPrice(List<PurchasesResponse> items) {
+  double getTotalPurchasesPrice(List<PurchasesResponse> items) {
     return items.fold(0.0, (total, item) {
       final price = double.tryParse(item.productPrice ?? '');
       return total + (price ?? 0.0);
     });
+  }
+
+  Future<void> getTotalOfPurchases() async {
+    await ZakatCubit.get(context).getTotalOfPurchases();
   }
 
   @override
@@ -60,7 +67,7 @@ class _PurchasesViewState extends State<PurchasesView> {
               FadeInLeft(
                 duration: Duration(milliseconds: AppConstants.animation),
                 child: Text(
-                  AppStrings.buyProducts,
+                  AppStrings.purchases,
                   style: AppTypography.kLight20
                       .copyWith(fontFamily: AppFonts.boldFontFamily),
                 ),
@@ -100,6 +107,13 @@ class _PurchasesViewState extends State<PurchasesView> {
                 } else if (state.zakatState == RequestState.purchasesLoaded) {
                   purchasesList = state.purchasesList;
                   hideLoading();
+                } else if (state.zakatState == RequestState.totalPurchasesLoading) {
+                  showLoading();
+                } else if (state.zakatState == RequestState.totalPurchasesLoaded) {
+                  purchasesTotal = state.purchasesTotal;
+                  hideLoading();
+                } else if (state.zakatState == RequestState.totalPurchasesError) {
+                  hideLoading();
                 } else if (state.zakatState == RequestState.deleteLoading) {
                   showLoading();
                 } else if (state.zakatState == RequestState.deleteError) {
@@ -133,7 +147,7 @@ class _PurchasesViewState extends State<PurchasesView> {
                                 ),
                             itemBuilder:
                                 (BuildContext cartContext, int index) {
-                              return PurchaseView(
+                              return PurchaseDetailsView(
                                 index: purchasesList.length - index,
                                 productName: purchasesList[index].productName!,
                                 productPrice: purchasesList[index].productPrice!,
@@ -215,7 +229,7 @@ class _PurchasesViewState extends State<PurchasesView> {
                             Row(
                               children: [
                                 Text(
-                                  getTotalSundryPrice(purchasesList).toString(),
+                                  purchasesTotal.toString(),
                                   style: AppTypography.kLight16.copyWith(
                                       fontWeight: FontWeight.bold,
                                       color: AppColors.cBlack),

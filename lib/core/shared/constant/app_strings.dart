@@ -25,12 +25,16 @@ class AppStrings {
   static const String productPrice = "سـعـر الصـاع";
   static const String productPriceWKilo = "سـعـر الكـيـلو";
   static const String quantityByKilo = "الـكـمـيـة";
+  static const String totalOfQuantityByKilo = "إجمالى الـكـمـيـة";
   static const String sa3Weight = "وزن الصـاع بـالـكـيـلـو";
-  static const String sundries = "نـثـريـات";
+  static const String sundries = "تفاصيل نـثـريـات";
+  static const String totalSundries = "إجمالى نـثـريـات";
   static const String sundryName = "الـبـنـد";
-  static const String sundryPrice = "الـسـعـر";
-  static const String buyProducts = "مـشـتـريـات";
-  static const String getAll = "عـرض الـكـل";
+  static const String sundryPrice = "الـقـيـمة";
+  static const String purchases = "تفاصيل مـشـتـريـات";
+  static const String totalPurchases = "إجمالى مـشـتـريـات";
+  static const String getAll = "عـرض إجمالى";
+  static const String getDetails = "عـرض التفاصيل";
 
   static const String package = "";
   static const String rice = "أرز";

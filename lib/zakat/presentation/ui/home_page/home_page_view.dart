@@ -29,15 +29,15 @@ class HomePageView extends StatefulWidget {
 }
 
 class _HomePageViewState extends State<HomePageView> {
-  List<TabItems> tabItems = [
-    TabItems(
+  List<TabItem> tabItems = [
+    TabItem(
         title: AppStrings.addZakat, activeTab: true, icon: AppAssets.addNew),
-    TabItems(title: AppStrings.cart, activeTab: false, icon: AppAssets.cart),
-    TabItems(
+    TabItem(title: AppStrings.cart, activeTab: false, icon: AppAssets.cart),
+    TabItem(
         title: AppStrings.totals, activeTab: false, icon: AppAssets.totals),
-    TabItems(
+    TabItem(
         title: AppStrings.remainTab, activeTab: false, icon: AppAssets.remain),
-    TabItems(
+    TabItem(
         title: AppStrings.products, activeTab: false, icon: AppAssets.products)
   ];
 

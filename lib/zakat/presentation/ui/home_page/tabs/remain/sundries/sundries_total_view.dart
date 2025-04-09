@@ -1,37 +1,40 @@
-import 'package:To3maa/zakat/domain/requests/delete_sundry_request.dart';
-import 'package:To3maa/zakat/presentation/ui/home_page/tabs/remain/sundry_view.dart';
+import 'package:To3maa/zakat/presentation/ui/home_page/tabs/remain/sundries/summed_sundry.dart';
+import 'package:To3maa/zakat/presentation/ui/home_page/tabs/remain/sundries/sundry_total_view.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../../../../core/shared/constant/app_constants.dart';
-import '../../../../../../core/shared/constant/app_fonts.dart';
-import '../../../../../../core/shared/constant/app_strings.dart';
-import '../../../../../../core/shared/constant/app_typography.dart';
-import '../../../../../../core/shared/style/app_colors.dart';
-import '../../../../../../core/utils/enums.dart';
-import '../../../../../domain/responses/sundries_response.dart';
-import '../../../../ui_components/loading_dialog.dart';
-import '../../cubit/zakat_cubit.dart';
-import '../../cubit/zakat_states.dart';
+import '../../../../../../../core/shared/constant/app_constants.dart';
+import '../../../../../../../core/shared/constant/app_fonts.dart';
+import '../../../../../../../core/shared/constant/app_strings.dart';
+import '../../../../../../../core/shared/constant/app_typography.dart';
+import '../../../../../../../core/shared/style/app_colors.dart';
+import '../../../../../../../core/utils/enums.dart';
+import '../../../../../../domain/responses/sundries_response.dart';
+import '../../../../../ui_components/loading_dialog.dart';
+import '../../../cubit/zakat_cubit.dart';
+import '../../../cubit/zakat_states.dart';
 
-class SundriesView extends StatefulWidget {
-  Function deleteSundry;
-  SundriesView({super.key, required this.deleteSundry});
+class SundriesTotalView extends StatefulWidget {
+  const SundriesTotalView({super.key});
 
   @override
-  State<SundriesView> createState() => _SundriesViewState();
+  State<SundriesTotalView> createState() => _SundriesTotalViewState();
 }
 
-class _SundriesViewState extends State<SundriesView> {
+class _SundriesTotalViewState extends State<SundriesTotalView> {
 
   List<SundriesResponse> sundriesList = [];
+  List<SummedSundry> sundriesTotalList = [];
 
   @override
   void initState() {
     getAllSundries();
+    getTotalOfSundries();
     super.initState();
   }
+
+  double sundriesTotal = 0.0;
 
   getAllSundries() async {
     await ZakatCubit.get(context).getAllSundries();
@@ -42,6 +45,25 @@ class _SundriesViewState extends State<SundriesView> {
       final price = double.tryParse(item.sundryPrice ?? '');
       return total + (price ?? 0.0);
     });
+  }
+
+  Future<void> getTotalOfSundries() async {
+    await ZakatCubit.get(context).getTotalOfSundries();
+  }
+
+  List<SummedSundry> summarizeSundries(List<SundriesResponse> sundriesList) {
+    final Map<String, double> grouped = {};
+
+    for (var item in sundriesList) {
+      final name = item.sundryName ?? 'Unknown';
+      final price = double.tryParse(item.sundryPrice ?? '0') ?? 0.0;
+
+      grouped[name] = (grouped[name] ?? 0) + price;
+    }
+
+    return grouped.entries
+        .map((entry) => SummedSundry(sundryName: entry.key, totalPrice: entry.value))
+        .toList();
   }
 
   @override
@@ -60,7 +82,7 @@ class _SundriesViewState extends State<SundriesView> {
               FadeInLeft(
                 duration: Duration(milliseconds: AppConstants.animation),
                 child: Text(
-                  AppStrings.sundries,
+                  AppStrings.totalSundries,
                   style: AppTypography.kLight20
                       .copyWith(fontFamily: AppFonts.boldFontFamily),
                 ),
@@ -99,16 +121,15 @@ class _SundriesViewState extends State<SundriesView> {
                   hideLoading();
                 } else if (state.zakatState == RequestState.sundriesLoaded) {
                   sundriesList = state.sundriesList;
+                  sundriesTotalList = summarizeSundries(sundriesList);
                   hideLoading();
-                } else if (state.zakatState == RequestState.deleteLoading) {
-                  showLoading();
-                } else if (state.zakatState == RequestState.deleteError) {
-                  hideLoading();
-                } else if (state.zakatState == RequestState.deleteDone) {
-                  getAllSundries();
-                  hideLoading();
-                  Navigator.of(context)
-                      .pop(false);
+                } else if (state.zakatState == RequestState.totalSundriesLoading) {
+                    showLoading();
+                  } else if (state.zakatState == RequestState.totalSundriesLoaded) {
+                    sundriesTotal = state.sundriesTotal;
+                    hideLoading();
+                  } else if (state.zakatState == RequestState.totalSundriesError) {
+                    hideLoading();
                 }
               }, builder: (context, state) {
             return SizedBox(
@@ -119,10 +140,10 @@ class _SundriesViewState extends State<SundriesView> {
                     height: 10.h,
                   ),
                   Expanded(
-                      child: sundriesList.isNotEmpty
+                      child: sundriesTotalList.isNotEmpty
                           ? SingleChildScrollView(
                             child: ListView.separated(
-                                itemCount: sundriesList.length,
+                                itemCount: sundriesTotalList.length,
                                 shrinkWrap: true,
                                 scrollDirection: Axis.vertical,
                                 physics: const NeverScrollableScrollPhysics(),
@@ -133,48 +154,9 @@ class _SundriesViewState extends State<SundriesView> {
                                     ),
                                 itemBuilder:
                                     (BuildContext cartContext, int index) {
-                                  return SundryView(
-                                    index: sundriesList.length - index,
-                                    sundryName: sundriesList[index].sundryName!,
-                                    sundryPrice: sundriesList[index].sundryPrice!,
-                                    id: sundriesList[index].id,
-                                    deleteCart: () async {
-                                      await showDialog(
-                                          context: context,
-                                          builder: (BuildContext context) {
-                                            return Directionality(
-                                              textDirection: TextDirection.rtl,
-                                              child: AlertDialog(
-                                                title: Text(AppStrings.warning,
-                                                    style: AppTypography.kBold20),
-                                                content: const Text(
-                                                    AppStrings.checkToDelete),
-                                                actions: [
-                                                  TextButton(
-                                                      onPressed: () async {
-                                                        DeleteSundryRequest deleteSundryRequest = DeleteSundryRequest(id: sundriesList[index].id);
-                                                        await ZakatCubit.get(
-                                                            cartContext)
-                                                            .deleteSundry(
-                                                            deleteSundryRequest);
-                                                        widget.deleteSundry();
-                                                      },
-                                                      child: Text(AppStrings.yes,
-                                                          style: AppTypography
-                                                              .kLight16)),
-                                                  TextButton(
-                                                      onPressed: () {
-                                                        Navigator.of(context)
-                                                            .pop(false);
-                                                      },
-                                                      child: Text(AppStrings.no,
-                                                          style: AppTypography
-                                                              .kLight16)),
-                                                ],
-                                              ),
-                                            );
-                                          });
-                                    },
+                                  return SundryTotalView(
+                                    sundryName: sundriesTotalList[index].sundryName,
+                                    sundryTotal: sundriesTotalList[index].totalPrice,
                                   );
                                 }),
                           )
@@ -213,7 +195,7 @@ class _SundriesViewState extends State<SundriesView> {
                             Row(
                               children: [
                                 Text(
-                                  getTotalSundryPrice(sundriesList).toString(),
+                                  sundriesTotal.toString(),
                                   style: AppTypography.kLight16.copyWith(
                                       fontWeight: FontWeight.bold,
                                       color: AppColors.cBlack),

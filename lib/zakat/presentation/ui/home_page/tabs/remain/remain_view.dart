@@ -1,6 +1,8 @@
 import 'package:To3maa/zakat/domain/requests/insert_sundry_request.dart';
-import 'package:To3maa/zakat/presentation/ui/home_page/tabs/remain/purchases_view.dart';
-import 'package:To3maa/zakat/presentation/ui/home_page/tabs/remain/sundries_view.dart';
+import 'package:To3maa/zakat/presentation/ui/home_page/tabs/remain/purchases/purchases_details_view.dart';
+import 'package:To3maa/zakat/presentation/ui/home_page/tabs/remain/purchases/purchases_total_view.dart';
+import 'package:To3maa/zakat/presentation/ui/home_page/tabs/remain/sundries/sundries_details_view.dart';
+import 'package:To3maa/zakat/presentation/ui/home_page/tabs/remain/sundries/sundries_total_view.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -38,17 +40,36 @@ class _RemainViewState extends State<RemainView> {
   final ScrollController _scrollController = ScrollController();
 
   bool sundries = true;
+  bool showSundries = true;
   bool showAllSundries = true;
+  bool showPurchases = false;
+  bool showAllPurchases = false;
   var scaffoldKey = GlobalKey<ScaffoldState>();
+
+  var drawers = [];
 
   String productImage = '';
   double purchasesTotal = 0.0;
   double sundriesTotal = 0.0;
 
+  int selectedDrawer = 0;
+
   @override
   void initState() {
     getTotalOfSundries();
     getTotalOfPurchases();
+    drawers = [
+      const PurchasesTotalView(),
+      PurchasesDetailsView(
+        deletePurchase: () {
+          getTotalOfPurchases();
+        },
+      ),
+      const SundriesTotalView(),
+      SundriesDetailsView(deleteSundry: () {
+        getTotalOfSundries();
+      }),
+    ];
     super.initState();
   }
 
@@ -76,16 +97,7 @@ class _RemainViewState extends State<RemainView> {
         key: scaffoldKey,
         drawer: SizedBox(
             width: MediaQuery.of(context).size.width * 0.75,
-            child:
-                showAllSundries ? SundriesView(
-                  deleteSundry: () {
-                    getTotalOfSundries();
-                  },
-                ) : PurchasesView(
-                  deletePurchase: () {
-                    getTotalOfPurchases();
-                  },
-                )),
+            child: drawers[selectedDrawer]),
         appBar: AppBar(
           backgroundColor: AppColors.cWhite,
           automaticallyImplyLeading: false,
@@ -102,19 +114,19 @@ class _RemainViewState extends State<RemainView> {
         backgroundColor: AppColors.cWhite,
         body: BlocConsumer<ZakatCubit, ZakatState>(
           listener: (context, state) {
-            if (state.zakatState == RequestState.sundriesLoading) {
+            if (state.zakatState == RequestState.totalSundriesLoading) {
               showLoading();
-            } else if (state.zakatState == RequestState.sundriesLoaded) {
+            } else if (state.zakatState == RequestState.totalSundriesLoaded) {
               sundriesTotal = state.sundriesTotal;
               hideLoading();
-            } else if (state.zakatState == RequestState.sundriesError) {
+            } else if (state.zakatState == RequestState.totalSundriesError) {
               hideLoading();
-            } else if (state.zakatState == RequestState.purchasesLoading) {
+            } else if (state.zakatState == RequestState.totalPurchasesLoading) {
               showLoading();
-            } else if (state.zakatState == RequestState.purchasesLoaded) {
+            } else if (state.zakatState == RequestState.totalPurchasesLoaded) {
               purchasesTotal = state.purchasesTotal;
               hideLoading();
-            } else if (state.zakatState == RequestState.purchasesError) {
+            } else if (state.zakatState == RequestState.totalPurchasesError) {
               hideLoading();
             }
           },
@@ -136,7 +148,8 @@ class _RemainViewState extends State<RemainView> {
                     Row(
                       children: [
                         Text(
-                          (getRemain() - sundriesTotal - purchasesTotal).toString(),
+                          (getRemain() - sundriesTotal - purchasesTotal)
+                              .toString(),
                           style: AppTypography.kLight16.copyWith(
                               fontWeight: FontWeight.bold,
                               color: AppColors.cBlack),
@@ -234,7 +247,7 @@ class _RemainViewState extends State<RemainView> {
                                       ))),
                                   child: Center(
                                     child: Text(
-                                      AppStrings.buyProducts,
+                                      AppStrings.purchases,
                                       style: AppTypography.kBold18
                                           .copyWith(color: AppColors.cTitle),
                                     ),
@@ -341,8 +354,15 @@ class _RemainViewState extends State<RemainView> {
                                                 onTap: () {
                                                   FocusScope.of(context)
                                                       .unfocus();
-                                                  double? price = double.tryParse(_productPriceController.text.trim());
-                                                  if ((getRemain() - sundriesTotal - purchasesTotal) < price!) {
+                                                  double? price =
+                                                      double.tryParse(
+                                                          _productPriceController
+                                                              .text
+                                                              .trim());
+                                                  if ((getRemain() -
+                                                          sundriesTotal -
+                                                          purchasesTotal) <
+                                                      price!) {
                                                     return;
                                                   }
                                                   if (_productPriceController
@@ -382,7 +402,7 @@ class _RemainViewState extends State<RemainView> {
                                                 },
                                                 child: Container(
                                                     width: 70.w,
-                                                    height: 50.w,
+                                                    height: 60.w,
                                                     decoration: BoxDecoration(
                                                       border: Border.all(
                                                           width: 2.w,
@@ -412,7 +432,7 @@ class _RemainViewState extends State<RemainView> {
                                               GestureDetector(
                                                 onTap: () async {
                                                   setState(() {
-                                                    showAllSundries = false;
+                                                    selectedDrawer = 0;
                                                   });
                                                   FocusScope.of(context)
                                                       .requestFocus(
@@ -421,8 +441,8 @@ class _RemainViewState extends State<RemainView> {
                                                       ?.openDrawer();
                                                 },
                                                 child: Container(
-                                                    width: 90.w,
-                                                    height: 50.w,
+                                                    width: 80.w,
+                                                    height: 60.w,
                                                     decoration: BoxDecoration(
                                                       border: Border.all(
                                                           width: 2.w,
@@ -446,6 +466,50 @@ class _RemainViewState extends State<RemainView> {
                                                           color:
                                                               AppColors.cTitle,
                                                         ),
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                      ),
+                                                    )),
+                                              ),
+                                              GestureDetector(
+                                                onTap: () async {
+                                                  setState(() {
+                                                    selectedDrawer = 1;
+                                                  });
+                                                  FocusScope.of(context)
+                                                      .requestFocus(
+                                                          FocusNode());
+                                                  scaffoldKey.currentState
+                                                      ?.openDrawer();
+                                                },
+                                                child: Container(
+                                                    width: 80.w,
+                                                    height: 60.w,
+                                                    decoration: BoxDecoration(
+                                                      border: Border.all(
+                                                          width: 2.w,
+                                                          color: AppColors
+                                                              .cPrimary),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              AppConstants
+                                                                  .radius),
+                                                      color: AppColors.cWhite,
+                                                      shape: BoxShape.rectangle,
+                                                    ),
+                                                    child: Center(
+                                                      child: Text(
+                                                        AppStrings.getDetails,
+                                                        style: AppTypography
+                                                            .kLight14
+                                                            .copyWith(
+                                                          fontFamily: AppFonts
+                                                              .qabasFontFamily,
+                                                          color:
+                                                              AppColors.cTitle,
+                                                        ),
+                                                        textAlign:
+                                                            TextAlign.center,
                                                       ),
                                                     )),
                                               ),
@@ -621,8 +685,15 @@ class _RemainViewState extends State<RemainView> {
                                                 onTap: () {
                                                   FocusScope.of(context)
                                                       .unfocus();
-                                                  double? price = double.tryParse(_sundryPriceController.text.trim());
-                                                  if ((getRemain() - sundriesTotal - purchasesTotal) < price!) {
+                                                  double? price =
+                                                      double.tryParse(
+                                                          _sundryPriceController
+                                                              .text
+                                                              .trim());
+                                                  if ((getRemain() -
+                                                          sundriesTotal -
+                                                          purchasesTotal) <
+                                                      price!) {
                                                     return;
                                                   }
                                                   if (_sundryPriceController
@@ -650,7 +721,7 @@ class _RemainViewState extends State<RemainView> {
                                                 },
                                                 child: Container(
                                                     width: 70.w,
-                                                    height: 50.w,
+                                                    height: 60.w,
                                                     decoration: BoxDecoration(
                                                       border: Border.all(
                                                           width: 2.w,
@@ -680,7 +751,7 @@ class _RemainViewState extends State<RemainView> {
                                               GestureDetector(
                                                 onTap: () async {
                                                   setState(() {
-                                                    showAllSundries = true;
+                                                    selectedDrawer = 2;
                                                   });
                                                   FocusScope.of(context)
                                                       .requestFocus(
@@ -689,8 +760,8 @@ class _RemainViewState extends State<RemainView> {
                                                       ?.openDrawer();
                                                 },
                                                 child: Container(
-                                                    width: 90.w,
-                                                    height: 50.w,
+                                                    width: 80.w,
+                                                    height: 60.w,
                                                     decoration: BoxDecoration(
                                                       border: Border.all(
                                                           width: 2.w,
@@ -714,9 +785,53 @@ class _RemainViewState extends State<RemainView> {
                                                           color:
                                                               AppColors.cTitle,
                                                         ),
+                                                        textAlign:
+                                                            TextAlign.center,
                                                       ),
                                                     )),
                                               ),
+                                              GestureDetector(
+                                                  onTap: () async {
+                                                    setState(() {
+                                                      selectedDrawer = 3;
+                                                    });
+                                                    FocusScope.of(context)
+                                                        .requestFocus(
+                                                            FocusNode());
+                                                    scaffoldKey.currentState
+                                                        ?.openDrawer();
+                                                  },
+                                                  child: Container(
+                                                      width: 80.w,
+                                                      height: 60.w,
+                                                      decoration: BoxDecoration(
+                                                        border: Border.all(
+                                                            width: 2.w,
+                                                            color: AppColors
+                                                                .cPrimary),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(
+                                                                    AppConstants
+                                                                        .radius),
+                                                        color: AppColors.cWhite,
+                                                        shape:
+                                                            BoxShape.rectangle,
+                                                      ),
+                                                      child: Center(
+                                                          child: Text(
+                                                        AppStrings.getDetails,
+                                                        style: AppTypography
+                                                            .kLight14
+                                                            .copyWith(
+                                                          fontFamily: AppFonts
+                                                              .qabasFontFamily,
+                                                          color:
+                                                              AppColors.cTitle,
+                                                        ),
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                      )))),
                                             ],
                                           ),
                                         ],

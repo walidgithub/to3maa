@@ -3,30 +3,26 @@ import 'package:flutter/material.dart';
 import 'package:To3maa/core/shared/constant/app_typography.dart';
 import 'package:To3maa/core/shared/style/app_colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../../../../core/shared/constant/app_constants.dart';
-import '../../../../../../core/shared/constant/app_fonts.dart';
-import '../../../../../../core/shared/constant/app_strings.dart';
+import '../../../../../../../core/shared/constant/app_constants.dart';
+import '../../../../../../../core/shared/constant/app_fonts.dart';
+import '../../../../../../../core/shared/constant/app_strings.dart';
 
-class SundryView extends StatefulWidget {
-  final int index;
-  final int id;
-  final String sundryName;
-  final String sundryPrice;
-  final Function deleteCart;
-  const SundryView({
+class PurchaseTotalView extends StatefulWidget {
+  final String productName;
+  final double productTotalQuantity;
+  final double productTotalPrice;
+  const PurchaseTotalView({
     super.key,
-    required this.sundryName,
-    required this.sundryPrice,
-    required this.index,
-    required this.deleteCart,
-    required this.id,
+    required this.productName,
+    required this.productTotalQuantity,
+    required this.productTotalPrice
   });
 
   @override
-  State<SundryView> createState() => _SundryViewState();
+  State<PurchaseTotalView> createState() => _PurchaseTotalViewState();
 }
 
-class _SundryViewState extends State<SundryView> {
+class _PurchaseTotalViewState extends State<PurchaseTotalView> {
   @override
   Widget build(BuildContext context) {
     return FadeInUp(
@@ -55,7 +51,7 @@ class _SundryViewState extends State<SundryView> {
                           Row(
                             children: [
                               Text(
-                                "${AppStrings.sundryPrice}:",
+                                "${AppStrings.productName}:",
                                 style: AppTypography.kLight16.copyWith(
                                     fontFamily: AppFonts.boldFontFamily,
                                     color: AppColors.cBlack),
@@ -64,7 +60,29 @@ class _SundryViewState extends State<SundryView> {
                                 width: 5.w,
                               ),
                               Text(
-                                widget.sundryPrice,
+                                widget.productName,
+                                style: AppTypography.kLight16.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColors.cNumber),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 10.h,
+                          ),
+                          Row(
+                            children: [
+                              Text(
+                                "${AppStrings.productPriceWKilo}:",
+                                style: AppTypography.kLight16.copyWith(
+                                    fontFamily: AppFonts.boldFontFamily,
+                                    color: AppColors.cBlack),
+                              ),
+                              SizedBox(
+                                width: 5.w,
+                              ),
+                              Text(
+                                "${widget.productTotalQuantity / widget.productTotalPrice}",
                                 style: AppTypography.kLight16.copyWith(
                                     fontWeight: FontWeight.bold,
                                     color: AppColors.cNumber),
@@ -86,7 +104,7 @@ class _SundryViewState extends State<SundryView> {
                           Row(
                             children: [
                               Text(
-                                "${AppStrings.sundryName}:",
+                                "${AppStrings.totalOfQuantityByKilo}:",
                                 style: AppTypography.kLight16.copyWith(
                                     fontFamily: AppFonts.boldFontFamily,
                                     color: AppColors.cBlack),
@@ -95,51 +113,56 @@ class _SundryViewState extends State<SundryView> {
                                 width: 5.w,
                               ),
                               Text(
-                                widget.sundryName,
+                                widget.productTotalQuantity.toString(),
                                 style: AppTypography.kLight16.copyWith(
                                     fontWeight: FontWeight.bold,
                                     color: AppColors.cNumber),
                               ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 10.h,
-                          ),
-                        ],
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(
-                            height: 10.h,
-                          ),
-                          Column(
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                  widget.deleteCart();
-                                },
-                                child: Container(
-                                  width: 30.w,
-                                  height: 30.w,
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                        width: 2.w,
-                                        color: AppColors.cPrimary),
-                                    borderRadius:
-                                    BorderRadius.circular(4.w),
-                                    color: AppColors.cWhite,
-                                    shape: BoxShape.rectangle,
-                                  ),
-                                  child: Icon(
-                                    Icons.delete_outline,
-                                    size: 20.w,
-                                    color: AppColors.cButton,
-                                  ),
-                                ),
+                              SizedBox(
+                                width: 5.w,
+                              ),
+                              Text(
+                                AppStrings.kilo,
+                                style: AppTypography.kLight16.copyWith(
+                                    fontFamily: AppFonts.boldFontFamily,
+                                    color: AppColors.cBlack),
                               ),
                             ],
-                          )
+                          ),
+                          SizedBox(
+                            height: 10.h,
+                          ),
+                          Row(
+                            children: [
+                              Text(
+                                AppStrings.total,
+                                style: AppTypography.kLight16.copyWith(
+                                    fontFamily: AppFonts.boldFontFamily,
+                                    color: AppColors.cBlack),
+                              ),
+                              SizedBox(
+                                width: 5.w,
+                              ),
+                              Text(
+                                widget.productTotalPrice.toString(),
+                                style: AppTypography.kLight16.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColors.cNumber),
+                              ),
+                              SizedBox(
+                                width: 5.w,
+                              ),
+                              Text(
+                                AppStrings.currency,
+                                style: AppTypography.kLight16.copyWith(
+                                    fontFamily: AppFonts.boldFontFamily,
+                                    color: AppColors.cBlack),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 10.h,
+                          ),
                         ],
                       ),
                     ],

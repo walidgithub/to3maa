@@ -3,18 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:To3maa/core/shared/constant/app_typography.dart';
 import 'package:To3maa/core/shared/style/app_colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../../../../core/shared/constant/app_constants.dart';
-import '../../../../../../core/shared/constant/app_fonts.dart';
-import '../../../../../../core/shared/constant/app_strings.dart';
+import '../../../../../../../core/shared/constant/app_constants.dart';
+import '../../../../../../../core/shared/constant/app_fonts.dart';
+import '../../../../../../../core/shared/constant/app_strings.dart';
 
-class PurchaseView extends StatefulWidget {
+class PurchaseDetailsView extends StatefulWidget {
   final int index;
   final int id;
   final String productName;
   final String productPrice;
   final int productQuantity;
   final Function deleteCart;
-  const PurchaseView({
+  const PurchaseDetailsView({
     super.key,
     required this.productName,
     required this.productPrice,
@@ -25,10 +25,10 @@ class PurchaseView extends StatefulWidget {
   });
 
   @override
-  State<PurchaseView> createState() => _PurchaseViewState();
+  State<PurchaseDetailsView> createState() => _PurchaseDetailsViewState();
 }
 
-class _PurchaseViewState extends State<PurchaseView> {
+class _PurchaseDetailsViewState extends State<PurchaseDetailsView> {
   @override
   Widget build(BuildContext context) {
     return FadeInUp(
@@ -54,6 +54,28 @@ class _PurchaseViewState extends State<PurchaseView> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          Row(
+                            children: [
+                              Text(
+                                "${AppStrings.productName}:",
+                                style: AppTypography.kLight16.copyWith(
+                                    fontFamily: AppFonts.boldFontFamily,
+                                    color: AppColors.cBlack),
+                              ),
+                              SizedBox(
+                                width: 5.w,
+                              ),
+                              Text(
+                                widget.productName,
+                                style: AppTypography.kLight16.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColors.cNumber),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 10.h,
+                          ),
                           Row(
                             children: [
                               Text(
@@ -88,28 +110,6 @@ class _PurchaseViewState extends State<PurchaseView> {
                           Row(
                             children: [
                               Text(
-                                "${AppStrings.productName}:",
-                                style: AppTypography.kLight16.copyWith(
-                                    fontFamily: AppFonts.boldFontFamily,
-                                    color: AppColors.cBlack),
-                              ),
-                              SizedBox(
-                                width: 5.w,
-                              ),
-                              Text(
-                                widget.productName,
-                                style: AppTypography.kLight16.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    color: AppColors.cNumber),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 10.h,
-                          ),
-                          Row(
-                            children: [
-                              Text(
                                 "${AppStrings.quantityByKilo}:",
                                 style: AppTypography.kLight16.copyWith(
                                     fontFamily: AppFonts.boldFontFamily,
@@ -129,6 +129,37 @@ class _PurchaseViewState extends State<PurchaseView> {
                               ),
                               Text(
                                 AppStrings.kilo,
+                                style: AppTypography.kLight16.copyWith(
+                                    fontFamily: AppFonts.boldFontFamily,
+                                    color: AppColors.cBlack),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 10.h,
+                          ),
+                          Row(
+                            children: [
+                              Text(
+                                AppStrings.total,
+                                style: AppTypography.kLight16.copyWith(
+                                    fontFamily: AppFonts.boldFontFamily,
+                                    color: AppColors.cBlack),
+                              ),
+                              SizedBox(
+                                width: 5.w,
+                              ),
+                              Text(
+                                "${widget.productQuantity * int.parse(widget.productPrice)}",
+                                style: AppTypography.kLight16.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColors.cNumber),
+                              ),
+                              SizedBox(
+                                width: 5.w,
+                              ),
+                              Text(
+                                AppStrings.currency,
                                 style: AppTypography.kLight16.copyWith(
                                     fontFamily: AppFonts.boldFontFamily,
                                     color: AppColors.cBlack),
