@@ -3,6 +3,7 @@ import 'package:To3maa/zakat/data/data_source/zakat_datasource.dart';
 import 'package:To3maa/zakat/data/repository/zakat_repository.dart';
 import 'package:To3maa/zakat/domain/repository/base_repository.dart';
 import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/delete_all_zakat_usecase.dart';
+import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/delete_members_count_usecase.dart';
 import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/delete_product_usecase.dart';
 import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/delete_purchase_usecase.dart';
 import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/delete_sundry_usecase.dart';
@@ -12,10 +13,12 @@ import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/get_all_products_use
 import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/get_all_purchases_usecase.dart';
 import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/get_all_sundries_usecase.dart';
 import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/get_all_zakat_usecase.dart';
+import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/get_members_count_by_product_usecase.dart';
 import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/get_total_of_purchases_usecase.dart';
 import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/get_total_of_sundries_usecase.dart';
 import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/get_zakat_products_by_kilos_usecase.dart';
 import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/get_zakat_products_by_zakat_id_usecase.dart';
+import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/insert_members_count_usecase.dart';
 import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/insert_product_usecase.dart';
 import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/insert_purchase_usecase.dart';
 import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/insert_sundry_usecase.dart';
@@ -38,7 +41,7 @@ class ServiceLocator {
 
     // Cubit
     sl.registerFactory(() => ZakatCubit(sl(), sl(), sl(), sl(), sl(), sl(),
-        sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl()));
+        sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl()));
 
     // Use Cases
     sl.registerLazySingleton<DeleteProductUseCase>(
@@ -109,6 +112,15 @@ class ServiceLocator {
 
     sl.registerLazySingleton<ResetProductQuantityUseCase>(
         () => ResetProductQuantityUseCase(sl()));
+
+    sl.registerLazySingleton<InsertMembersCountUseCase>(
+            () => InsertMembersCountUseCase(sl()));
+
+    sl.registerLazySingleton<DeleteMembersCountUseCase>(
+            () => DeleteMembersCountUseCase(sl()));
+
+    sl.registerLazySingleton<GetMembersByProductUseCase>(
+            () => GetMembersByProductUseCase(sl()));
 
     // Repositories
     sl.registerLazySingleton<BaseRepository>(() => ZakatRepository(sl()));

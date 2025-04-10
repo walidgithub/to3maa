@@ -1,5 +1,7 @@
+import 'package:To3maa/zakat/domain/requests/delete_members_count_request.dart';
 import 'package:To3maa/zakat/domain/requests/delete_purchase_request.dart';
 import 'package:To3maa/zakat/domain/requests/delete_sundry_request.dart';
+import 'package:To3maa/zakat/domain/requests/insert_members_count_request.dart';
 import 'package:To3maa/zakat/domain/requests/insert_purchase_request.dart';
 import 'package:To3maa/zakat/domain/requests/insert_sundry_request.dart';
 import 'package:To3maa/zakat/domain/requests/reset_product_quantity_request.dart';
@@ -282,6 +284,36 @@ class ZakatRepository extends BaseRepository {
   Future<Either<Failure, double>> getTotalOfSundries() async {
     try {
       final result = await _baseDataSource.getTotalOfSundries();
+      return Right(result);
+    } catch (error) {
+      return Left(ErrorHandler.handle(error).failure);
+    }
+  }
+
+  @override
+  Future<Either<Failure, int>> deleteMembersCount(DeleteMembersCountRequest deleteMembersCountRequest) async {
+    try {
+      final result = await _baseDataSource.deleteMembersCount(deleteMembersCountRequest);
+      return Right(result);
+    } catch (error) {
+      return Left(ErrorHandler.handle(error).failure);
+    }
+  }
+
+  @override
+  Future<Either<Failure, int>> getMembersCountByProduct(String productName) async {
+    try {
+      final result = await _baseDataSource.getMembersCountByProduct(productName);
+      return Right(result);
+    } catch (error) {
+      return Left(ErrorHandler.handle(error).failure);
+    }
+  }
+
+  @override
+  Future<Either<Failure, int>> insertMembersCount(InsertMembersCount insertMembersCount) async {
+    try {
+      final result = await _baseDataSource.insertMembersCount(insertMembersCount);
       return Right(result);
     } catch (error) {
       return Left(ErrorHandler.handle(error).failure);

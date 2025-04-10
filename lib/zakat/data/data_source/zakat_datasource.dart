@@ -20,6 +20,8 @@ import 'package:To3maa/zakat/domain/responses/zakat_products_by_kilos_response.d
 import 'package:To3maa/zakat/domain/responses/zakat_products_response.dart';
 import 'package:To3maa/zakat/domain/responses/zakat_response.dart';
 
+import '../../domain/requests/delete_members_count_request.dart';
+import '../../domain/requests/insert_members_count_request.dart';
 import '../../domain/responses/purchases_by_kilos_response.dart';
 
 abstract class BaseDataSource {
@@ -29,6 +31,7 @@ abstract class BaseDataSource {
   Future<int> insertProductData(InsertProductRequest insertProductRequest);
   Future<int> insertSundryData(InsertSundryRequest insertSundryRequest);
   Future<int> insertPurchaseData(InsertPurchaseRequest insertPurchaseRequest);
+  Future<int> insertMembersCount(InsertMembersCount insertMembersCount);
 
   Future<int> updateProductData(UpdateProductRequest updateProductRequest);
   Future<int> updateProductQuantityData(
@@ -43,6 +46,7 @@ abstract class BaseDataSource {
   Future<int> deleteProductData(DeleteProductRequest deleteProductRequest);
   Future<int> deleteSundryData(DeleteSundryRequest deleteSundryRequest);
   Future<int> deletePurchaseData(DeletePurchaseRequest deletePurchaseRequest);
+  Future<int> deleteMembersCount(DeleteMembersCountRequest deleteMembersCountRequest);
 
   Future<List<SundriesResponse>> getAllSundries();
   Future<List<PurchasesResponse>> getAllPurchases();
@@ -55,6 +59,7 @@ abstract class BaseDataSource {
 
   Future<double> getTotalOfPurchases();
   Future<double> getTotalOfSundries();
+  Future<int> getMembersCountByProduct(String productName);
 }
 
 class ZakatDataSource extends BaseDataSource {
@@ -320,6 +325,36 @@ class ZakatDataSource extends BaseDataSource {
   @override
   Future<double> getTotalOfSundries() async {
     final res = await _dbHelper.getTotalOfSundries();
+    try {
+      return res;
+    } catch (e) {
+      throw e.toString();
+    }
+  }
+
+  @override
+  Future<int> deleteMembersCount(DeleteMembersCountRequest deleteMembersCountRequest) async {
+    final res = await _dbHelper.deleteMembersCount(deleteMembersCountRequest);
+    try {
+      return res;
+    } catch (e) {
+      throw e.toString();
+    }
+  }
+
+  @override
+  Future<int> getMembersCountByProduct(String productName) async {
+    final res = await _dbHelper.getMembersCountByProduct(productName);
+    try {
+      return res;
+    } catch (e) {
+      throw e.toString();
+    }
+  }
+
+  @override
+  Future<int> insertMembersCount(InsertMembersCount insertMembersCount) async {
+    final res = await _dbHelper.insertMembersCount(insertMembersCount);
     try {
       return res;
     } catch (e) {

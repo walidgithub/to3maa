@@ -5,6 +5,7 @@ import 'package:To3maa/zakat/domain/models/sundries_model.dart';
 import 'package:To3maa/zakat/domain/models/zakat_model.dart';
 import 'package:To3maa/zakat/domain/models/zakat_products_by_kilos_model.dart';
 import 'package:To3maa/zakat/domain/models/zakat_products_model.dart';
+import 'package:To3maa/zakat/domain/requests/delete_members_count_request.dart';
 import 'package:To3maa/zakat/domain/requests/delete_product_request.dart';
 import 'package:To3maa/zakat/domain/requests/delete_purchase_request.dart';
 import 'package:To3maa/zakat/domain/requests/delete_zakat_products_request.dart';
@@ -22,6 +23,7 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 import '../../zakat/domain/requests/delete_sundry_request.dart';
+import '../../zakat/domain/requests/insert_members_count_request.dart';
 import '../../zakat/domain/requests/insert_purchase_request.dart';
 
 class DbHelper {
@@ -46,7 +48,7 @@ class DbHelper {
     final path = join(dbPath, filePath);
     // return await openDatabase(path, version: 1, onCreate: createDB);
     return await openDatabase(path,
-        version: 5, onCreate: createDB, onUpgrade: onUpgrade);
+        version: 6, onCreate: createDB, onUpgrade: onUpgrade);
   }
 
   Future createDB(Database db, int version) async {
@@ -62,6 +64,8 @@ class DbHelper {
     await db.execute("create table IF NOT EXISTS sundries(id integer primary key autoincrement, sundryName varchar(255), sundryPrice varchar(10))");
 
     await db.execute("create table IF NOT EXISTS purchases(id integer primary key autoincrement, productName varchar(255), productQuantity integer, productPrice varchar(10), productImage varchar(255))");
+
+    await db.execute("create table IF NOT EXISTS membersCount(id integer primary key autoincrement, zakatId integer, membersCount integer, productName varchar(255))");
   }
 
   Future onUpgrade(Database db, int oldVersion, int newVersion) async {
@@ -69,6 +73,8 @@ class DbHelper {
       await db.execute("create table IF NOT EXISTS sundries(id integer primary key autoincrement, sundryName varchar(255), sundryPrice varchar(10))");
 
       await db.execute("create table IF NOT EXISTS purchases(id integer primary key autoincrement, productName varchar(255), productQuantity integer, productPrice varchar(10), productImage varchar(255))");
+
+      await db.execute("create table IF NOT EXISTS membersCount(id integer primary key autoincrement, zakatId integer, membersCount integer, productName varchar(255))");
     }
   }
 
@@ -97,6 +103,12 @@ class DbHelper {
       InsertSundryRequest insertSundryRequest) async {
     final db = _db!.database;
     return await db.insert('sundries', insertSundryRequest.toJson());
+  }
+
+  Future<int> insertMembersCount(
+      InsertMembersCount insertMembersCount) async {
+    final db = _db!.database;
+    return await db.insert('membersCount', insertMembersCount.toJson());
   }
 
   Future<int> insertPurchaseData(
@@ -182,6 +194,18 @@ class DbHelper {
 
     return db.delete('zakatProducts',
         where: 'zakatId = ?', whereArgs: [deleteZakatProductsRequest.id]);
+  }
+
+  Future<int> deleteMembersCount(
+      DeleteMembersCountRequest deleteMembersCountRequest) async {
+    if (_db == null) {
+      await initDB(dbdName);
+    }
+
+    final db = _db!.database;
+
+    return db.delete('membersCount',
+        where: 'zakatId = ?', whereArgs: [deleteMembersCountRequest.id]);
   }
 
   // delete all zakat data
@@ -357,6 +381,19 @@ class DbHelper {
   }
 
   // get totals -------------------------------------------------
+  Future<int> getMembersCountByProduct(String productName) async {
+    if (_db == null) {
+      await initDB(dbdName);
+    }
+
+    final db = _db!.database;
+
+    final result = await db.rawQuery('SELECT SUM(membersCount) as sumMembersCount FROM membersCount WHERE productName= ?',
+        [productName]);
+    final total = Sqflite.firstIntValue(result) ?? 0;
+    return total;
+  }
+
   Future<List<ZakatProductsByKilosModel>> getAllZakatProductsByKilos() async {
     if (_db == null) {
       await initDB(dbdName);

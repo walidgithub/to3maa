@@ -18,10 +18,12 @@ class ZakatState extends Equatable {
   final List<SundriesResponse> sundriesList;
   final List<PurchasesResponse> purchasesList;
   final int zakatId;
+  final int membersCountId;
   final int sundryId;
   final int purchaseId;
   final int zakatProductId;
   final int productId;
+  final int membersCount;
   final double sundriesTotal;
   final double purchasesTotal;
   final RequestState zakatState;
@@ -36,12 +38,14 @@ class ZakatState extends Equatable {
     this.purchasesByKiloList = const [],
     this.zakatProductsByZakatIdList = const [],
     this.zakatId = 0,
+    this.membersCountId = 0,
     this.zakatProductId = 0,
     this.productId = 0,
     this.sundryId = 0,
     this.purchaseId = 0,
     this.sundriesTotal = 0.0,
     this.purchasesTotal = 0.0,
+    this.membersCount = 0,
     this.zakatState = RequestState.initialState,
     this.zakatMessage = '',
   });
@@ -55,10 +59,12 @@ class ZakatState extends Equatable {
     List<PurchasesByKilosResponse>? purchasesByKiloList,
     List<ZakatProductsResponse>? zakatProductsByZakatIdList,
     int? zakatId,
+    int? membersCountId,
     int? sundryId,
     int? purchaseId,
     int? zakatProductId,
     int? productId,
+    int? membersCount,
     double? sundriesTotal,
     double? purchasesTotal,
     RequestState? zakatState,
@@ -76,8 +82,10 @@ class ZakatState extends Equatable {
       zakatProductsByZakatIdList:
           zakatProductsByZakatIdList ?? this.zakatProductsByZakatIdList,
       zakatId: zakatId ?? this.zakatId,
+      membersCountId: membersCountId ?? this.membersCountId,
       sundryId: sundryId ?? this.sundryId,
       purchaseId: purchaseId ?? this.purchaseId,
+      membersCount: membersCount ?? this.membersCount,
       sundriesTotal: sundriesTotal ?? this.sundriesTotal,
       purchasesTotal: purchasesTotal ?? this.purchasesTotal,
       zakatProductId: zakatProductId ?? this.zakatProductId,
@@ -97,10 +105,12 @@ class ZakatState extends Equatable {
     purchasesByKiloList,
         zakatProductsByZakatIdList,
         zakatId,
+    membersCountId,
     sundryId,
     purchaseId,
         zakatProductId,
         productId,
+    membersCount,
     purchasesTotal,
     sundriesTotal,
         zakatState,

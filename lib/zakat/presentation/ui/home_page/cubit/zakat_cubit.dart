@@ -17,6 +17,7 @@ import 'package:To3maa/zakat/domain/requests/update_product_quantity_request.dar
 import 'package:To3maa/zakat/domain/requests/update_product_request.dart';
 import 'package:To3maa/zakat/domain/use_cases/base_usecase/base_usecase.dart';
 import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/delete_all_zakat_usecase.dart';
+import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/delete_members_count_usecase.dart';
 import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/delete_product_usecase.dart';
 import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/delete_purchase_usecase.dart';
 import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/delete_sundry_usecase.dart';
@@ -26,10 +27,12 @@ import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/get_all_products_use
 import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/get_all_purchases_usecase.dart';
 import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/get_all_sundries_usecase.dart';
 import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/get_all_zakat_usecase.dart';
+import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/get_members_count_by_product_usecase.dart';
 import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/get_total_of_purchases_usecase.dart';
 import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/get_total_of_sundries_usecase.dart';
 import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/get_zakat_products_by_kilos_usecase.dart';
 import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/get_zakat_products_by_zakat_id_usecase.dart';
+import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/insert_members_count_usecase.dart';
 import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/insert_product_usecase.dart';
 import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/insert_purchase_usecase.dart';
 import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/insert_sundry_usecase.dart';
@@ -41,6 +44,7 @@ import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/update_product_useca
 import 'package:To3maa/zakat/presentation/ui/home_page/cubit/zakat_states.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../domain/requests/insert_members_count_request.dart';
 import '../../../../domain/use_cases/zakat_usecase/get_purchases_by_kilos_usecase.dart';
 
 class ZakatCubit extends Cubit<ZakatState> {
@@ -67,6 +71,9 @@ class ZakatCubit extends Cubit<ZakatState> {
   final ResetProductQuantityUseCase resetProductQuantityUseCase;
   final GetTotalOfPurchasesUseCase getTotalOfPurchasesUseCase;
   final GetTotalOfSundriesUseCase getTotalOfSundriesUseCase;
+  final InsertMembersCountUseCase insertMembersCountUseCase;
+  final DeleteMembersCountUseCase deleteMembersCountUseCase;
+  final GetMembersByProductUseCase getMembersByProductUseCase;
 
   ZakatCubit(
       this.deleteProductUseCase,
@@ -91,6 +98,9 @@ class ZakatCubit extends Cubit<ZakatState> {
       this.insertPurchaseUseCase,
       this.getPurchasesByKilosUseCase,
       this.getTotalOfSundriesUseCase,
+      this.insertMembersCountUseCase,
+      this.deleteMembersCountUseCase,
+      this.getMembersByProductUseCase,
       this.getTotalOfPurchasesUseCase)
       : super(const ZakatState());
 
@@ -112,9 +122,24 @@ class ZakatCubit extends Cubit<ZakatState> {
             )));
   }
 
+  FutureOr<void> insertMembersCount(InsertMembersCount insertMembersCount) async {
+    emit(state.copyWith(
+        zakatState: RequestState.insertLoading, zakatMessage: '', membersCountId: 0));
+
+    final result = await insertMembersCountUseCase(insertMembersCount);
+
+    result.fold(
+            (l) => emit(state.copyWith(
+            zakatState: RequestState.insertError, zakatMessage: l.message)),
+            (r) => emit(state.copyWith(
+          membersCountId: r,
+          zakatState: RequestState.insertDone,
+        )));
+  }
+
   FutureOr<void> insertSundry(InsertSundryRequest insertSundryRequest) async {
     emit(state.copyWith(
-        zakatState: RequestState.insertLoading, zakatMessage: '', zakatId: 0));
+        zakatState: RequestState.insertLoading, zakatMessage: '', sundryId: 0));
 
     final result = await insertSundryUseCase(insertSundryRequest);
 
@@ -130,7 +155,7 @@ class ZakatCubit extends Cubit<ZakatState> {
   FutureOr<void> insertPurchase(
       InsertPurchaseRequest insertPurchaseRequest) async {
     emit(state.copyWith(
-        zakatState: RequestState.insertLoading, zakatMessage: '', zakatId: 0));
+        zakatState: RequestState.insertLoading, zakatMessage: '', purchaseId: 0));
 
     final result = await insertPurchaseUseCase(insertPurchaseRequest);
 

@@ -22,6 +22,8 @@ import 'package:To3maa/zakat/domain/responses/zakat_products_by_kilos_response.d
 import 'package:To3maa/zakat/domain/responses/zakat_products_response.dart';
 import 'package:To3maa/zakat/domain/responses/zakat_response.dart';
 
+import '../requests/delete_members_count_request.dart';
+import '../requests/insert_members_count_request.dart';
 import '../responses/purchases_by_kilos_response.dart';
 
 abstract class BaseRepository {
@@ -35,6 +37,7 @@ abstract class BaseRepository {
       InsertSundryRequest insertSundryRequest);
   Future<Either<Failure, int>> insertPurchaseData(
       InsertPurchaseRequest insertPurchaseRequest);
+  Future<Either<Failure, int>> insertMembersCount(InsertMembersCount insertMembersCount);
 
   Future<Either<Failure, int>> updateProductData(
       UpdateProductRequest updateProductRequest);
@@ -42,6 +45,7 @@ abstract class BaseRepository {
       UpdateProductQuantityRequest updateProductQuantityRequest);
   Future<Either<Failure, int>> resetProductQuantityData(
       ResetProductQuantityRequest resetProductQuantityRequest);
+  Future<Either<Failure, int>> deleteMembersCount(DeleteMembersCountRequest deleteMembersCountRequest);
 
   Future<Either<Failure, int>> deleteZakatData(
       DeleteZakatRequest deleteZakatRequest);
@@ -69,4 +73,5 @@ abstract class BaseRepository {
 
   Future<Either<Failure, double>> getTotalOfPurchases();
   Future<Either<Failure, double>> getTotalOfSundries();
+  Future<Either<Failure, int>> getMembersCountByProduct(String productName);
 }
