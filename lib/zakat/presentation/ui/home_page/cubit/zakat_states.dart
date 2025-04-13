@@ -15,6 +15,7 @@ class ZakatState extends Equatable {
   final List<ZakatProductsByKilosResponse> zakatProductsByKiloList;
   final List<PurchasesByKilosResponse> purchasesByKiloList;
   final List<ZakatProductsResponse> zakatProductsByZakatIdList;
+  final List<ZakatProductsResponse> zakatProductsList;
   final List<SundriesResponse> sundriesList;
   final List<PurchasesResponse> purchasesList;
   final int zakatId;
@@ -37,6 +38,7 @@ class ZakatState extends Equatable {
     this.zakatProductsByKiloList = const [],
     this.purchasesByKiloList = const [],
     this.zakatProductsByZakatIdList = const [],
+    this.zakatProductsList = const [],
     this.zakatId = 0,
     this.membersCountId = 0,
     this.zakatProductId = 0,
@@ -58,6 +60,7 @@ class ZakatState extends Equatable {
     List<ZakatProductsByKilosResponse>? zakatProductsByKiloList,
     List<PurchasesByKilosResponse>? purchasesByKiloList,
     List<ZakatProductsResponse>? zakatProductsByZakatIdList,
+    List<ZakatProductsResponse>? zakatProductsList,
     int? zakatId,
     int? membersCountId,
     int? sundryId,
@@ -81,6 +84,8 @@ class ZakatState extends Equatable {
       purchasesByKiloList ?? this.purchasesByKiloList,
       zakatProductsByZakatIdList:
           zakatProductsByZakatIdList ?? this.zakatProductsByZakatIdList,
+      zakatProductsList:
+      zakatProductsList ?? this.zakatProductsList,
       zakatId: zakatId ?? this.zakatId,
       membersCountId: membersCountId ?? this.membersCountId,
       sundryId: sundryId ?? this.sundryId,
@@ -104,6 +109,7 @@ class ZakatState extends Equatable {
         zakatProductsByKiloList,
     purchasesByKiloList,
         zakatProductsByZakatIdList,
+        zakatProductsList,
         zakatId,
     membersCountId,
     sundryId,

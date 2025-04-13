@@ -31,6 +31,7 @@ import 'package:To3maa/zakat/presentation/ui/home_page/cubit/zakat_cubit.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../zakat/domain/use_cases/zakat_usecase/get_purchases_by_kilos_usecase.dart';
+import '../../zakat/domain/use_cases/zakat_usecase/get_zakat_products_usecase.dart';
 
 final sl = GetIt.instance;
 
@@ -41,7 +42,7 @@ class ServiceLocator {
 
     // Cubit
     sl.registerFactory(() => ZakatCubit(sl(), sl(), sl(), sl(), sl(), sl(),
-        sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl()));
+        sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl()));
 
     // Use Cases
     sl.registerLazySingleton<DeleteProductUseCase>(
@@ -88,6 +89,9 @@ class ServiceLocator {
 
     sl.registerLazySingleton<GetZakatProductsByZakatIdUseCase>(
         () => GetZakatProductsByZakatIdUseCase(sl()));
+
+    sl.registerLazySingleton<GetZakatProductsUseCase>(
+            () => GetZakatProductsUseCase(sl()));
 
     sl.registerLazySingleton<InsertProductUseCase>(
         () => InsertProductUseCase(sl()));

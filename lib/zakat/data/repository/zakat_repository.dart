@@ -319,4 +319,14 @@ class ZakatRepository extends BaseRepository {
       return Left(ErrorHandler.handle(error).failure);
     }
   }
+
+  @override
+  Future<Either<Failure, List<ZakatProductsResponse>>> getZakatProducts() async {
+    try {
+      final result = await _baseDataSource.getZakatProducts();
+      return Right(result);
+    } catch (error) {
+      return Left(ErrorHandler.handle(error).failure);
+    }
+  }
 }

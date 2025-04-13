@@ -1,3 +1,4 @@
+import 'package:To3maa/zakat/domain/requests/insert_members_count_request.dart';
 import 'package:To3maa/zakat/domain/requests/reset_product_quantity_request.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
@@ -21,12 +22,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hijri/hijri_calendar.dart';
 import 'dart:ui' as ui;
 import 'package:intl/intl.dart';
-
 import '../../../../../../core/shared/constant/app_constants.dart';
 import '../../../../../../core/shared/constant/app_fonts.dart';
 import '../../../../../../core/shared/constant/app_strings.dart';
 import '../../../../../../core/shared/style/app_colors.dart';
-import '../../../../../domain/responses/products_response.dart';
 
 class AddZakatView extends StatefulWidget {
   const AddZakatView({super.key});
@@ -62,6 +61,8 @@ class _AddZakatViewState extends State<AddZakatView> {
   double remain = 0.0;
   double allValue = 0.0;
   double allProductsValue = 0.0;
+
+  int insertedZakatId = 0;
 
   void clearData() {
     _membersCountController.text = '';
@@ -174,6 +175,7 @@ class _AddZakatViewState extends State<AddZakatView> {
               hideLoading();
             } else if (state.zakatState == RequestState.insertDone) {
               hideLoading();
+              insertedZakatId = state.zakatId;
               getAllZakat();
             } else if (state.zakatState == RequestState.zakatLoading) {
               showLoading();
@@ -633,6 +635,9 @@ class _AddZakatViewState extends State<AddZakatView> {
                                   await ZakatCubit.get(context)
                                       .insertZakatProducts(
                                           insertZakatProductsRequest);
+
+                                  InsertMembersCount insertMembersCount = InsertMembersCount(productName: x.productName,membersCount: x.productQuantity,zakatId: insertedZakatId);
+                                  await ZakatCubit.get(context).insertMembersCount(insertMembersCount);
 
                                   x.productQuantity = 0;
                                 }

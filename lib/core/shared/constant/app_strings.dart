@@ -8,6 +8,7 @@ class AppStrings {
   static const String cart = "الـعـربـة";
   static const String remainTab = "الـمـتـبـقـى";
   static const String successDelete = "تـم الـحـذف بـنـجـاح";
+  static const String productIsExist = "لا يـجـوز الـتـعـديـل فـى الـصـنـف بـعـد الـشـراء مـنـه";
   static const String successAdd = "تـمـت الإضـافـة بـنـجـاح";
   static const String creditNotEnough = "الـرصـيـد لا يـكـفـى";
   static const String successExport = "تـم استخراج التقرير بنجاح";

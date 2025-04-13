@@ -40,12 +40,6 @@ String formatWeight(num weightKg) {
   }
 }
 
-String calculateMembersCount(num weightKg, String productPrice) {
-  if (productPrice == "0") return '0';
-  int members = (weightKg / double.parse(productPrice)).floor();
-  return members.toString();
-}
-
 String formatWeightString(num weightKg) {
   if (weightKg >= 1000) {
     return "ton";

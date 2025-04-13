@@ -66,6 +66,9 @@ abstract class BaseRepository {
   Future<Either<Failure, List<ZakatProductsResponse>>>
       getZakatProductsByZakatId(
           GetZakatProductsByZatatIdRequest getZakatProductsByZatatIdRequest);
+  Future<Either<Failure, List<ZakatProductsResponse>>>
+  getZakatProducts();
+
   Future<Either<Failure, List<ZakatProductsByKilosResponse>>>
       getAllZakatProductsByKilos();
   Future<Either<Failure, List<PurchasesByKilosResponse>>>

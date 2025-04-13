@@ -43,9 +43,10 @@ import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/update_product_quant
 import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/update_product_usecase.dart';
 import 'package:To3maa/zakat/presentation/ui/home_page/cubit/zakat_states.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+import '../../../../domain/requests/delete_members_count_request.dart';
 import '../../../../domain/requests/insert_members_count_request.dart';
 import '../../../../domain/use_cases/zakat_usecase/get_purchases_by_kilos_usecase.dart';
+import '../../../../domain/use_cases/zakat_usecase/get_zakat_products_usecase.dart';
 
 class ZakatCubit extends Cubit<ZakatState> {
   final DeleteProductUseCase deleteProductUseCase;
@@ -74,6 +75,7 @@ class ZakatCubit extends Cubit<ZakatState> {
   final InsertMembersCountUseCase insertMembersCountUseCase;
   final DeleteMembersCountUseCase deleteMembersCountUseCase;
   final GetMembersByProductUseCase getMembersByProductUseCase;
+  final GetZakatProductsUseCase getZakatProductsUseCase;
 
   ZakatCubit(
       this.deleteProductUseCase,
@@ -101,6 +103,7 @@ class ZakatCubit extends Cubit<ZakatState> {
       this.insertMembersCountUseCase,
       this.deleteMembersCountUseCase,
       this.getMembersByProductUseCase,
+      this.getZakatProductsUseCase,
       this.getTotalOfPurchasesUseCase)
       : super(const ZakatState());
 
@@ -122,19 +125,22 @@ class ZakatCubit extends Cubit<ZakatState> {
             )));
   }
 
-  FutureOr<void> insertMembersCount(InsertMembersCount insertMembersCount) async {
+  FutureOr<void> insertMembersCount(
+      InsertMembersCount insertMembersCount) async {
     emit(state.copyWith(
-        zakatState: RequestState.insertLoading, zakatMessage: '', membersCountId: 0));
+        zakatState: RequestState.insertLoading,
+        zakatMessage: '',
+        membersCountId: 0));
 
     final result = await insertMembersCountUseCase(insertMembersCount);
 
     result.fold(
-            (l) => emit(state.copyWith(
+        (l) => emit(state.copyWith(
             zakatState: RequestState.insertError, zakatMessage: l.message)),
-            (r) => emit(state.copyWith(
-          membersCountId: r,
-          zakatState: RequestState.insertDone,
-        )));
+        (r) => emit(state.copyWith(
+              membersCountId: r,
+              zakatState: RequestState.insertDone,
+            )));
   }
 
   FutureOr<void> insertSundry(InsertSundryRequest insertSundryRequest) async {
@@ -155,7 +161,9 @@ class ZakatCubit extends Cubit<ZakatState> {
   FutureOr<void> insertPurchase(
       InsertPurchaseRequest insertPurchaseRequest) async {
     emit(state.copyWith(
-        zakatState: RequestState.insertLoading, zakatMessage: '', purchaseId: 0));
+        zakatState: RequestState.insertLoading,
+        zakatMessage: '',
+        purchaseId: 0));
 
     final result = await insertPurchaseUseCase(insertPurchaseRequest);
 
@@ -277,9 +285,27 @@ class ZakatCubit extends Cubit<ZakatState> {
             )));
   }
 
+  FutureOr<void> deleteMembersCount(
+      DeleteMembersCountRequest deleteMembersCountRequest) async {
+    emit(state.copyWith(
+        zakatState: RequestState.deleteLoading,
+        zakatMessage: '',
+        membersCountId: 0));
+
+    final result = await deleteMembersCountUseCase(deleteMembersCountRequest);
+
+    result.fold(
+        (l) => emit(state.copyWith(
+            zakatState: RequestState.deleteError, zakatMessage: l.message)),
+        (r) => emit(state.copyWith(
+              membersCountId: r,
+              zakatState: RequestState.deleteDone,
+            )));
+  }
+
   FutureOr<void> deleteSundry(DeleteSundryRequest deleteSundryRequest) async {
     emit(state.copyWith(
-        zakatState: RequestState.deleteLoading, zakatMessage: '', zakatId: 0));
+        zakatState: RequestState.deleteLoading, zakatMessage: '', sundryId: 0));
 
     final result = await deleteSundryUseCase(deleteSundryRequest);
 
@@ -295,7 +321,9 @@ class ZakatCubit extends Cubit<ZakatState> {
   FutureOr<void> deletePurchase(
       DeletePurchaseRequest deletePurchaseRequest) async {
     emit(state.copyWith(
-        zakatState: RequestState.deleteLoading, zakatMessage: '', zakatId: 0));
+        zakatState: RequestState.deleteLoading,
+        zakatMessage: '',
+        purchaseId: 0));
 
     final result = await deletePurchaseUseCase(deletePurchaseRequest);
 
@@ -385,10 +413,28 @@ class ZakatCubit extends Cubit<ZakatState> {
     final result = await getTotalOfPurchasesUseCase(const NoParameters());
     result.fold(
         (l) => emit(state.copyWith(
-            zakatState: RequestState.totalPurchasesError, zakatMessage: l.message)),
+            zakatState: RequestState.totalPurchasesError,
+            zakatMessage: l.message)),
         (r) => emit(state.copyWith(
               purchasesTotal: r,
               zakatState: RequestState.totalPurchasesLoaded,
+            )));
+  }
+
+  FutureOr<void> getMembersCountByProduct(String productName) async {
+    emit(state.copyWith(
+        zakatState: RequestState.getMembersCountLoading,
+        zakatMessage: '',
+        membersCount: 0));
+
+    final result = await getMembersByProductUseCase(productName);
+    result.fold(
+        (l) => emit(state.copyWith(
+            zakatState: RequestState.getMembersCountError,
+            zakatMessage: l.message)),
+        (r) => emit(state.copyWith(
+              membersCount: r,
+              zakatState: RequestState.getMembersCountLoaded,
             )));
   }
 
@@ -401,7 +447,8 @@ class ZakatCubit extends Cubit<ZakatState> {
     final result = await getTotalOfSundriesUseCase(const NoParameters());
     result.fold(
         (l) => emit(state.copyWith(
-            zakatState: RequestState.totalSundriesError, zakatMessage: l.message)),
+            zakatState: RequestState.totalSundriesError,
+            zakatMessage: l.message)),
         (r) => emit(state.copyWith(
               sundriesTotal: r,
               zakatState: RequestState.totalSundriesLoaded,
@@ -412,7 +459,7 @@ class ZakatCubit extends Cubit<ZakatState> {
     emit(state.copyWith(
         zakatState: RequestState.sundriesLoading,
         zakatMessage: '',
-        zakatList: []));
+        sundriesList: []));
 
     final result = await getAllSundriesUseCase(const NoParameters());
     result.fold(
@@ -428,7 +475,7 @@ class ZakatCubit extends Cubit<ZakatState> {
     emit(state.copyWith(
         zakatState: RequestState.purchasesLoading,
         zakatMessage: '',
-        zakatList: []));
+        purchasesList: []));
 
     final result = await getAllPurchasesUseCase(const NoParameters());
     result.fold(
@@ -511,5 +558,24 @@ class ZakatCubit extends Cubit<ZakatState> {
               zakatProductsByZakatIdList: r,
               zakatState: RequestState.getZakatProductsByZakatIdLoaded,
             )));
+  }
+
+  FutureOr<void> getZakatProducts() async {
+    emit(state.copyWith(
+        zakatState: RequestState.getZakatProductsLoading,
+        zakatMessage: '',
+        zakatProductsList: []));
+
+    final result = await getZakatProductsUseCase(
+        const NoParameters());
+
+    result.fold(
+            (l) => emit(state.copyWith(
+            zakatState: RequestState.getZakatProductsError,
+            zakatMessage: l.message)),
+            (r) => emit(state.copyWith(
+          zakatProductsList: r,
+          zakatState: RequestState.getZakatProductsLoaded,
+        )));
   }
 }

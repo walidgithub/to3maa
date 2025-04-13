@@ -19,7 +19,6 @@ import 'package:To3maa/zakat/domain/responses/sundries_response.dart';
 import 'package:To3maa/zakat/domain/responses/zakat_products_by_kilos_response.dart';
 import 'package:To3maa/zakat/domain/responses/zakat_products_response.dart';
 import 'package:To3maa/zakat/domain/responses/zakat_response.dart';
-
 import '../../domain/requests/delete_members_count_request.dart';
 import '../../domain/requests/insert_members_count_request.dart';
 import '../../domain/responses/purchases_by_kilos_response.dart';
@@ -54,6 +53,7 @@ abstract class BaseDataSource {
   Future<List<ZakatResponse>> getAllZakat();
   Future<List<ZakatProductsResponse>> getZakatProductsByZatatId(
       GetZakatProductsByZatatIdRequest getZakatProductsByZatatIdRequest);
+  Future<List<ZakatProductsResponse>> getZakatProducts();
   Future<List<ZakatProductsByKilosResponse>> getAllZakatProductsByKilos();
   Future<List<PurchasesByKilosResponse>> getAllPurchasesByKilos();
 
@@ -86,6 +86,7 @@ class ZakatDataSource extends BaseDataSource {
       await _dbHelper.deleteAllZakatProductsData();
       await _dbHelper.deleteAllSundriesData();
       await _dbHelper.deleteAllPurchasesData();
+      await _dbHelper.deleteAllMembersCount();
     });
     try {
       return res;
@@ -355,6 +356,16 @@ class ZakatDataSource extends BaseDataSource {
   @override
   Future<int> insertMembersCount(InsertMembersCount insertMembersCount) async {
     final res = await _dbHelper.insertMembersCount(insertMembersCount);
+    try {
+      return res;
+    } catch (e) {
+      throw e.toString();
+    }
+  }
+
+  @override
+  Future<List<ZakatProductsResponse>> getZakatProducts() async {
+    final res = await _dbHelper.getZakatProducts();
     try {
       return res;
     } catch (e) {

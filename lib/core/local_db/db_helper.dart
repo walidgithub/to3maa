@@ -21,7 +21,6 @@ import 'package:To3maa/zakat/domain/requests/update_product_request.dart';
 import 'package:To3maa/zakat/domain/responses/purchases_by_kilos_response.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
-
 import '../../zakat/domain/requests/delete_sundry_request.dart';
 import '../../zakat/domain/requests/insert_members_count_request.dart';
 import '../../zakat/domain/requests/insert_purchase_request.dart';
@@ -94,6 +93,17 @@ class DbHelper {
   Future<int> insertProductData(
       InsertProductRequest insertProductRequest) async {
     final db = _db!.database;
+
+    final existing = await db.query(
+      'productsData',
+      where: 'productName = ?',
+      whereArgs: [insertProductRequest.productName],
+    );
+
+    if (existing.isNotEmpty) {
+      return 0;
+    }
+
     insertedNewProduct =
         await db.insert('productsData', insertProductRequest.toJson());
     return insertedNewProduct!;
@@ -206,6 +216,16 @@ class DbHelper {
 
     return db.delete('membersCount',
         where: 'zakatId = ?', whereArgs: [deleteMembersCountRequest.id]);
+  }
+
+  Future<int> deleteAllMembersCount() async {
+    if (_db == null) {
+      await initDB(dbdName);
+    }
+
+    final db = _db!.database;
+
+    return db.delete('membersCount');
   }
 
   // delete all zakat data
@@ -380,6 +400,19 @@ class DbHelper {
     return result.map((map) => ZakatProductsModel.fromMap(map)).toList();
   }
 
+  Future<List<ZakatProductsModel>> getZakatProducts() async {
+    if (_db == null) {
+      await initDB(dbdName);
+    }
+
+    final db = _db!.database;
+    var result = [];
+
+    result = await db.rawQuery('SELECT * FROM zakatProducts');
+
+    return result.map((map) => ZakatProductsModel.fromMap(map)).toList();
+  }
+
   // get totals -------------------------------------------------
   Future<int> getMembersCountByProduct(String productName) async {
     if (_db == null) {
@@ -390,6 +423,7 @@ class DbHelper {
 
     final result = await db.rawQuery('SELECT SUM(membersCount) as sumMembersCount FROM membersCount WHERE productName= ?',
         [productName]);
+
     final total = Sqflite.firstIntValue(result) ?? 0;
     return total;
   }

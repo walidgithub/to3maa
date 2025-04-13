@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:To3maa/core/utils/enums.dart';
+import 'package:To3maa/zakat/domain/requests/delete_members_count_request.dart';
 import 'package:To3maa/zakat/presentation/ui/home_page/tabs/cart/check_delete_dialog.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
@@ -51,6 +52,31 @@ class _CartViewState extends State<CartView> {
 
   Future<void> getAllZakat() async {
     await ZakatCubit.get(context).getAllZakat();
+  }
+
+  Future<void> deleteMembersCount(int productId) async {
+    DeleteMembersCountRequest deleteMembersCountRequest = DeleteMembersCountRequest(id: productId);
+    await ZakatCubit.get(context).deleteMembersCount(deleteMembersCountRequest);
+  }
+
+  Future<void> deleteZakat(int productId) async {
+    DeleteZakatRequest deleteZakatRequest =
+    (DeleteZakatRequest(id: productId));
+    await ZakatCubit.get(
+        context)
+        .deleteZakat(
+        deleteZakatRequest);
+  }
+
+  Future<void> deleteZakatProducts(int productId) async {
+    DeleteZakatProductsRequest
+    deleteZakatProductsRequest =
+    (DeleteZakatProductsRequest(id: productId));
+
+    await ZakatCubit.get(
+        context)
+        .deleteZakatProducts(
+        deleteZakatProductsRequest);
   }
 
   Future<void> deleteAll() async {
@@ -162,17 +188,6 @@ class _CartViewState extends State<CartView> {
                                       ),
                               itemBuilder:
                                   (BuildContext cartContext, int index) {
-                                int? itemId;
-                                if (index >= 0 && index < cartItems.length) {
-                                  itemId = cartItems[index].id;
-                                }
-
-                                DeleteZakatRequest deleteZakatRequest =
-                                    (DeleteZakatRequest(id: itemId!));
-                                DeleteZakatProductsRequest
-                                    deleteZakatProductsRequest =
-                                    (DeleteZakatProductsRequest(id: itemId));
-
                                 return CartItemView(
                                   index: cart.length - index,
                                   selected: cart[index].selected!,
@@ -204,21 +219,14 @@ class _CartViewState extends State<CartView> {
                                               actions: [
                                                 TextButton(
                                                     onPressed: () async {
-                                                      await ZakatCubit.get(
-                                                              cartContext)
-                                                          .deleteZakat(
-                                                              deleteZakatRequest);
-
-                                                      // ignore: use_build_context_synchronously
-                                                      await ZakatCubit.get(
-                                                              cartContext)
-                                                          .deleteZakatProducts(
-                                                              deleteZakatProductsRequest);
+                                                      await deleteZakat(cart[index].id!);
+                                                      await deleteZakatProducts(cart[index].id!);
+                                                      await deleteMembersCount(cart[index].id!);
 
                                                       cart.removeWhere(
                                                         (element) =>
                                                             element.id ==
-                                                            itemId,
+                                                                cart[index].id!,
                                                       );
 
                                                       final snackBar = SnackBar(
@@ -237,6 +245,7 @@ class _CartViewState extends State<CartView> {
                                                               snackBar);
 
                                                       await getAllZakat();
+
                                                       getTotalMembersCount(
                                                           cart);
                                                       getTotalOfPurchases();

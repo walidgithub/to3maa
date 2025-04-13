@@ -18,6 +18,7 @@ import '../../../../../../core/shared/constant/app_constants.dart';
 import '../../../../../../core/shared/constant/app_fonts.dart';
 import '../../../../../../core/shared/constant/app_strings.dart';
 import '../../../../../../core/shared/style/app_colors.dart';
+import '../../../../../domain/responses/zakat_products_response.dart';
 
 class ProductsView extends StatefulWidget {
   const ProductsView({super.key});
@@ -35,20 +36,28 @@ class _ProductsViewState extends State<ProductsView> {
   final TextEditingController _sa3WeightController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
 
+  List<ZakatProductsResponse> zakatProductsList = [];
+
   int editProductId = 0;
   bool editProduct = false;
 
   String productImage = '';
+  String oldProductName = '';
 
   @override
   void initState() {
     productImage = productImages[0].imagePath!;
     getAllProducts();
+    getZakatProducts();
     super.initState();
   }
 
   Future<void> getAllProducts() async {
     await ZakatCubit.get(context).getAllProducts();
+  }
+
+  Future<void> getZakatProducts() async {
+    await ZakatCubit.get(context).getZakatProducts();
   }
 
   void clearValues() {
@@ -108,6 +117,14 @@ class _ProductsViewState extends State<ProductsView> {
               } else if (state.zakatState == RequestState.productsError) {
                 hideLoading();
               } else if (state.zakatState == RequestState.productsLoaded) {
+                hideLoading();
+              } else if (state.zakatState == RequestState.getZakatProductsLoading) {
+                showLoading();
+              } else if (state.zakatState == RequestState.getZakatProductsError) {
+                hideLoading();
+              } else if (state.zakatState == RequestState.getZakatProductsLoaded) {
+                zakatProductsList.clear();
+                zakatProductsList.addAll(state.zakatProductsList);
                 hideLoading();
               } else if (state.zakatState == RequestState.deleteLoading) {
                 showLoading();
@@ -221,6 +238,8 @@ class _ProductsViewState extends State<ProductsView> {
                                             .productsList[index].productPrice!;
                                         _productNameController.text = state
                                             .productsList[index].productName!;
+                                        oldProductName = state
+                                            .productsList[index].productName!;
                                         _productDescController.text = state
                                             .productsList[index].productDesc!;
                                         _sa3WeightController.text = state
@@ -247,6 +266,22 @@ class _ProductsViewState extends State<ProductsView> {
                                         });
                                       },
                                       editPrice: (String productPrice) async {
+                                        // check before edit to prevent edit in any data;
+                                        if (state
+                                            .productsList[index].productName! != "") {
+                                          bool checkIfProductExist =  zakatProductsList.any((product) => product.productName == state
+                                              .productsList[index].productName!);
+
+                                          if (checkIfProductExist) {
+                                            final snackBar = SnackBar(
+                                              duration:
+                                              Duration(milliseconds: AppConstants.durationOfSnackBar),
+                                              content: const Text(AppStrings.productIsExist),
+                                            );
+                                            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                                            return;
+                                          }
+                                        }
                                         UpdateProductRequest
                                             updateProductRequest =
                                             (UpdateProductRequest(
@@ -436,6 +471,21 @@ class _ProductsViewState extends State<ProductsView> {
                   GestureDetector(
                     onTap: () async {
                       if (editProduct) {
+                        // check before edit to prevent edit in any data;
+                        if (oldProductName != "") {
+                          bool checkIfProductExist =  zakatProductsList.any((product) => product.productName == oldProductName);
+
+                          if (checkIfProductExist) {
+                            final snackBar = SnackBar(
+                              duration:
+                              Duration(milliseconds: AppConstants.durationOfSnackBar),
+                              content: const Text(AppStrings.productIsExist),
+                            );
+                            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                            return;
+                          }
+                        }
+
                         if (_productNameController.text.trim() == "" ||
                             double.parse(_productPriceController.text.trim()) <=
                                 0 ||
