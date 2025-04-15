@@ -354,11 +354,16 @@ class _RemainViewState extends State<RemainView> {
                                                 onTap: () {
                                                   FocusScope.of(context)
                                                       .unfocus();
-                                                  double? price =
-                                                      double.tryParse(
-                                                          _productPriceController
-                                                              .text
-                                                              .trim());
+                                                  double? price;
+                                                  double? parsedPrice = double.tryParse(_productPriceController.text.trim());
+                                                  double? parsedQuantity = double.tryParse(_productQuantityController.text.trim());
+
+                                                  if (parsedPrice != null && parsedQuantity != null) {
+                                                    price = parsedPrice * parsedQuantity;
+                                                  } else {
+                                                    price = null;
+                                                  }
+
                                                   if ((getRemain() -
                                                           sundriesTotal -
                                                           purchasesTotal) <
@@ -374,6 +379,7 @@ class _RemainViewState extends State<RemainView> {
                                                         .showSnackBar(snackBar);
                                                     return;
                                                   }
+
                                                   if (_productPriceController
                                                               .text
                                                               .trim() !=
