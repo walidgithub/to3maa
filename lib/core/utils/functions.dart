@@ -1,7 +1,8 @@
 import 'package:To3maa/core/shared/constant/app_typography.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
+import 'dart:ui' as ui;
 import '../shared/constant/app_strings.dart';
 
 Future<bool> onBackButtonPressed(BuildContext context) async {
@@ -9,21 +10,21 @@ Future<bool> onBackButtonPressed(BuildContext context) async {
       context: context,
       builder: (BuildContext context) {
         return Directionality(
-          textDirection: TextDirection.rtl,
+          textDirection: ui.TextDirection.rtl,
           child: AlertDialog(
-            title: Text(AppStrings.warning,style: AppTypography.kBold18,),
-            content: Text(AppStrings.closeApp,style: AppTypography.kBold16),
+            title: Text(AppStrings.warning.tr(),style: AppTypography.kBold18,),
+            content: Text(AppStrings.closeApp.tr(),style: AppTypography.kBold16),
             actions: [
               TextButton(
                   onPressed: () {
                     SystemNavigator.pop();
                   },
-                  child: Text(AppStrings.yes,style: AppTypography.kLight14)),
+                  child: Text(AppStrings.yes.tr(),style: AppTypography.kLight14)),
               TextButton(
                   onPressed: () {
                     Navigator.of(context).pop(false);
                   },
-                  child: Text(AppStrings.no,style: AppTypography.kLight14)),
+                  child: Text(AppStrings.no.tr(),style: AppTypography.kLight14)),
             ],
           ),
         );

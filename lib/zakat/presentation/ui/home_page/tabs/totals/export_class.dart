@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:excel/excel.dart';
 import 'package:flutter/material.dart';
 import '../../../../../../core/shared/constant/app_strings.dart';
@@ -48,8 +49,8 @@ Future<void> exportCartsAndProductsDesign({
     sheet.cell(CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: row))
   ];
 
-  headerCells[0].value = TextCellValue('(بالكيلو) الوزن');
-  headerCells[1].value = TextCellValue('بيان الأصناف');
+  headerCells[0].value = TextCellValue(AppStrings.weightWithKilo.tr());
+  headerCells[1].value = TextCellValue(AppStrings.items.tr());
 
   for (var cell in headerCells) {
     cell.cellStyle = headerStyle;
@@ -68,8 +69,8 @@ Future<void> exportCartsAndProductsDesign({
             .toString()} ${formatWeightString(product.sumProductQuantity! *
             product.sa3Weight).toString() ==
             "ton"
-            ? AppStrings.ton
-            : AppStrings.kilo}");
+            ? AppStrings.ton.tr()
+            : AppStrings.kilo.tr()}");
     nameCell.value = TextCellValue(product.productName);
 
     weightCell.cellStyle = normalCenterStyle;
@@ -87,10 +88,10 @@ Future<void> exportCartsAndProductsDesign({
   row++;
 
   var summaryItems = [
-    [sumMembers, 'عدد الأفراد'],
-    [sumZakat, 'إجمالي الزكاة'],
-    [sumRemain, 'المبلغ المتبقي'],
-    [printDate, 'تاريخ الطباعة']
+    [sumMembers, AppStrings.membersCount2.tr()],
+    [sumZakat, AppStrings.zakatTotal.tr()],
+    [sumRemain, AppStrings.remainValue.tr()],
+    [printDate, AppStrings.printingDate.tr()]
   ];
 
   for (var item in summaryItems) {
@@ -129,7 +130,7 @@ Future<void> exportCartsAndProductsDesign({
   sheet
       .cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: row))
       .value =
-      TextCellValue('طهُرة للصائم من اللغو والرفث وطعمة للمساكين');
+      TextCellValue(AppStrings.excelFooter.tr());
   sheet
       .cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: row))
       .cellStyle = boldStyle;
@@ -142,7 +143,7 @@ Future<void> exportCartsAndProductsDesign({
   sheet
       .cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: row))
       .value =
-      TextCellValue('زكاة الفطر عام $yearOfDate هجريًا');
+      TextCellValue('${AppStrings.zakatYear.tr()} $yearOfDate ${AppStrings.hejri.tr()}');
   sheet
       .cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: row))
       .cellStyle = boldStyle;

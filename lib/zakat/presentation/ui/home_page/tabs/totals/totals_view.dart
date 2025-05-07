@@ -1,6 +1,7 @@
 import 'package:To3maa/core/shared/constant/app_assets.dart';
 import 'package:To3maa/zakat/presentation/ui/home_page/tabs/totals/dates_response.dart';
 import 'package:animate_do/animate_do.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:To3maa/core/utils/enums.dart';
@@ -168,7 +169,7 @@ class _TotalsViewState extends State<TotalsView> {
             title: FadeInLeft(
               duration: Duration(milliseconds: AppConstants.animation),
               child: Text(
-                AppStrings.totals,
+                AppStrings.totals.tr(),
                 style: AppTypography.kLight20
                     .copyWith(fontFamily: AppFonts.boldFontFamily),
               ),
@@ -221,7 +222,7 @@ class _TotalsViewState extends State<TotalsView> {
                 Row(
                   children: [
                     Text(
-                      "استخراج البيانات الحالية",
+                      AppStrings.exportData.tr(),
                       style:
                           const TextStyle(fontFamily: AppFonts.boldFontFamily)
                               .copyWith(
@@ -295,10 +296,10 @@ class _TotalsViewState extends State<TotalsView> {
                                           .sumProductQuantity!);
                                 }),
                           )
-                        : const Center(
+                        : Center(
                             child: Text(
-                              AppStrings.noCarts,
-                              style: TextStyle(
+                              AppStrings.noCarts.tr(),
+                              style: const TextStyle(
                                   fontFamily: AppFonts.qabasFontFamily),
                             ),
                           )),
@@ -324,7 +325,7 @@ class _TotalsViewState extends State<TotalsView> {
                           Row(
                             children: [
                               Text(
-                                AppStrings.total,
+                                AppStrings.total.tr(),
                                 style: AppTypography.kBold18.copyWith(
                                   color: AppColors.cWhite,
                                   fontFamily: AppFonts.qabasFontFamily,
@@ -342,7 +343,7 @@ class _TotalsViewState extends State<TotalsView> {
                                     width: 5.w,
                                   ),
                                   Text(
-                                    AppStrings.currency,
+                                    AppStrings.defaultCurrency.tr(),
                                     style: AppTypography.kLight16.copyWith(
                                         fontFamily: AppFonts.boldFontFamily,
                                         color: AppColors.cWhite),
@@ -354,7 +355,7 @@ class _TotalsViewState extends State<TotalsView> {
                           Row(
                             children: [
                               Text(
-                                AppStrings.remain,
+                                AppStrings.remain.tr(),
                                 style: AppTypography.kBold18.copyWith(
                                   color: AppColors.cWhite,
                                   fontFamily: AppFonts.qabasFontFamily,
@@ -372,7 +373,7 @@ class _TotalsViewState extends State<TotalsView> {
                                     width: 5.w,
                                   ),
                                   Text(
-                                    AppStrings.currency,
+                                    AppStrings.defaultCurrency.tr(),
                                     style: AppTypography.kLight16.copyWith(
                                         fontFamily: AppFonts.boldFontFamily,
                                         color: AppColors.cWhite),
@@ -384,7 +385,7 @@ class _TotalsViewState extends State<TotalsView> {
                           Row(
                             children: [
                               Text(
-                                AppStrings.allMembersCount,
+                                AppStrings.allNumberOfIndividuals.tr(),
                                 style: AppTypography.kBold18.copyWith(
                                   color: AppColors.cWhite,
                                   fontFamily: AppFonts.qabasFontFamily,

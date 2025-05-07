@@ -1,4 +1,7 @@
 import 'package:To3maa/zakat/presentation/ui/home_page/tabs/remain/remain_view.dart';
+import 'package:To3maa/zakat/presentation/ui/home_page/tabs/settings/settings.dart';
+import 'package:To3maa/zakat/presentation/ui/home_page/widgets/home_drawer.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:To3maa/core/utils/enums.dart';
@@ -16,6 +19,7 @@ import 'package:To3maa/zakat/presentation/ui/home_page/tabs/products/products_vi
 import 'package:To3maa/zakat/presentation/ui/home_page/tabs/totals/totals_view.dart';
 import 'package:To3maa/zakat/presentation/ui/home_page/widgets/tab_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import '../../../../../../core/shared/constant/app_constants.dart';
 import '../../../../../../core/shared/constant/app_fonts.dart';
 import '../../../../../../core/shared/constant/app_strings.dart';
@@ -31,24 +35,28 @@ class HomePageView extends StatefulWidget {
 class _HomePageViewState extends State<HomePageView> {
   List<TabItem> tabItems = [
     TabItem(
-        title: AppStrings.addZakat, activeTab: true, icon: AppAssets.addNew),
-    TabItem(title: AppStrings.cart, activeTab: false, icon: AppAssets.cart),
+        title: AppStrings.addZakat.tr(), activeTab: true, icon: AppAssets.addNew),
+    TabItem(title: AppStrings.cart.tr(), activeTab: false, icon: AppAssets.cart),
     TabItem(
-        title: AppStrings.totals, activeTab: false, icon: AppAssets.totals),
+        title: AppStrings.totals.tr(), activeTab: false, icon: AppAssets.totals),
     TabItem(
-        title: AppStrings.remainTab, activeTab: false, icon: AppAssets.remain),
+        title: AppStrings.remainTab.tr(), activeTab: false, icon: AppAssets.remain),
     TabItem(
-        title: AppStrings.products, activeTab: false, icon: AppAssets.products)
+        title: AppStrings.products.tr(), activeTab: false, icon: AppAssets.products),
+    TabItem(
+        title: "", activeTab: false, icon: AppAssets.settings)
   ];
 
   int selectedTab = 0;
+  var scaffoldKey = GlobalKey<ScaffoldState>();
 
   var tabPages = [
     const AddZakatView(),
     const CartView(),
     const TotalsView(),
     const RemainView(),
-    const ProductsView()
+    const ProductsView(),
+    const SettingsView()
   ];
 
   @override
@@ -59,6 +67,10 @@ class _HomePageViewState extends State<HomePageView> {
         onTap: () => FocusScope.of(context).unfocus(),
         child: SafeArea(
             child: Scaffold(
+              key: scaffoldKey,
+              drawer: SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.75,
+                  child: const HomeDrawer()),
           body: BlocProvider(
               create: (context) => sl<ZakatCubit>(),
               child: contentBody(context)),
@@ -109,15 +121,30 @@ class _HomePageViewState extends State<HomePageView> {
                         borderRadius: BorderRadius.only(
                             bottomRight:
                                 Radius.circular(AppConstants.moreRadius))),
-                    child: RotatedBox(
-                      quarterTurns: 3,
-                      child: Center(
-                        child: Text(
-                          AppStrings.appName,
-                          style: AppTypography.kBold24
-                              .copyWith(fontFamily: AppFonts.boldFontFamily),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        RotatedBox(
+                          quarterTurns: 3,
+                          child: Center(
+                            child: Text(
+                              AppStrings.appName.tr(),
+                              style: AppTypography.kBold24
+                                  .copyWith(fontFamily: AppFonts.boldFontFamily),
+                            ),
+                          ),
                         ),
-                      ),
+                        GestureDetector(
+                          onTap: () {
+                            scaffoldKey.currentState
+                                ?.openDrawer();
+                          },
+                          child: SvgPicture.asset(
+                            AppAssets.menu,
+                            width: 35.w,
+                          ),
+                        )
+                      ],
                     ),
                   ),
                   Expanded(
@@ -129,7 +156,7 @@ class _HomePageViewState extends State<HomePageView> {
                         shrinkWrap: false,
                         separatorBuilder: (BuildContext context, int index) =>
                             SizedBox(
-                          height: 30.h,
+                          height: 25.h,
                         ),
                         itemBuilder: (BuildContext context, int index) {
                           return TabBarWidget(

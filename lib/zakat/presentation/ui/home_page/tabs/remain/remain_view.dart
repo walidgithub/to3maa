@@ -4,6 +4,7 @@ import 'package:To3maa/zakat/presentation/ui/home_page/tabs/remain/purchases/pur
 import 'package:To3maa/zakat/presentation/ui/home_page/tabs/remain/sundries/sundries_details_view.dart';
 import 'package:To3maa/zakat/presentation/ui/home_page/tabs/remain/sundries/sundries_total_view.dart';
 import 'package:animate_do/animate_do.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -22,6 +23,7 @@ import '../../../../ui_components/text_field_widget.dart';
 import '../../cubit/zakat_cubit.dart';
 import '../../cubit/zakat_states.dart';
 import '../products/product_image_view.dart';
+import 'dart:ui' as ui;
 
 class RemainView extends StatefulWidget {
   const RemainView({super.key});
@@ -92,7 +94,7 @@ class _RemainViewState extends State<RemainView> {
   @override
   Widget build(BuildContext context) {
     return Directionality(
-      textDirection: TextDirection.rtl,
+      textDirection: ui.TextDirection.rtl,
       child: Scaffold(
         key: scaffoldKey,
         drawer: SizedBox(
@@ -105,7 +107,7 @@ class _RemainViewState extends State<RemainView> {
           title: FadeInLeft(
             duration: Duration(milliseconds: AppConstants.animation),
             child: Text(
-              AppStrings.remainTab,
+              AppStrings.remainTab.tr(),
               style: AppTypography.kLight20
                   .copyWith(fontFamily: AppFonts.boldFontFamily),
             ),
@@ -139,7 +141,7 @@ class _RemainViewState extends State<RemainView> {
                 Row(
                   children: [
                     Text(
-                      AppStrings.remain,
+                      AppStrings.remain.tr(),
                       style: AppTypography.kBold18.copyWith(
                         color: AppColors.cBlack,
                         fontFamily: AppFonts.qabasFontFamily,
@@ -158,7 +160,7 @@ class _RemainViewState extends State<RemainView> {
                           width: 5.w,
                         ),
                         Text(
-                          AppStrings.currency,
+                          AppStrings.defaultCurrency.tr(),
                           style: AppTypography.kLight16.copyWith(
                               fontFamily: AppFonts.boldFontFamily,
                               color: AppColors.cBlack),
@@ -212,7 +214,7 @@ class _RemainViewState extends State<RemainView> {
                                   ))),
                                   child: Center(
                                     child: Text(
-                                      AppStrings.sundries,
+                                      AppStrings.sundries.tr(),
                                       style: AppTypography.kBold18
                                           .copyWith(color: AppColors.cTitle),
                                     ),
@@ -247,7 +249,7 @@ class _RemainViewState extends State<RemainView> {
                                       ))),
                                   child: Center(
                                     child: Text(
-                                      AppStrings.purchases,
+                                      AppStrings.purchases.tr(),
                                       style: AppTypography.kBold18
                                           .copyWith(color: AppColors.cTitle),
                                     ),
@@ -304,7 +306,7 @@ class _RemainViewState extends State<RemainView> {
                                               milliseconds: AppConstants
                                                   .durationOfSnackBar),
                                           content:
-                                              const Text(AppStrings.successAdd),
+                                              Text(AppStrings.successAdd.tr()),
                                         );
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(snackBar);
@@ -317,7 +319,7 @@ class _RemainViewState extends State<RemainView> {
                                         children: [
                                           textFieldWidget(
                                               _productNameController,
-                                              AppStrings.productName,
+                                              AppStrings.productName.tr(),
                                               TextInputType.text,
                                               (String textVal) {},
                                               false,
@@ -328,7 +330,7 @@ class _RemainViewState extends State<RemainView> {
                                           ),
                                           textFieldWidget(
                                               _productPriceController,
-                                              AppStrings.productPriceWKilo,
+                                              AppStrings.productPriceWKilo.tr(),
                                               TextInputType.number,
                                               (String textVal) {},
                                               true,
@@ -338,7 +340,7 @@ class _RemainViewState extends State<RemainView> {
                                           ),
                                           textFieldWidget(
                                               _productQuantityController,
-                                              AppStrings.quantityByKilo,
+                                              AppStrings.quantityByKilo.tr(),
                                               TextInputType.number,
                                               (String textVal) {},
                                               false,
@@ -373,7 +375,7 @@ class _RemainViewState extends State<RemainView> {
                                                           milliseconds: AppConstants
                                                               .durationOfSnackBar),
                                                       content:
-                                                      const Text(AppStrings.creditNotEnough),
+                                                      Text(AppStrings.creditNotEnough.tr()),
                                                     );
                                                     ScaffoldMessenger.of(context)
                                                         .showSnackBar(snackBar);
@@ -432,7 +434,7 @@ class _RemainViewState extends State<RemainView> {
                                                     ),
                                                     child: Center(
                                                       child: Text(
-                                                        AppStrings.save,
+                                                        AppStrings.save.tr(),
                                                         style: AppTypography
                                                             .kLight14
                                                             .copyWith(
@@ -472,7 +474,7 @@ class _RemainViewState extends State<RemainView> {
                                                     ),
                                                     child: Center(
                                                       child: Text(
-                                                        AppStrings.getAll,
+                                                        AppStrings.getAll.tr(),
                                                         style: AppTypography
                                                             .kLight14
                                                             .copyWith(
@@ -514,7 +516,7 @@ class _RemainViewState extends State<RemainView> {
                                                     ),
                                                     child: Center(
                                                       child: Text(
-                                                        AppStrings.getDetails,
+                                                        AppStrings.getDetails.tr(),
                                                         style: AppTypography
                                                             .kLight14
                                                             .copyWith(
@@ -623,11 +625,11 @@ class _RemainViewState extends State<RemainView> {
                                                                         );
                                                                       }),
                                                             )
-                                                          : const Center(
+                                                          : Center(
                                                               child: Text(
                                                                 AppStrings
-                                                                    .noProducts,
-                                                                style: TextStyle(
+                                                                    .noProducts.tr(),
+                                                                style: const TextStyle(
                                                                     fontFamily:
                                                                         AppFonts
                                                                             .qabasFontFamily),
@@ -660,7 +662,7 @@ class _RemainViewState extends State<RemainView> {
                                               milliseconds: AppConstants
                                                   .durationOfSnackBar),
                                           content:
-                                              const Text(AppStrings.successAdd),
+                                          Text(AppStrings.successAdd.tr()),
                                         );
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(snackBar);
@@ -673,7 +675,7 @@ class _RemainViewState extends State<RemainView> {
                                         children: [
                                           textFieldWidget(
                                               _sundryNameController,
-                                              AppStrings.sundryName,
+                                              AppStrings.sundryName.tr(),
                                               TextInputType.text,
                                               (String textVal) {},
                                               true,
@@ -683,7 +685,7 @@ class _RemainViewState extends State<RemainView> {
                                           ),
                                           textFieldWidget(
                                               _sundryPriceController,
-                                              AppStrings.sundryPrice,
+                                              AppStrings.sundryPrice.tr(),
                                               TextInputType.number,
                                               (String textVal) {},
                                               false,
@@ -714,7 +716,7 @@ class _RemainViewState extends State<RemainView> {
                                                           milliseconds: AppConstants
                                                               .durationOfSnackBar),
                                                       content:
-                                                      const Text(AppStrings.creditNotEnough),
+                                                      Text(AppStrings.creditNotEnough.tr()),
                                                     );
                                                     ScaffoldMessenger.of(context)
                                                         .showSnackBar(snackBar);
@@ -760,7 +762,7 @@ class _RemainViewState extends State<RemainView> {
                                                     ),
                                                     child: Center(
                                                       child: Text(
-                                                        AppStrings.save,
+                                                        AppStrings.save.tr(),
                                                         style: AppTypography
                                                             .kLight14
                                                             .copyWith(
@@ -800,7 +802,7 @@ class _RemainViewState extends State<RemainView> {
                                                     ),
                                                     child: Center(
                                                       child: Text(
-                                                        AppStrings.getAll,
+                                                        AppStrings.getAll.tr(),
                                                         style: AppTypography
                                                             .kLight14
                                                             .copyWith(
@@ -844,7 +846,7 @@ class _RemainViewState extends State<RemainView> {
                                                       ),
                                                       child: Center(
                                                           child: Text(
-                                                        AppStrings.getDetails,
+                                                        AppStrings.getDetails.tr(),
                                                         style: AppTypography
                                                             .kLight14
                                                             .copyWith(

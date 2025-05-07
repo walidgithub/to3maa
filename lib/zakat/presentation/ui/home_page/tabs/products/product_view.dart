@@ -1,4 +1,5 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:To3maa/core/shared/constant/app_typography.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -79,7 +80,7 @@ class _ProductViewState extends State<ProductView> {
                         width: 5.w,
                       ),
                       Text(
-                        AppStrings.currency,
+                        AppStrings.defaultCurrency.tr(),
                         style: AppTypography.kLight16.copyWith(
                             fontFamily: AppFonts.boldFontFamily,
                             color: AppColors.cBlack),
@@ -179,7 +180,7 @@ class _ProductViewState extends State<ProductView> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Text(
-                    AppStrings.editPrice,
+                    AppStrings.editPrice.tr(),
                     style: AppTypography.kLight11.copyWith(
                       fontFamily: AppFonts.qabasFontFamily,
                       color: AppColors.cButton,
@@ -204,7 +205,7 @@ class _ProductViewState extends State<ProductView> {
                     width: 10.w,
                   ),
                   Text(
-                    AppStrings.currency,
+                    AppStrings.defaultCurrency.tr(),
                     style: AppTypography.kLight14
                         .copyWith(fontFamily: AppFonts.boldFontFamily),
                   ),
@@ -233,7 +234,7 @@ class _ProductViewState extends State<ProductView> {
                         ),
                         child: Center(
                           child: Text(
-                            AppStrings.save,
+                            AppStrings.save.tr(),
                             style: AppTypography.kLight11.copyWith(
                               fontFamily: AppFonts.qabasFontFamily,
                               color: AppColors.cButton,

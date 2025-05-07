@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../../../core/shared/constant/app_strings.dart';
@@ -16,7 +17,7 @@ void showLoading() {
     ..userInteractions = false;
   EasyLoading.show(
     maskType: EasyLoadingMaskType.black,
-    status: AppStrings.loading,
+    status: AppStrings.loading.tr(),
   );
 }
 

@@ -1,5 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:To3maa/core/shared/constant/app_strings.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:excel/excel.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:open_file/open_file.dart';
@@ -35,7 +37,7 @@ Future<void> saveExcelFile(Excel excel, BuildContext context, String dateOfYear)
 
     // Show success message
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('تم تصدير الملف بنجاح! ✅')),
+       SnackBar(content: Text(AppStrings.fileExported.tr())),
     );
 
   } catch (e) {

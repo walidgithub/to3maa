@@ -1,9 +1,12 @@
 import 'package:To3maa/zakat/domain/responses/products_response.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:To3maa/core/shared/constant/app_typography.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:animate_do/animate_do.dart';
+import '../../../../../../core/di/di.dart';
+import '../../../../../../core/preferences/app_pref.dart';
 import '../../../../../../core/shared/constant/app_constants.dart';
 import '../../../../../../core/shared/constant/app_fonts.dart';
 import '../../../../../../core/shared/constant/app_strings.dart';
@@ -39,11 +42,14 @@ class AddProductView extends StatefulWidget {
 }
 
 class _AddProductViewState extends State<AddProductView> {
+  final AppPreferences _appPreferences = sl<AppPreferences>();
+
   double usedAmount(var products) {
     return products.fold(0, (sum, item) => sum + (double.parse(item.productQuantity.toString()) * double.parse(item.productPrice.toString())));
   }
 
   int? _itemQuantity;
+  String currency = AppStrings.defaultCurrency.tr();
 
   int getTotalProductQuantity(List<ProductsResponse> products) {
     return products.fold(0, (sum, product) => sum + (product.productQuantity ?? 0));
@@ -51,9 +57,15 @@ class _AddProductViewState extends State<AddProductView> {
 
   @override
   void initState() {
+    getCurrency();
     _itemQuantity = 0;
     super.initState();
   }
+
+  void getCurrency() async {
+    currency = _appPreferences.getCurrency(PREFS_KEY_CURRENCY)!;
+  }
+
   @override
   Widget build(BuildContext context) {
     return FadeInUp(
@@ -103,7 +115,7 @@ class _AddProductViewState extends State<AddProductView> {
                         width: 5.w,
                       ),
                       Text(
-                        AppStrings.currency,
+                        currency!,
                         style: AppTypography.kLight16.copyWith(
                             fontFamily: AppFonts.boldFontFamily,
                             color: AppColors.cBlack),

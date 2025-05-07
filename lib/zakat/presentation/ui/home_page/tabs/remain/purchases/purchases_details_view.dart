@@ -1,6 +1,7 @@
 import 'package:To3maa/zakat/domain/requests/delete_purchase_request.dart';
 import 'package:To3maa/zakat/presentation/ui/home_page/tabs/remain/purchases/purchase_details_view.dart';
 import 'package:animate_do/animate_do.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -14,6 +15,7 @@ import '../../../../../../domain/responses/purchases_response.dart';
 import '../../../../../ui_components/loading_dialog.dart';
 import '../../../cubit/zakat_cubit.dart';
 import '../../../cubit/zakat_states.dart';
+import 'dart:ui' as ui;
 
 class PurchasesDetailsView extends StatefulWidget {
   Function deletePurchase;
@@ -60,7 +62,7 @@ class _PurchasesDetailsViewState extends State<PurchasesDetailsView> {
               FadeInLeft(
                 duration: Duration(milliseconds: AppConstants.animation),
                 child: Text(
-                  AppStrings.purchases,
+                  AppStrings.purchases.tr(),
                   style: AppTypography.kLight20
                       .copyWith(fontFamily: AppFonts.boldFontFamily),
                 ),
@@ -151,12 +153,12 @@ class _PurchasesDetailsViewState extends State<PurchasesDetailsView> {
                                       context: context,
                                       builder: (BuildContext context) {
                                         return Directionality(
-                                          textDirection: TextDirection.rtl,
+                                          textDirection: ui.TextDirection.rtl,
                                           child: AlertDialog(
-                                            title: Text(AppStrings.warning,
+                                            title: Text(AppStrings.warning.tr(),
                                                 style: AppTypography.kBold20),
-                                            content: const Text(
-                                                AppStrings.checkToDelete),
+                                            content: Text(
+                                                AppStrings.checkToDelete.tr()),
                                             actions: [
                                               TextButton(
                                                   onPressed: () async {
@@ -168,7 +170,7 @@ class _PurchasesDetailsViewState extends State<PurchasesDetailsView> {
 
                                                     widget.deletePurchase();
                                                   },
-                                                  child: Text(AppStrings.yes,
+                                                  child: Text(AppStrings.yes.tr(),
                                                       style: AppTypography
                                                           .kLight16)),
                                               TextButton(
@@ -176,7 +178,7 @@ class _PurchasesDetailsViewState extends State<PurchasesDetailsView> {
                                                     Navigator.of(context)
                                                         .pop(false);
                                                   },
-                                                  child: Text(AppStrings.no,
+                                                  child: Text(AppStrings.no.tr(),
                                                       style: AppTypography
                                                           .kLight16)),
                                             ],
@@ -187,11 +189,11 @@ class _PurchasesDetailsViewState extends State<PurchasesDetailsView> {
                               );
                             }),
                           )
-                          : const Center(
+                          : Center(
                         child: Text(
-                          AppStrings.noPurchases,
+                          AppStrings.noPurchases.tr(),
                           style:
-                          TextStyle(fontFamily: AppFonts.qabasFontFamily),
+                          const TextStyle(fontFamily: AppFonts.qabasFontFamily),
                         ),
                       )),
                   SizedBox(
@@ -213,7 +215,7 @@ class _PurchasesDetailsViewState extends State<PurchasesDetailsView> {
                         Row(
                           children: [
                             Text(
-                              AppStrings.total,
+                              AppStrings.total.tr(),
                               style: AppTypography.kBold18.copyWith(
                                 color: AppColors.cWhite,
                                 fontFamily: AppFonts.qabasFontFamily,
@@ -231,7 +233,7 @@ class _PurchasesDetailsViewState extends State<PurchasesDetailsView> {
                                   width: 5.w,
                                 ),
                                 Text(
-                                  AppStrings.currency,
+                                  AppStrings.defaultCurrency.tr(),
                                   style: AppTypography.kLight16.copyWith(
                                       fontFamily: AppFonts.boldFontFamily,
                                       color: AppColors.cWhite),

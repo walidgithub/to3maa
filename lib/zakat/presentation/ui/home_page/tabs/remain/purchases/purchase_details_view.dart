@@ -1,4 +1,5 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:To3maa/core/shared/constant/app_typography.dart';
 import 'package:To3maa/core/shared/style/app_colors.dart';
@@ -57,7 +58,7 @@ class _PurchaseDetailsViewState extends State<PurchaseDetailsView> {
                           Row(
                             children: [
                               Text(
-                                "${AppStrings.productName}:",
+                                "${AppStrings.productName.tr()}:",
                                 style: AppTypography.kLight16.copyWith(
                                     fontFamily: AppFonts.boldFontFamily,
                                     color: AppColors.cBlack),
@@ -79,7 +80,7 @@ class _PurchaseDetailsViewState extends State<PurchaseDetailsView> {
                           Row(
                             children: [
                               Text(
-                                "${AppStrings.productPriceWKilo}:",
+                                "${AppStrings.productPriceWKilo.tr()}:",
                                 style: AppTypography.kLight16.copyWith(
                                     fontFamily: AppFonts.boldFontFamily,
                                     color: AppColors.cBlack),
@@ -97,7 +98,7 @@ class _PurchaseDetailsViewState extends State<PurchaseDetailsView> {
                                 width: 5.w,
                               ),
                               Text(
-                                AppStrings.currency,
+                                AppStrings.defaultCurrency.tr(),
                                 style: AppTypography.kLight16.copyWith(
                                     fontFamily: AppFonts.boldFontFamily,
                                     color: AppColors.cBlack),
@@ -110,7 +111,7 @@ class _PurchaseDetailsViewState extends State<PurchaseDetailsView> {
                           Row(
                             children: [
                               Text(
-                                "${AppStrings.quantityByKilo}:",
+                                "${AppStrings.quantityByKilo.tr()}:",
                                 style: AppTypography.kLight16.copyWith(
                                     fontFamily: AppFonts.boldFontFamily,
                                     color: AppColors.cBlack),
@@ -128,7 +129,7 @@ class _PurchaseDetailsViewState extends State<PurchaseDetailsView> {
                                 width: 5.w,
                               ),
                               Text(
-                                AppStrings.kilo,
+                                AppStrings.kilo.tr(),
                                 style: AppTypography.kLight16.copyWith(
                                     fontFamily: AppFonts.boldFontFamily,
                                     color: AppColors.cBlack),
@@ -141,7 +142,7 @@ class _PurchaseDetailsViewState extends State<PurchaseDetailsView> {
                           Row(
                             children: [
                               Text(
-                                AppStrings.total,
+                                AppStrings.total.tr(),
                                 style: AppTypography.kLight16.copyWith(
                                     fontFamily: AppFonts.boldFontFamily,
                                     color: AppColors.cBlack),
@@ -159,7 +160,7 @@ class _PurchaseDetailsViewState extends State<PurchaseDetailsView> {
                                 width: 5.w,
                               ),
                               Text(
-                                AppStrings.currency,
+                                AppStrings.defaultCurrency.tr(),
                                 style: AppTypography.kLight16.copyWith(
                                     fontFamily: AppFonts.boldFontFamily,
                                     color: AppColors.cBlack),

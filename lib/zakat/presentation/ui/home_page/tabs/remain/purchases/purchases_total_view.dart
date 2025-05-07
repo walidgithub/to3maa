@@ -1,6 +1,7 @@
 import 'package:To3maa/zakat/presentation/ui/home_page/tabs/remain/purchases/purchase_total_view.dart';
 import 'package:To3maa/zakat/presentation/ui/home_page/tabs/remain/purchases/summed_product.dart';
 import 'package:animate_do/animate_do.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -88,7 +89,7 @@ class _PurchasesTotalViewState extends State<PurchasesTotalView> {
               FadeInLeft(
                 duration: Duration(milliseconds: AppConstants.animation),
                 child: Text(
-                  AppStrings.totalPurchases,
+                  AppStrings.totalPurchases.tr(),
                   style: AppTypography.kLight20
                       .copyWith(fontFamily: AppFonts.boldFontFamily),
                 ),
@@ -167,11 +168,11 @@ class _PurchasesTotalViewState extends State<PurchasesTotalView> {
                               );
                             }),
                           )
-                          : const Center(
+                          : Center(
                         child: Text(
-                          AppStrings.noPurchases,
+                          AppStrings.noPurchases.tr(),
                           style:
-                          TextStyle(fontFamily: AppFonts.qabasFontFamily),
+                          const TextStyle(fontFamily: AppFonts.qabasFontFamily),
                         ),
                       )),
                   SizedBox(
@@ -193,7 +194,7 @@ class _PurchasesTotalViewState extends State<PurchasesTotalView> {
                         Row(
                           children: [
                             Text(
-                              AppStrings.total,
+                              AppStrings.total.tr(),
                               style: AppTypography.kBold18.copyWith(
                                 color: AppColors.cWhite,
                                 fontFamily: AppFonts.qabasFontFamily,
@@ -211,7 +212,7 @@ class _PurchasesTotalViewState extends State<PurchasesTotalView> {
                                   width: 5.w,
                                 ),
                                 Text(
-                                  AppStrings.currency,
+                                  AppStrings.defaultCurrency.tr(),
                                   style: AppTypography.kLight16.copyWith(
                                       fontFamily: AppFonts.boldFontFamily,
                                       color: AppColors.cWhite),

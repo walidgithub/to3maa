@@ -5,6 +5,7 @@ import 'package:To3maa/zakat/presentation/ui/home_page/cubit/zakat_cubit.dart';
 import 'package:To3maa/zakat/presentation/ui/home_page/cubit/zakat_states.dart';
 import 'package:To3maa/zakat/presentation/ui/home_page/tabs/cart/cart_product_item_view.dart';
 import 'package:animate_do/animate_do.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:To3maa/core/shared/constant/app_typography.dart';
 import 'package:To3maa/core/shared/style/app_colors.dart';
@@ -13,6 +14,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../../../core/shared/constant/app_constants.dart';
 import '../../../../../../core/shared/constant/app_fonts.dart';
 import '../../../../../../core/shared/constant/app_strings.dart';
+import 'dart:ui' as ui;
 
 class CartItemView extends StatefulWidget {
   final bool selected;
@@ -117,7 +119,7 @@ class _CartItemViewState extends State<CartItemView> {
                               Row(
                                 children: [
                                   Text(
-                                    AppStrings.index,
+                                    AppStrings.index.tr(),
                                     style: AppTypography.kLight16.copyWith(
                                         fontFamily: AppFonts.boldFontFamily,
                                         color: AppColors.cBlack),
@@ -146,7 +148,7 @@ class _CartItemViewState extends State<CartItemView> {
                                 height: 5.h,
                               ),
                               Directionality(
-                                textDirection: TextDirection.ltr,
+                                textDirection: ui.TextDirection.ltr,
                                 child: Text(
                                     "$time",
                                   style: AppTypography.kLight16.copyWith(
@@ -169,7 +171,7 @@ class _CartItemViewState extends State<CartItemView> {
                                     width: 5.w,
                                   ),
                                   Text(
-                                    AppStrings.currency,
+                                    AppStrings.defaultCurrency.tr(),
                                     style: AppTypography.kLight16.copyWith(
                                         fontFamily: AppFonts.boldFontFamily,
                                         color: AppColors.cBlack),
@@ -191,7 +193,7 @@ class _CartItemViewState extends State<CartItemView> {
                                     width: 5.w,
                                   ),
                                   Text(
-                                    AppStrings.members,
+                                    AppStrings.members.tr(),
                                     style: AppTypography.kLight16.copyWith(
                                         fontFamily: AppFonts.boldFontFamily,
                                         color: AppColors.cBlack),
@@ -204,7 +206,7 @@ class _CartItemViewState extends State<CartItemView> {
                               Row(
                                 children: [
                                   Text(
-                                    AppStrings.remain,
+                                    AppStrings.remain.tr(),
                                     style: AppTypography.kLight16.copyWith(
                                         fontFamily: AppFonts.boldFontFamily,
                                         color: AppColors.cBlack),
@@ -224,7 +226,7 @@ class _CartItemViewState extends State<CartItemView> {
                                         width: 5.w,
                                       ),
                                       Text(
-                                        AppStrings.currency,
+                                        AppStrings.defaultCurrency.tr(),
                                         style: AppTypography.kLight16.copyWith(
                                             fontFamily: AppFonts.boldFontFamily,
                                             color: AppColors.cBlack),

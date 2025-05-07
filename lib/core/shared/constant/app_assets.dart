@@ -13,9 +13,12 @@ class AppAssets {
   static const String wheat = '$imagePath/wheat.png';
   static const String package = '$imagePath/package.png';
   static const String pasta = '$imagePath/pasta.png';
+  static const String limaBean = '$imagePath/limaBean.png';
   static const String beans = '$imagePath/beans.png';
-  static const String lobia = '$imagePath/lobia.png';
   static const String favaBeans = '$imagePath/favaBeans.png';
   static const String lentils = '$imagePath/lentils.png';
   static const String export = '$imagePath/export.svg';
+  static const String menu = '$imagePath/menu.svg';
+  static const String rate = '$imagePath/rate.svg';
+  static const String settings = '$imagePath/settings.svg';
 }

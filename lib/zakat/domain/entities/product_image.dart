@@ -34,17 +34,17 @@ List<ProductImages> productImages = [
       activeImage: false,
       imageName: AppStrings.wheat),
   ProductImages(
-      imagePath: AppAssets.lobia,
+      imagePath: AppAssets.beans,
       activeImage: false,
-      imageName: AppStrings.lobia),
+      imageName: AppStrings.beans),
   ProductImages(
       imagePath: AppAssets.pasta,
       activeImage: false,
       imageName: AppStrings.pasta),
   ProductImages(
-      imagePath: AppAssets.beans,
+      imagePath: AppAssets.limaBean,
       activeImage: false,
-      imageName: AppStrings.beans),
+      imageName: AppStrings.limaBean),
   ProductImages(
       imagePath: AppAssets.favaBeans,
       activeImage: false,

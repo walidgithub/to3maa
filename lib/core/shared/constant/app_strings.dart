@@ -1,87 +1,135 @@
 class AppStrings {
-  static const String appName = "طُــعــمــة";
-  static const String addZakat = "أضــف زكــاة";
-  static const String totals = "إجـمـالـيـات";
-  static const String products = "المـنـتـجـات";
-  static const String addNew = "أضــف جــديــد";
-  static const String editProduct = "تــعــديــل";
-  static const String cart = "الـعـربـة";
-  static const String remainTab = "الـمـتـبـقـى";
-  static const String successDelete = "تـم الـحـذف بـنـجـاح";
-  static const String productIsExist = "لا يـجـوز الـتـعـديـل فـى الـصـنـف بـعـد الـشـراء مـنـه";
-  static const String successAdd = "تـمـت الإضـافـة بـنـجـاح";
-  static const String creditNotEnough = "الـرصـيـد لا يـكـفـى";
-  static const String successExport = "تـم استخراج التقرير بنجاح";
-  static const String successUpdate = "تـم الـتـعـديـل بـنـجـاح";
+  static const String appName = "To3mah";
+  static const String addZakat = "Add zakat";
+  static const String totals = "Totals";
+  static const String products = "Products";
+  static const String settings = "Settings";
+  static const String addNew = "Add new";
+  static const String editProduct = "Edit";
+  static const String cart = "Cart";
+  static const String remainTab = "Remaining";
+  static const String successDelete = "Deleted successfully.";
+  static const String productIsExist = "It is not permissible to modify the item after purchasing it from him.";
+  static const String successAdd = "Added successfully.";
+  static const String creditNotEnough = "The credit not enough.";
+  static const String successExport = "Report exported successfully.";
+  static const String successUpdate = "Modified successfully.";
 
-  static const String member = "الإســم";
-  static const String zakatValue = "قــيـمـة الـزكــاة";
-  static const String membersCount = "عــدد الأفــراد";
-  static const String suggested = "أصـنـاف مـقـتـرحـة";
-  static const String zakat = "الـزكـاة:";
-  static const String buyFromRemain = "مـن المـتـبقى:";
+  static const String zakatValue = "Zakat value";
+  static const String selectCurrency = "Currency";
+  static const String numberOfIndividuals = "Number of individuals";
+  static const String suggested = "Suggested products";
+  static const String zakat = "Zakat:";
+  static const String buyFromRemain = "From remaining:";
 
-  static const String add = "إضــافــة";
-  static const String productDesc = "الوصــف";
-  static const String productName = "اسـم الـصـنـف";
-  static const String productPrice = "سـعـر الصـاع";
-  static const String productPriceWKilo = "سـعـر الكـيـلو";
-  static const String quantityByKilo = "الـكـمـيـة";
-  static const String totalOfQuantityByKilo = "إجمالى الـكـمـيـة";
-  static const String sa3Weight = "وزن الصـاع بـالـكـيـلـو";
-  static const String sundries = "تفاصيل نـثـريـات";
-  static const String totalSundries = "إجمالى نـثـريـات";
-  static const String sundryName = "الـبـنـد";
-  static const String sundryPrice = "الـقـيـمة";
-  static const String purchases = "تفاصيل مـشـتـريـات";
-  static const String totalPurchases = "إجمالى مـشـتـريـات";
-  static const String getAll = "عـرض إجمالى";
-  static const String getDetails = "عـرض التفاصيل";
+  static const String selectLang = "Select language";
 
-  static const String package = "";
-  static const String rice = "أرز";
-  static const String dates = "تــمـر";
-  static const String pasta = "مكرونة";
-  static const String raisins = "زبـيـب";
-  static const String wheat = "دقـيـق";
-  static const String beans = "فـاصـولـيـا";
-  static const String favaBeans = "فــول";
-  static const String lobia = "لـوبـيـا";
-  static const String lentils = "عــدس";
+  static const String add = "Add";
+  static const String productDesc = "Description";
+  static const String productName = "Product name";
+  static const String productPrice = "The price of a sa'";
+  static const String productPriceWKilo = "The price of a kilo";
+  static const String quantityByKilo = "Quantity";
+  static const String totalOfQuantityByKilo = "Total Quantity";
+  static const String sa3Weight = "Weight of Saa in kilograms";
+  static const String sundries = "Sundries details";
+  static const String totalSundries = "Total sundries";
+  static const String sundryName = "The item";
+  static const String sundryPrice = "Value";
+  static const String purchases = "Purchase details";
+  static const String totalPurchases = "Total purchases";
+  static const String getAll = "Total view";
+  static const String getDetails = "Show details";
 
-  static const String total = "الإجمالى: ";
-  static const String remain = "المتبقى: ";
-  static const String allMembersCount = "عدد الأفراد: ";
-  static const String save = "حـــفـــظ";
-  static const String editPrice = "تـعـديـل الـسـعـر:";
-  static const String kilo = "كـيـلـو";
-  static const String ton = "طــن";
-  static const String sa3 = "صــاع";
-  static const String members = "أفـراد";
-  static const String currency = 'ج.م';
-  static const String index = 'مسلسل:';
-  static const String selectDate = 'اختار التاريخ';
+  static const String package = "_";
+  static const String rice = "Rice";
+  static const String dates = "Dates";
+  static const String pasta = "Pasta";
+  static const String raisins = "Raisins";
+  static const String wheat = "Wheat";
+  static const String limaBean = "Lima bean";
+  static const String favaBeans = "Fava beans";
+  static const String beans = "Beans";
+  static const String lentils = "Lentils";
+
+  static const String total = "Total: ";
+  static const String remain = "Remaining: ";
+  static const String allNumberOfIndividuals = "Number of individuals: ";
+  static const String save = "Save";
+  static const String editPrice = "Price adjustment:";
+  static const String kilo = "Kilo";
+  static const String ton = "Ton";
+  static const String sa3 = "Sa'";
+  static const String members = "Individuals";
+  static const String defaultCurrency = 'L.E';
+  static const String index = 'Index:';
+  static const String selectDate = 'Select the date';
 
 
-  static const String noProducts = "لـم يـتـم تـسـجـيـل مـنـتـجـات بـعـد.";
-  static const String noCarts = "لـم يـتـم إضـافـة زكــاة بـعـد.";
-  static const String noSundries = "لـم يـتـم إضـافـة نـثـريـات بـعـد.";
-  static const String noPurchases = "لـم يـتـم إضـافـة مـشـتـريـات بـعـد.";
+  static const String noProducts = "No products registered yet.";
+  static const String noCarts = "No zakat added yet.";
+  static const String noSundries = "No sundries added yet.";
+  static const String noPurchases = "No purchases have been added yet.";
 
-  static const String someThingWentWrong = "حـدث خـطـأ مـا";
+  static const String someThingWentWrong = "Something went wrong.";
 
-  static const String yes = 'نـعـم';
-  static const String checkOk = 'تـأكـيـد';
-  static const String checkDeleteAll = 'تـأكـيـد حـذف كـل الـعـربـة';
-  static const String skip = 'تـراجـع';
-  static const String loading = 'تـحـمـيـل';
-  static const String no = 'لا';
-  static const String warning = 'تـحـذيـر';
-  static const String closeApp = 'هـل تـريـد الـخـروج مـن الـتـطـبـيـق؟';
-  static const String deleteAllData = 'هل تريد حـذف كـل مـا فـى الـعـربـة؟';
-  static const String checkToDelete = 'هل أنـت مـتـأكـد مـن الـحـذف؟';
+  static const String yes = 'Yes';
+  static const String checkOk = 'Confirmation';
+  static const String checkDeleteAll = 'Confirm delete all carts';
+  static const String skip = 'Skip';
+  static const String loading = 'Loading';
+  static const String no = 'No';
+  static const String warning = 'Warning';
+  static const String closeApp = 'Do you want to exit the application?';
+  static const String deleteAllData = 'Do you want to delete everything in the cart?';
+  static const String checkToDelete = 'Are you sure you want to delete?';
+  static const about = 'About application:';
+  static const info = '''🕌 To3ma – A Smart App for Organizing Zakat al-Fitr
+
+The To3ma app was specifically designed to help Zakat al-Fitr collectors manage data quickly and easily, with accurate reports that facilitate the collection and distribution process.
+
+✅ Features:
+📝 Easily enter household and contributor data.
+
+🧺 Specify the required items (rice, flour, dates, etc.).
+
+📊 Generate a report with the total required quantities.
+
+🧾 A detailed report of the Zakat collected.
+
+📥 Save and retrieve data at any time.
+
+🔄 Automatically update quantities when new data is added.
+
+💡 A simple and fast interface, suitable for everyone.
+
+Whether you are responsible for collecting Zakat at a mosque or a charitable organization, To3ma is your smart companion for organizing your work during the Zakat season.''';
+
+  static const evaluation = 'Evaluation';
+
+  // ----------------------------------------
+  static const weightWithKilo = "Weight (in kg)";
+  static const items = "Statement of items";
+  static const membersCount2 = "Number of individuals";
+  static const zakatTotal = "Total zakat";
+  static const printingDate = "Printing date";
+  static const remainValue = "Remaining amount";
+  static const zakatYear = "Zakat al-Fitr year";
+  static const hejri = "Hijri";
+  static const toEnsureDelete = "To confirm deletion ";
+  static const writeThis = "Write ";
+  static const deleteAll = "Delete all";
+  static const exportData = "Extract current data";
+  static const fileExported = "File exported successfully! ✅";
+
+  static const excelFooter = "Purification for the fasting person from idle talk and obscene speech and food for the poor";
+  static const addZakatErrorCountOrValue = "Error in the number of individuals or the value of zakat.";
+  static const addZakatErrorEmptyValue = "Enter the number of individuals and the zakat amount.";
+  static const addZakatErrorLowLimit = "The zakat value has not reached the minimum limit.";
+  static const addZakatErrorNoSelectedItems = "No items selected.";
+  static const addZakatErrorNoSuitableItems = "No suitable items were chosen for the value of zakat and the number of individuals.";
+  static const addZakatErrorQuantity = "The quantities do not match the number of individuals and the value of zakat.";
 
   // error handler
-  static const String success = "success";
-  static const String defaultError = "Something Error";
+  static const String success = "Successfully completed";
 }

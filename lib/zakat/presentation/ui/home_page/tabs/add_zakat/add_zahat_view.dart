@@ -1,6 +1,7 @@
 import 'package:To3maa/zakat/domain/requests/insert_members_count_request.dart';
 import 'package:To3maa/zakat/domain/requests/reset_product_quantity_request.dart';
 import 'package:animate_do/animate_do.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,6 +23,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hijri/hijri_calendar.dart';
 import 'dart:ui' as ui;
 import 'package:intl/intl.dart';
+import '../../../../../../core/di/di.dart';
+import '../../../../../../core/preferences/app_pref.dart';
 import '../../../../../../core/shared/constant/app_constants.dart';
 import '../../../../../../core/shared/constant/app_fonts.dart';
 import '../../../../../../core/shared/constant/app_strings.dart';
@@ -38,17 +41,25 @@ class _AddZakatViewState extends State<AddZakatView> {
   final TextEditingController _membersCountController = TextEditingController();
   final TextEditingController _zakatValueController = TextEditingController();
 
+  final AppPreferences _appPreferences = sl<AppPreferences>();
+
   HijriCalendar hijriDate = HijriCalendar.now();
 
   bool showError = false;
   String errorMessage = "";
+  String currency = AppStrings.defaultCurrency.tr();
 
   @override
   void initState() {
     HijriCalendar.setLocal('ar');
     getAllZakat();
     clearData();
+    getCurrency();
     super.initState();
+  }
+
+  void getCurrency() async {
+    currency = _appPreferences.getCurrency(PREFS_KEY_CURRENCY)!;
   }
 
   Future<void> resetQuantity() async {
@@ -153,7 +164,7 @@ class _AddZakatViewState extends State<AddZakatView> {
             title: FadeInLeft(
               duration: Duration(milliseconds: AppConstants.animation),
               child: Text(
-                AppStrings.addZakat,
+                AppStrings.addZakat.tr(),
                 style: AppTypography.kLight20
                     .copyWith(fontFamily: AppFonts.boldFontFamily),
               ),
@@ -193,7 +204,7 @@ class _AddZakatViewState extends State<AddZakatView> {
                 ),
                 textFieldWidget(
                     _membersCountController,
-                    AppStrings.membersCount,
+                    AppStrings.numberOfIndividuals.tr(),
                     TextInputType.number, (String textVal) async {
                   await resetQuantity();
                   await getAllProducts();
@@ -213,7 +224,7 @@ class _AddZakatViewState extends State<AddZakatView> {
                 SizedBox(
                   height: AppConstants.heightBetweenElements,
                 ),
-                textFieldWidget(_zakatValueController, AppStrings.zakatValue,
+                textFieldWidget(_zakatValueController, AppStrings.zakatValue.tr(),
                     TextInputType.number, (String textVal) async {
                   setState(() {
                     allValue = double.parse(textVal);
@@ -245,10 +256,10 @@ class _AddZakatViewState extends State<AddZakatView> {
                     ? Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
-                            AppStrings.suggested,
+                          Text(
+                            AppStrings.suggested.tr(),
                             style:
-                                TextStyle(fontFamily: AppFonts.qabasFontFamily),
+                                const TextStyle(fontFamily: AppFonts.qabasFontFamily),
                           ),
                           SizedBox(
                             height: 5.h,
@@ -381,10 +392,10 @@ class _AddZakatViewState extends State<AddZakatView> {
                                   );
                                 }),
                           )
-                        : const Center(
+                        : Center(
                             child: Text(
-                              AppStrings.noProducts,
-                              style: TextStyle(
+                              AppStrings.noProducts.tr(),
+                              style: const TextStyle(
                                   fontFamily: AppFonts.qabasFontFamily),
                             ),
                           )),
@@ -409,7 +420,7 @@ class _AddZakatViewState extends State<AddZakatView> {
                           Row(
                             children: [
                               Text(
-                                AppStrings.total,
+                                AppStrings.total.tr(),
                                 style: AppTypography.kBold18.copyWith(
                                   color: AppColors.cWhite,
                                   fontFamily: AppFonts.qabasFontFamily,
@@ -427,7 +438,7 @@ class _AddZakatViewState extends State<AddZakatView> {
                                     width: 5.w,
                                   ),
                                   Text(
-                                    AppStrings.currency,
+                                    AppStrings.defaultCurrency.tr(),
                                     style: AppTypography.kLight16.copyWith(
                                         fontFamily: AppFonts.boldFontFamily,
                                         color: AppColors.cWhite),
@@ -439,7 +450,7 @@ class _AddZakatViewState extends State<AddZakatView> {
                           Row(
                             children: [
                               Text(
-                                AppStrings.remain,
+                                AppStrings.remain.tr(),
                                 style: AppTypography.kBold18.copyWith(
                                   color: AppColors.cWhite,
                                   fontFamily: AppFonts.qabasFontFamily,
@@ -457,7 +468,7 @@ class _AddZakatViewState extends State<AddZakatView> {
                                     width: 5.w,
                                   ),
                                   Text(
-                                    AppStrings.currency,
+                                    AppStrings.defaultCurrency.tr(),
                                     style: AppTypography.kLight16.copyWith(
                                         fontFamily: AppFonts.boldFontFamily,
                                         color: AppColors.cWhite),
@@ -472,7 +483,7 @@ class _AddZakatViewState extends State<AddZakatView> {
                                 HapticFeedback.vibrate();
                                 setState(() {
                                   showError = true;
-                                  errorMessage = "خطأ فى عدد الأفراد أو قيمة الزكاة";
+                                  errorMessage = AppStrings.addZakatErrorCountOrValue.tr();
                                 });
                                 return;
                               } else {
@@ -488,7 +499,7 @@ class _AddZakatViewState extends State<AddZakatView> {
                                 HapticFeedback.vibrate();
                                 setState(() {
                                   showError = true;
-                                  errorMessage = "خطأ فى عدد الأفراد أو قيمة الزكاة";
+                                  errorMessage = AppStrings.addZakatErrorCountOrValue.tr();
                                 });
                                 return;
                               } else {
@@ -508,7 +519,7 @@ class _AddZakatViewState extends State<AddZakatView> {
                                       0) {
                                 setState(() {
                                   showError = true;
-                                  errorMessage = "أدخل خانات عدد الأفراد وقيمة الزكاة";
+                                  errorMessage = AppStrings.addZakatErrorEmptyValue.tr();
                                 });
                                 return;
                               } else {
@@ -530,7 +541,7 @@ class _AddZakatViewState extends State<AddZakatView> {
                                 HapticFeedback.vibrate();
                                 setState(() {
                                   showError = true;
-                                  errorMessage = "قيمة الزكاة لم تصل الحد الى الأدنى";
+                                  errorMessage = AppStrings.addZakatErrorLowLimit.tr();
                                 });
                                 return;
                               } else {
@@ -552,7 +563,7 @@ class _AddZakatViewState extends State<AddZakatView> {
                                 HapticFeedback.vibrate();
                                 setState(() {
                                   showError = true;
-                                  errorMessage = "لم يتم اختيار أصناف مناسبة لقيمة الزكاة وعدد الأفراد";
+                                  errorMessage = AppStrings.addZakatErrorNoSuitableItems.tr();
                                 });
                                 return;
                               } else {
@@ -571,7 +582,7 @@ class _AddZakatViewState extends State<AddZakatView> {
                                 HapticFeedback.vibrate();
                                 setState(() {
                                   showError = true;
-                                  errorMessage = "الكميات لا تناسب عدد الأفراد وقيمة الزكاة";
+                                  errorMessage = AppStrings.addZakatErrorQuantity.tr();
                                 });
                                 return;
                               } else {
@@ -587,7 +598,7 @@ class _AddZakatViewState extends State<AddZakatView> {
                                 HapticFeedback.vibrate();
                                 setState(() {
                                   showError = true;
-                                  errorMessage = "لم يتم اختيار أى أصناف";
+                                  errorMessage = AppStrings.addZakatErrorNoSelectedItems.tr();
                                 });
                                 return;
                               } else {
@@ -647,7 +658,7 @@ class _AddZakatViewState extends State<AddZakatView> {
                                 duration: Duration(
                                     milliseconds:
                                         AppConstants.durationOfSnackBar),
-                                content: const Text(AppStrings.successAdd),
+                                content: Text(AppStrings.successAdd.tr()),
                               );
                               // ignore: use_build_context_synchronously
                               ScaffoldMessenger.of(context)
@@ -670,7 +681,7 @@ class _AddZakatViewState extends State<AddZakatView> {
                                 ),
                                 child: Center(
                                   child: Text(
-                                    AppStrings.save,
+                                    AppStrings.save.tr(),
                                     style: AppTypography.kLight14.copyWith(
                                       fontFamily: AppFonts.qabasFontFamily,
                                       color: AppColors.cButton,

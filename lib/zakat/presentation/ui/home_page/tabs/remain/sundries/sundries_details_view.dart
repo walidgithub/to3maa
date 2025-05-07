@@ -1,6 +1,7 @@
 import 'package:To3maa/zakat/domain/requests/delete_sundry_request.dart';
 import 'package:To3maa/zakat/presentation/ui/home_page/tabs/remain/sundries/sundry_details_view.dart';
 import 'package:animate_do/animate_do.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -14,6 +15,7 @@ import '../../../../../../domain/responses/sundries_response.dart';
 import '../../../../../ui_components/loading_dialog.dart';
 import '../../../cubit/zakat_cubit.dart';
 import '../../../cubit/zakat_states.dart';
+import 'dart:ui' as ui;
 
 class SundriesDetailsView extends StatefulWidget {
   Function deleteSundry;
@@ -60,7 +62,7 @@ class _SundriesDetailsViewState extends State<SundriesDetailsView> {
               FadeInLeft(
                 duration: Duration(milliseconds: AppConstants.animation),
                 child: Text(
-                  AppStrings.sundries,
+                  AppStrings.sundries.tr(),
                   style: AppTypography.kLight20
                       .copyWith(fontFamily: AppFonts.boldFontFamily),
                 ),
@@ -150,9 +152,9 @@ class _SundriesDetailsViewState extends State<SundriesDetailsView> {
                                           context: context,
                                           builder: (BuildContext context) {
                                             return Directionality(
-                                              textDirection: TextDirection.rtl,
+                                              textDirection: ui.TextDirection.rtl,
                                               child: AlertDialog(
-                                                title: Text(AppStrings.warning,
+                                                title: Text(AppStrings.warning.tr(),
                                                     style: AppTypography.kBold20),
                                                 content: const Text(
                                                     AppStrings.checkToDelete),
@@ -166,7 +168,7 @@ class _SundriesDetailsViewState extends State<SundriesDetailsView> {
                                                             deleteSundryRequest);
                                                         widget.deleteSundry();
                                                       },
-                                                      child: Text(AppStrings.yes,
+                                                      child: Text(AppStrings.yes.tr(),
                                                           style: AppTypography
                                                               .kLight16)),
                                                   TextButton(
@@ -174,7 +176,7 @@ class _SundriesDetailsViewState extends State<SundriesDetailsView> {
                                                         Navigator.of(context)
                                                             .pop(false);
                                                       },
-                                                      child: Text(AppStrings.no,
+                                                      child: Text(AppStrings.no.tr(),
                                                           style: AppTypography
                                                               .kLight16)),
                                                 ],
@@ -185,11 +187,11 @@ class _SundriesDetailsViewState extends State<SundriesDetailsView> {
                                   );
                                 }),
                           )
-                          : const Center(
+                          : Center(
                         child: Text(
-                          AppStrings.noSundries,
+                          AppStrings.noSundries.tr(),
                           style:
-                          TextStyle(fontFamily: AppFonts.qabasFontFamily),
+                          const TextStyle(fontFamily: AppFonts.qabasFontFamily),
                         ),
                       )),
                   SizedBox(
@@ -211,7 +213,7 @@ class _SundriesDetailsViewState extends State<SundriesDetailsView> {
                         Row(
                           children: [
                             Text(
-                              AppStrings.total,
+                              AppStrings.total.tr(),
                               style: AppTypography.kBold18.copyWith(
                                 color: AppColors.cWhite,
                                 fontFamily: AppFonts.qabasFontFamily,
@@ -229,7 +231,7 @@ class _SundriesDetailsViewState extends State<SundriesDetailsView> {
                                   width: 5.w,
                                 ),
                                 Text(
-                                  AppStrings.currency,
+                                  AppStrings.defaultCurrency.tr(),
                                   style: AppTypography.kLight16.copyWith(
                                       fontFamily: AppFonts.boldFontFamily,
                                       color: AppColors.cWhite),

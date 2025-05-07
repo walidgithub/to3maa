@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'dart:ui' as ui;
@@ -58,22 +59,22 @@ class _CheckDeleteDialogState extends State<CheckDeleteDialog> {
                 ),
               ),
               SizedBox(height: 20.h),
-              Text(AppStrings.checkDeleteAll,
+              Text(AppStrings.checkDeleteAll.tr(),
                   style:
                       AppTypography.kBold22.copyWith(color: AppColors.cGray)),
               SizedBox(height: 20.h),
               RichText(
                 text: TextSpan(
-                    text: "قم بكتابة ",
+                    text: AppStrings.writeThis.tr(),
                     style: AppTypography.kLight18
                         .copyWith(color: AppColors.cTitle, height: 1.2),
                     children: [
                       TextSpan(
-                          text: "حذف الكل",
+                          text: AppStrings.deleteAll.tr(),
                           style: AppTypography.kBold18
                               .copyWith(color: AppColors.cButton)),
                       TextSpan(
-                          text: " لتأكيد الحذف",
+                          text: AppStrings.toEnsureDelete.tr(),
                           style: AppTypography.kLight18
                               .copyWith(color: AppColors.cTitle)),
                     ]),
@@ -88,7 +89,7 @@ class _CheckDeleteDialogState extends State<CheckDeleteDialog> {
                       child: TextField(
                           onChanged: (done) {
                             if (checkEditingController.text.trim() ==
-                                "حذف الكل") {
+                                AppStrings.deleteAll.tr()) {
                               setState(() {});
                             } else {
                               setState(() {});
@@ -114,7 +115,7 @@ class _CheckDeleteDialogState extends State<CheckDeleteDialog> {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      if (checkEditingController.text.trim() == "حذف الكل") {
+                      if (checkEditingController.text.trim() == AppStrings.deleteAll.tr()) {
                         widget.deleteAll();
                         CheckDeleteDialog.hide(context);
                       }
@@ -132,11 +133,11 @@ class _CheckDeleteDialogState extends State<CheckDeleteDialog> {
                         ),
                         child: Center(
                           child: Text(
-                            AppStrings.checkOk,
+                            AppStrings.checkOk.tr(),
                             style: AppTypography.kLight14.copyWith(
                               fontFamily: AppFonts.qabasFontFamily,
                               color: checkEditingController.text.trim() ==
-                                      "حذف الكل"
+                                      AppStrings.deleteAll.tr()
                                   ? AppColors.cButton
                                   : AppColors.cGray,
                             ),
@@ -161,7 +162,7 @@ class _CheckDeleteDialogState extends State<CheckDeleteDialog> {
                         ),
                         child: Center(
                           child: Text(
-                            AppStrings.skip,
+                            AppStrings.skip.tr(),
                             style: AppTypography.kLight14.copyWith(
                               fontFamily: AppFonts.qabasFontFamily,
                               color: AppColors.cTitle,

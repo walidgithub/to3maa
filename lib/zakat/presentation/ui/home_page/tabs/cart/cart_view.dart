@@ -3,6 +3,7 @@ import 'package:To3maa/core/utils/enums.dart';
 import 'package:To3maa/zakat/domain/requests/delete_members_count_request.dart';
 import 'package:To3maa/zakat/presentation/ui/home_page/tabs/cart/check_delete_dialog.dart';
 import 'package:animate_do/animate_do.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:To3maa/zakat/domain/entities/cart_items.dart';
@@ -15,7 +16,7 @@ import 'package:To3maa/zakat/presentation/ui/home_page/tabs/cart/cart_item_view.
 import 'package:To3maa/zakat/presentation/ui_components/loading_dialog.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-
+import 'dart:ui' as ui;
 import '../../../../../../core/shared/constant/app_constants.dart';
 import '../../../../../../core/shared/constant/app_fonts.dart';
 import '../../../../../../core/shared/constant/app_strings.dart';
@@ -110,7 +111,7 @@ class _CartViewState extends State<CartView> {
   @override
   Widget build(BuildContext context) {
     return Directionality(
-      textDirection: TextDirection.rtl,
+      textDirection: ui.TextDirection.rtl,
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: AppColors.cWhite,
@@ -119,7 +120,7 @@ class _CartViewState extends State<CartView> {
           title: FadeInLeft(
             duration: Duration(milliseconds: AppConstants.animation),
             child: Text(
-              AppStrings.cart,
+              AppStrings.cart.tr(),
               style: AppTypography.kLight20
                   .copyWith(fontFamily: AppFonts.boldFontFamily),
             ),
@@ -210,12 +211,12 @@ class _CartViewState extends State<CartView> {
                                         context: context,
                                         builder: (BuildContext context) {
                                           return Directionality(
-                                            textDirection: TextDirection.rtl,
+                                            textDirection: ui.TextDirection.rtl,
                                             child: AlertDialog(
-                                              title: Text(AppStrings.warning,
+                                              title: Text(AppStrings.warning.tr(),
                                                   style: AppTypography.kBold20),
-                                              content: const Text(
-                                                  AppStrings.checkToDelete),
+                                              content: Text(
+                                                  AppStrings.checkToDelete.tr()),
                                               actions: [
                                                 TextButton(
                                                     onPressed: () async {
@@ -234,9 +235,9 @@ class _CartViewState extends State<CartView> {
                                                             milliseconds:
                                                                 AppConstants
                                                                     .durationOfSnackBar),
-                                                        content: const Text(
+                                                        content: Text(
                                                             AppStrings
-                                                                .successDelete),
+                                                                .successDelete.tr()),
                                                       );
                                                       // ignore: use_build_context_synchronously
                                                       ScaffoldMessenger.of(
@@ -255,7 +256,7 @@ class _CartViewState extends State<CartView> {
                                                       Navigator.of(context)
                                                           .pop(false);
                                                     },
-                                                    child: Text(AppStrings.yes,
+                                                    child: Text(AppStrings.yes.tr(),
                                                         style: AppTypography
                                                             .kLight16)),
                                                 TextButton(
@@ -263,7 +264,7 @@ class _CartViewState extends State<CartView> {
                                                       Navigator.of(context)
                                                           .pop(false);
                                                     },
-                                                    child: Text(AppStrings.no,
+                                                    child: Text(AppStrings.no.tr(),
                                                         style: AppTypography
                                                             .kLight16)),
                                               ],
@@ -274,11 +275,11 @@ class _CartViewState extends State<CartView> {
                                 );
                               }),
                         )
-                      : const Center(
+                      : Center(
                           child: Text(
-                            AppStrings.noCarts,
+                            AppStrings.noCarts.tr(),
                             style:
-                                TextStyle(fontFamily: AppFonts.qabasFontFamily),
+                                const TextStyle(fontFamily: AppFonts.qabasFontFamily),
                           ),
                         )),
               SizedBox(
@@ -347,7 +348,7 @@ class _CartViewState extends State<CartView> {
                           Row(
                             children: [
                               Text(
-                                AppStrings.total,
+                                AppStrings.total.tr(),
                                 style: AppTypography.kBold18.copyWith(
                                   color: AppColors.cWhite,
                                   fontFamily: AppFonts.qabasFontFamily,
@@ -365,7 +366,7 @@ class _CartViewState extends State<CartView> {
                                     width: 5.w,
                                   ),
                                   Text(
-                                    AppStrings.currency,
+                                    AppStrings.defaultCurrency.tr(),
                                     style: AppTypography.kLight16.copyWith(
                                         fontFamily: AppFonts.boldFontFamily,
                                         color: AppColors.cWhite),
@@ -377,7 +378,7 @@ class _CartViewState extends State<CartView> {
                           Row(
                             children: [
                               Text(
-                                AppStrings.remain,
+                                AppStrings.remain.tr(),
                                 style: AppTypography.kBold18.copyWith(
                                   color: AppColors.cWhite,
                                   fontFamily: AppFonts.qabasFontFamily,
@@ -395,7 +396,7 @@ class _CartViewState extends State<CartView> {
                                     width: 5.w,
                                   ),
                                   Text(
-                                    AppStrings.currency,
+                                    AppStrings.defaultCurrency.tr(),
                                     style: AppTypography.kLight16.copyWith(
                                         fontFamily: AppFonts.boldFontFamily,
                                         color: AppColors.cWhite),
@@ -408,7 +409,7 @@ class _CartViewState extends State<CartView> {
                           Row(
                             children: [
                               Text(
-                                AppStrings.allMembersCount,
+                                AppStrings.allNumberOfIndividuals.tr(),
                                 style: AppTypography.kBold18.copyWith(
                                   color: AppColors.cWhite,
                                   fontFamily: AppFonts.qabasFontFamily,

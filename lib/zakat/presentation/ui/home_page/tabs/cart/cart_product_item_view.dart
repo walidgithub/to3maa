@@ -1,6 +1,7 @@
 
 import 'package:To3maa/core/shared/constant/app_typography.dart';
 import 'package:To3maa/core/shared/style/app_colors.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import '../../../../../../core/shared/constant/app_strings.dart';
 
@@ -27,7 +28,7 @@ class CartItemProductView extends StatelessWidget {
               style: AppTypography.kBold16,
             ),
             Text(
-              '$productQuantity  ${AppStrings.sa3}',
+              '$productQuantity  ${AppStrings.sa3.tr()}',
               style: AppTypography.kLight14,
             ),
           ],

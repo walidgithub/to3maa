@@ -1,4 +1,5 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:To3maa/core/shared/constant/app_constants.dart';
 import 'package:To3maa/core/shared/constant/app_typography.dart';
@@ -120,7 +121,7 @@ class _TotalsProductsViewState extends State<TotalsProductsView> {
                         Row(
                           children: [
                             Text(
-                              AppStrings.membersCount,
+                              AppStrings.numberOfIndividuals.tr(),
                               style: AppTypography.kLight16.copyWith(
                                   fontFamily: AppFonts.boldFontFamily,
                                   color: AppColors.cBlack),
@@ -151,7 +152,7 @@ class _TotalsProductsViewState extends State<TotalsProductsView> {
                               width: 5.w,
                             ),
                             Text(
-                              AppStrings.currency,
+                              AppStrings.defaultCurrency.tr(),
                               style: AppTypography.kLight16.copyWith(
                                   fontFamily: AppFonts.boldFontFamily,
                                   color: AppColors.cBlack),
@@ -164,7 +165,7 @@ class _TotalsProductsViewState extends State<TotalsProductsView> {
                         Row(
                           children: [
                             Text(
-                              AppStrings.zakat,
+                              AppStrings.zakat.tr(),
                               style: AppTypography.kLight16.copyWith(
                                   fontFamily: AppFonts.boldFontFamily,
                                   color: AppColors.cBlack),
@@ -185,8 +186,8 @@ class _TotalsProductsViewState extends State<TotalsProductsView> {
                               formatWeightString(widget.sumProductQuantity *
                                   widget.sa3Weight).toString() ==
                                   "ton"
-                                  ? AppStrings.ton
-                                  : AppStrings.kilo,
+                                  ? AppStrings.ton.tr()
+                                  : AppStrings.kilo.tr(),
                               style: AppTypography.kLight14
                                   .copyWith(fontFamily: AppFonts.boldFontFamily),
                             ),
@@ -198,7 +199,7 @@ class _TotalsProductsViewState extends State<TotalsProductsView> {
                         Row(
                           children: [
                             Text(
-                              AppStrings.buyFromRemain,
+                              AppStrings.buyFromRemain.tr(),
                               style: AppTypography.kLight16.copyWith(
                                   fontFamily: AppFonts.boldFontFamily,
                                   color: AppColors.cBlack),
@@ -218,8 +219,8 @@ class _TotalsProductsViewState extends State<TotalsProductsView> {
                             Text(
                               formatWeightString(widget.sumPurchasesQuantity).toString() ==
                                   "ton"
-                                  ? AppStrings.ton
-                                  : AppStrings.kilo,
+                                  ? AppStrings.ton.tr()
+                                  : AppStrings.kilo.tr(),
                               style: AppTypography.kLight14
                                   .copyWith(fontFamily: AppFonts.boldFontFamily),
                             ),

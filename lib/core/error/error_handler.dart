@@ -27,12 +27,12 @@ extension DataSourceExtension on DataSource {
 }
 
 class ResponseCode {
-  static const int SUCCESS = 200; // success with data
+  static const int SUCCESS = 200;
   static const int DEFAULT = -7;
 }
 
 class ResponseMessage {
-  static const String SUCCESS = AppStrings.success; // success with data
-  static const String DEFAULT = AppStrings.defaultError;
+  static const String SUCCESS = AppStrings.success;
+  static const String DEFAULT = AppStrings.someThingWentWrong;
 }
 

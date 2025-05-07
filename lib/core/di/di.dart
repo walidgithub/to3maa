@@ -29,14 +29,23 @@ import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/update_product_quant
 import 'package:To3maa/zakat/domain/use_cases/zakat_usecase/update_product_usecase.dart';
 import 'package:To3maa/zakat/presentation/ui/home_page/cubit/zakat_cubit.dart';
 import 'package:get_it/get_it.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../zakat/domain/use_cases/zakat_usecase/get_purchases_by_kilos_usecase.dart';
 import '../../zakat/domain/use_cases/zakat_usecase/get_zakat_products_usecase.dart';
+import '../preferences/app_pref.dart';
 
 final sl = GetIt.instance;
 
 class ServiceLocator {
   Future<void> init() async {
+    // app prefs instance
+    final sharedPrefs = await SharedPreferences.getInstance();
+
+    sl.registerLazySingleton<SharedPreferences>(() => sharedPrefs);
+
+    sl.registerLazySingleton<AppPreferences>(() => AppPreferences(sl()));
+
     // dbHelper
     sl.registerLazySingleton<DbHelper>(() => DbHelper());
 

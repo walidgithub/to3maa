@@ -1,4 +1,5 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:To3maa/core/utils/enums.dart';
@@ -19,6 +20,7 @@ import '../../../../../../core/shared/constant/app_fonts.dart';
 import '../../../../../../core/shared/constant/app_strings.dart';
 import '../../../../../../core/shared/style/app_colors.dart';
 import '../../../../../domain/responses/zakat_products_response.dart';
+import 'dart:ui' as ui;
 
 class ProductsView extends StatefulWidget {
   const ProductsView({super.key});
@@ -79,7 +81,7 @@ class _ProductsViewState extends State<ProductsView> {
 
   Widget productsBody() {
     return Directionality(
-        textDirection: TextDirection.rtl,
+        textDirection: ui.TextDirection.rtl,
         child: Scaffold(
             appBar: AppBar(
               backgroundColor: AppColors.cWhite,
@@ -103,7 +105,7 @@ class _ProductsViewState extends State<ProductsView> {
               title: FadeInLeft(
                 duration: Duration(milliseconds: AppConstants.animation),
                 child: Text(
-                  AppStrings.products,
+                  AppStrings.products.tr(),
                   style: AppTypography.kLight20
                       .copyWith(fontFamily: AppFonts.boldFontFamily),
                 ),
@@ -135,7 +137,7 @@ class _ProductsViewState extends State<ProductsView> {
                 final snackBar = SnackBar(
                   duration:
                       Duration(milliseconds: AppConstants.durationOfSnackBar),
-                  content: const Text(AppStrings.successDelete),
+                  content: Text(AppStrings.successDelete.tr()),
                 );
                 ScaffoldMessenger.of(context).showSnackBar(snackBar);
               } else if (state.zakatState == RequestState.updateLoading) {
@@ -147,7 +149,7 @@ class _ProductsViewState extends State<ProductsView> {
                 final snackBar = SnackBar(
                   duration:
                       Duration(milliseconds: AppConstants.durationOfSnackBar),
-                  content: const Text(AppStrings.successUpdate),
+                  content: Text(AppStrings.successUpdate.tr()),
                 );
                 ScaffoldMessenger.of(context).showSnackBar(snackBar);
               }
@@ -192,14 +194,14 @@ class _ProductsViewState extends State<ProductsView> {
                                             builder: (BuildContext context) {
                                               return Directionality(
                                                 textDirection:
-                                                    TextDirection.rtl,
+                                                    ui.TextDirection.rtl,
                                                 child: AlertDialog(
                                                   title: Text(
-                                                      AppStrings.warning,
+                                                      AppStrings.warning.tr(),
                                                       style: AppTypography
                                                           .kBold18),
-                                                  content: const Text(
-                                                      AppStrings.checkToDelete),
+                                                  content: Text(
+                                                      AppStrings.checkToDelete.tr()),
                                                   actions: [
                                                     TextButton(
                                                         onPressed: () async {
@@ -214,7 +216,7 @@ class _ProductsViewState extends State<ProductsView> {
                                                               .pop(false);
                                                         },
                                                         child: Text(
-                                                            AppStrings.yes,
+                                                            AppStrings.yes.tr(),
                                                             style: AppTypography
                                                                 .kLight14)),
                                                     TextButton(
@@ -223,7 +225,7 @@ class _ProductsViewState extends State<ProductsView> {
                                                               .pop(false);
                                                         },
                                                         child: Text(
-                                                            AppStrings.no,
+                                                            AppStrings.no.tr(),
                                                             style: AppTypography
                                                                 .kLight14)),
                                                   ],
@@ -276,7 +278,7 @@ class _ProductsViewState extends State<ProductsView> {
                                             final snackBar = SnackBar(
                                               duration:
                                               Duration(milliseconds: AppConstants.durationOfSnackBar),
-                                              content: const Text(AppStrings.productIsExist),
+                                              content: Text(AppStrings.productIsExist.tr()),
                                             );
                                             ScaffoldMessenger.of(context).showSnackBar(snackBar);
                                             return;
@@ -311,10 +313,10 @@ class _ProductsViewState extends State<ProductsView> {
                                     );
                                   }),
                             )
-                          : const Center(
+                          : Center(
                               child: Text(
-                                AppStrings.noProducts,
-                                style: TextStyle(
+                                AppStrings.noProducts.tr(),
+                                style: const TextStyle(
                                     fontFamily: AppFonts.qabasFontFamily),
                               ),
                             )),
@@ -328,7 +330,7 @@ class _ProductsViewState extends State<ProductsView> {
 
   Widget addNewBody() {
     return Directionality(
-        textDirection: TextDirection.rtl,
+        textDirection: ui.TextDirection.rtl,
         child: Scaffold(
           appBar: AppBar(
             backgroundColor: AppColors.cWhite,
@@ -354,7 +356,7 @@ class _ProductsViewState extends State<ProductsView> {
             title: FadeInLeft(
               duration: Duration(milliseconds: AppConstants.animation),
               child: Text(
-                !editProduct ? AppStrings.addNew : AppStrings.editProduct,
+                !editProduct ? AppStrings.addNew.tr() : AppStrings.editProduct.tr(),
                 style: AppTypography.kLight20
                     .copyWith(fontFamily: AppFonts.boldFontFamily),
               ),
@@ -372,7 +374,7 @@ class _ProductsViewState extends State<ProductsView> {
                 final snackBar = SnackBar(
                   duration:
                       Duration(milliseconds: AppConstants.durationOfSnackBar),
-                  content: const Text(AppStrings.successAdd),
+                  content: Text(AppStrings.successAdd.tr()),
                 );
                 ScaffoldMessenger.of(context).showSnackBar(snackBar);
               } else if (state.zakatState == RequestState.productsLoading) {
@@ -390,7 +392,7 @@ class _ProductsViewState extends State<ProductsView> {
                 final snackBar = SnackBar(
                   duration:
                       Duration(milliseconds: AppConstants.durationOfSnackBar),
-                  content: const Text(AppStrings.successUpdate),
+                  content: Text(AppStrings.successUpdate.tr()),
                 );
                 ScaffoldMessenger.of(context).showSnackBar(snackBar);
               }
@@ -403,7 +405,7 @@ class _ProductsViewState extends State<ProductsView> {
                   ),
                   textFieldWidget(
                       _productNameController,
-                      AppStrings.productName,
+                      AppStrings.productName.tr(),
                       TextInputType.text,
                       (String textVal) {},true,true),
                   SizedBox(
@@ -411,20 +413,20 @@ class _ProductsViewState extends State<ProductsView> {
                   ),
                   textFieldWidget(
                       _productPriceController,
-                      AppStrings.productPrice,
+                      AppStrings.productPrice.tr(),
                       TextInputType.number,
                       (String textVal) {},false,true),
                   SizedBox(
                     height: AppConstants.heightBetweenElements,
                   ),
-                  textFieldWidget(_sa3WeightController, AppStrings.sa3Weight,
+                  textFieldWidget(_sa3WeightController, AppStrings.sa3Weight.tr(),
                       TextInputType.number, (String textVal) {},false,true),
                   SizedBox(
                     height: AppConstants.heightBetweenElements,
                   ),
                   textFieldWidget(
                       _productDescController,
-                      AppStrings.productDesc,
+                      AppStrings.productDesc.tr(),
                       TextInputType.text,
                       (String textVal) {},false,true),
                   SizedBox(
@@ -479,7 +481,7 @@ class _ProductsViewState extends State<ProductsView> {
                             final snackBar = SnackBar(
                               duration:
                               Duration(milliseconds: AppConstants.durationOfSnackBar),
-                              content: const Text(AppStrings.productIsExist),
+                              content: Text(AppStrings.productIsExist.tr()),
                             );
                             ScaffoldMessenger.of(context).showSnackBar(snackBar);
                             return;
@@ -561,7 +563,7 @@ class _ProductsViewState extends State<ProductsView> {
                       ),
                       child: Center(
                         child: Text(
-                          AppStrings.save,
+                          AppStrings.save.tr(),
                           style: AppTypography.kLight16.copyWith(
                             fontFamily: AppFonts.qabasFontFamily,
                             color: AppColors.cWhite,
