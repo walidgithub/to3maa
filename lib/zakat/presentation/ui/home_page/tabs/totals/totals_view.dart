@@ -159,257 +159,254 @@ class _TotalsViewState extends State<TotalsView> {
 
   @override
   Widget build(BuildContext context) {
-    return Directionality(
-        textDirection: ui.TextDirection.rtl,
-        child: Scaffold(
-          appBar: AppBar(
-            backgroundColor: AppColors.cWhite,
-            automaticallyImplyLeading: false,
-            surfaceTintColor: Colors.transparent,
-            title: FadeInLeft(
-              duration: Duration(milliseconds: AppConstants.animation),
-              child: Text(
-                AppStrings.totals.tr(),
-                style: AppTypography.kLight20
-                    .copyWith(fontFamily: AppFonts.boldFontFamily),
-              ),
-            ),
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: AppColors.cWhite,
+        automaticallyImplyLeading: false,
+        surfaceTintColor: Colors.transparent,
+        title: FadeInLeft(
+          duration: Duration(milliseconds: AppConstants.animation),
+          child: Text(
+            AppStrings.totals.tr(),
+            style: AppTypography.kLight20
+                .copyWith(fontFamily: AppFonts.boldFontFamily),
           ),
-          backgroundColor: AppColors.cWhite,
-          body: BlocConsumer<ZakatCubit, ZakatState>(
-              listener: (context, state) async {
-            if (state.zakatState ==
-                RequestState.getZakatProductsByKilosLoading) {
-              showLoading();
-            } else if (state.zakatState ==
-                RequestState.getZakatProductsByKilosError) {
-              hideLoading();
-            } else if (state.zakatState ==
-                RequestState.getZakatProductsByKilosLoaded) {
-              zakatByKilos = state.zakatProductsByKiloList;
-              hideLoading();
-            } else if (state.zakatState ==
-                RequestState.getPurchasesByKilosLoading) {
-              showLoading();
-            } else if (state.zakatState ==
-                RequestState.getPurchasesByKilosError) {
-              hideLoading();
-            } else if (state.zakatState ==
-                RequestState.getPurchasesByKilosLoaded) {
-              purchasesByKilos = state.purchasesByKiloList;
-              hideLoading();
-            } else if (state.zakatState == RequestState.totalSundriesLoading) {
-              showLoading();
-            } else if (state.zakatState == RequestState.totalSundriesLoaded) {
-              sundriesTotal = state.sundriesTotal;
-              hideLoading();
-            } else if (state.zakatState == RequestState.totalSundriesError) {
-              hideLoading();
-            } else if (state.zakatState == RequestState.totalPurchasesLoading) {
-              showLoading();
-            } else if (state.zakatState == RequestState.totalPurchasesLoaded) {
-              purchasesTotal = state.purchasesTotal;
-              hideLoading();
-            } else if (state.zakatState == RequestState.totalPurchasesError) {
-              hideLoading();
-            }
-          }, builder: (context, state) {
-            return Column(
+        ),
+      ),
+      backgroundColor: AppColors.cWhite,
+      body: BlocConsumer<ZakatCubit, ZakatState>(
+          listener: (context, state) async {
+        if (state.zakatState ==
+            RequestState.getZakatProductsByKilosLoading) {
+          showLoading();
+        } else if (state.zakatState ==
+            RequestState.getZakatProductsByKilosError) {
+          hideLoading();
+        } else if (state.zakatState ==
+            RequestState.getZakatProductsByKilosLoaded) {
+          zakatByKilos = state.zakatProductsByKiloList;
+          hideLoading();
+        } else if (state.zakatState ==
+            RequestState.getPurchasesByKilosLoading) {
+          showLoading();
+        } else if (state.zakatState ==
+            RequestState.getPurchasesByKilosError) {
+          hideLoading();
+        } else if (state.zakatState ==
+            RequestState.getPurchasesByKilosLoaded) {
+          purchasesByKilos = state.purchasesByKiloList;
+          hideLoading();
+        } else if (state.zakatState == RequestState.totalSundriesLoading) {
+          showLoading();
+        } else if (state.zakatState == RequestState.totalSundriesLoaded) {
+          sundriesTotal = state.sundriesTotal;
+          hideLoading();
+        } else if (state.zakatState == RequestState.totalSundriesError) {
+          hideLoading();
+        } else if (state.zakatState == RequestState.totalPurchasesLoading) {
+          showLoading();
+        } else if (state.zakatState == RequestState.totalPurchasesLoaded) {
+          purchasesTotal = state.purchasesTotal;
+          hideLoading();
+        } else if (state.zakatState == RequestState.totalPurchasesError) {
+          hideLoading();
+        }
+      }, builder: (context, state) {
+        return Column(
+          children: [
+            SizedBox(
+              height: 10.h,
+            ),
+            Row(
               children: [
-                SizedBox(
-                  height: 10.h,
+                Text(
+                  AppStrings.exportData.tr(),
+                  style:
+                      const TextStyle(fontFamily: AppFonts.boldFontFamily)
+                          .copyWith(fontSize: 18.sp,color: AppColors.cButton),
                 ),
-                Row(
-                  children: [
-                    Text(
-                      AppStrings.exportData.tr(),
-                      style:
-                          const TextStyle(fontFamily: AppFonts.boldFontFamily)
-                              .copyWith(
-                                  fontWeight: FontWeight.bold, fontSize: 18.sp),
-                    ),
-                    SizedBox(
-                      width: 20.w,
-                    ),
-                    GestureDetector(
-                      onTap: () async {
-                        DateTime now = DateTime.now();
-                        String formattedTime =
-                            DateFormat('hh:mm ss a').format(now);
+                SizedBox(
+                  width: 20.w,
+                ),
+                GestureDetector(
+                  onTap: () async {
+                    DateTime now = DateTime.now();
+                    String formattedTime =
+                        DateFormat('hh:mm ss a').format(now);
 
-                        await exportCartsAndProductsDesign(
-                            carts: cart,
-                            products: zakatByKilos,
-                            printDate:
-                                "${hijriDate.fullDate().toString()} - $formattedTime",
-                            yearOfDate: selectedDate!.date!,
-                            // ignore: use_build_context_synchronously
-                            context: context);
-                      },
-                      child: SvgPicture.asset(
-                        AppAssets.export,
-                        width: 25.w,
-                      ),
-                    ),
-                  ],
-                ),
-                const Divider(),
-                SizedBox(
-                  height: 10.h,
-                ),
-                Expanded(
-                    child: zakatByKilos.isNotEmpty
-                        ? SingleChildScrollView(
-                            child: ListView.separated(
-                                itemCount: zakatByKilos.length,
-                                shrinkWrap: true,
-                                scrollDirection: Axis.vertical,
-                                physics: const NeverScrollableScrollPhysics(),
-                                separatorBuilder:
-                                    (BuildContext context, int index) =>
-                                        SizedBox(
-                                          height: 20.h,
-                                        ),
-                                itemBuilder: (BuildContext context, int index) {
-                                  return TotalsProductsView(
-                                      productId: zakatByKilos[index].id,
-                                      productName:
-                                          zakatByKilos[index].productName,
-                                      productImage:
-                                          zakatByKilos[index].productImage,
-                                      productPrice:
-                                          zakatByKilos[index].productPrice,
-                                      sa3Weight: zakatByKilos[index].sa3Weight,
-                                      productDesc:
-                                          zakatByKilos[index].productDesc,
-                                      sumPurchasesQuantity: purchasesByKilos
-                                          .firstWhere(
-                                            (e) => e.productName == zakatByKilos[index].productName,
-                                        orElse: () => const PurchasesByKilosModel(
-                                          id: 0,
-                                          productName: "",
-                                          productPrice: "",
-                                          sumPurchasesQuantity: 0,
-                                        ),
-                                      ).sumPurchasesQuantity ?? 0,
-                                      sumProductQuantity: zakatByKilos[index]
-                                          .sumProductQuantity!);
-                                }),
-                          )
-                        : Center(
-                            child: Text(
-                              AppStrings.noCarts.tr(),
-                              style: const TextStyle(
-                                  fontFamily: AppFonts.qabasFontFamily),
-                            ),
-                          )),
-                SizedBox(
-                  height: 5.h,
-                ),
-                Container(
-                  height: 110.h,
-                  width: MediaQuery.sizeOf(context).width * 0.75,
-                  padding:
-                      EdgeInsets.symmetric(vertical: 10.h, horizontal: 10.w),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(AppConstants.radius),
-                    color: AppColors.cButton,
+                    await exportCartsAndProductsDesign(
+                        carts: cart,
+                        products: zakatByKilos,
+                        printDate:
+                            "${hijriDate.fullDate().toString()} - $formattedTime",
+                        yearOfDate: selectedDate!.date!,
+                        // ignore: use_build_context_synchronously
+                        context: context);
+                  },
+                  child: SvgPicture.asset(
+                    AppAssets.export,
+                    width: 25.w,
                   ),
-                  child: Row(
+                ),
+              ],
+            ),
+            const Divider(),
+            SizedBox(
+              height: 10.h,
+            ),
+            Expanded(
+                child: zakatByKilos.isNotEmpty
+                    ? SingleChildScrollView(
+                        child: ListView.separated(
+                            itemCount: zakatByKilos.length,
+                            shrinkWrap: true,
+                            scrollDirection: Axis.vertical,
+                            physics: const NeverScrollableScrollPhysics(),
+                            separatorBuilder:
+                                (BuildContext context, int index) =>
+                                    SizedBox(
+                                      height: 20.h,
+                                    ),
+                            itemBuilder: (BuildContext context, int index) {
+                              return TotalsProductsView(
+                                  productId: zakatByKilos[index].id,
+                                  productName:
+                                      zakatByKilos[index].productName,
+                                  productImage:
+                                      zakatByKilos[index].productImage,
+                                  productPrice:
+                                      zakatByKilos[index].productPrice,
+                                  sa3Weight: zakatByKilos[index].sa3Weight,
+                                  productDesc:
+                                      zakatByKilos[index].productDesc,
+                                  sumPurchasesQuantity: purchasesByKilos
+                                      .firstWhere(
+                                        (e) => e.productName == zakatByKilos[index].productName,
+                                    orElse: () => const PurchasesByKilosModel(
+                                      id: 0,
+                                      productName: "",
+                                      productPrice: "",
+                                      sumPurchasesQuantity: 0,
+                                    ),
+                                  ).sumPurchasesQuantity ?? 0,
+                                  sumProductQuantity: zakatByKilos[index]
+                                      .sumProductQuantity!);
+                            }),
+                      )
+                    : Center(
+                        child: Text(
+                          AppStrings.noCarts.tr(),
+                          style: const TextStyle(
+                              fontFamily: AppFonts.qabasFontFamily),
+                        ),
+                      )),
+            SizedBox(
+              height: 5.h,
+            ),
+            Container(
+              height: 110.h,
+              width: MediaQuery.sizeOf(context).width * 0.75,
+              padding:
+                  EdgeInsets.symmetric(vertical: 10.h, horizontal: 10.w),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(AppConstants.radius),
+                color: AppColors.cButton,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      Row(
                         children: [
-                          Row(
-                            children: [
-                              Text(
-                                AppStrings.total.tr(),
-                                style: AppTypography.kBold18.copyWith(
-                                  color: AppColors.cWhite,
-                                  fontFamily: AppFonts.qabasFontFamily,
-                                ),
-                              ),
-                              Row(
-                                children: [
-                                  Text(
-                                    getTotal().toString(),
-                                    style: AppTypography.kLight16.copyWith(
-                                        fontWeight: FontWeight.bold,
-                                        color: AppColors.cBlack),
-                                  ),
-                                  SizedBox(
-                                    width: 5.w,
-                                  ),
-                                  Text(
-                                    AppStrings.defaultCurrency.tr(),
-                                    style: AppTypography.kLight16.copyWith(
-                                        fontFamily: AppFonts.boldFontFamily,
-                                        color: AppColors.cWhite),
-                                  ),
-                                ],
-                              ),
-                            ],
+                          Text(
+                            AppStrings.total.tr(),
+                            style: AppTypography.kBold18.copyWith(
+                              color: AppColors.cWhite,
+                              fontFamily: AppFonts.qabasFontFamily,
+                            ),
                           ),
                           Row(
                             children: [
                               Text(
-                                AppStrings.remain.tr(),
-                                style: AppTypography.kBold18.copyWith(
-                                  color: AppColors.cWhite,
-                                  fontFamily: AppFonts.qabasFontFamily,
-                                ),
-                              ),
-                              Row(
-                                children: [
-                                  Text(
-                                    (getRemain() - sundriesTotal - purchasesTotal).toString(),
-                                    style: AppTypography.kLight16.copyWith(
-                                        fontWeight: FontWeight.bold,
-                                        color: AppColors.cBlack),
-                                  ),
-                                  SizedBox(
-                                    width: 5.w,
-                                  ),
-                                  Text(
-                                    AppStrings.defaultCurrency.tr(),
-                                    style: AppTypography.kLight16.copyWith(
-                                        fontFamily: AppFonts.boldFontFamily,
-                                        color: AppColors.cWhite),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Text(
-                                AppStrings.allNumberOfIndividuals.tr(),
-                                style: AppTypography.kBold18.copyWith(
-                                  color: AppColors.cWhite,
-                                  fontFamily: AppFonts.qabasFontFamily,
-                                ),
-                              ),
-                              Text(
-                                getTotalMembersCount(cart).toString(),
+                                getTotal().toString(),
                                 style: AppTypography.kLight16.copyWith(
                                     fontWeight: FontWeight.bold,
                                     color: AppColors.cBlack),
+                              ),
+                              SizedBox(
+                                width: 5.w,
+                              ),
+                              Text(
+                                AppStrings.defaultCurrency.tr(),
+                                style: AppTypography.kLight16.copyWith(
+                                    fontFamily: AppFonts.boldFontFamily,
+                                    color: AppColors.cWhite),
                               ),
                             ],
                           ),
                         ],
                       ),
+                      Row(
+                        children: [
+                          Text(
+                            AppStrings.remain.tr(),
+                            style: AppTypography.kBold18.copyWith(
+                              color: AppColors.cWhite,
+                              fontFamily: AppFonts.qabasFontFamily,
+                            ),
+                          ),
+                          Row(
+                            children: [
+                              Text(
+                                (getRemain() - sundriesTotal - purchasesTotal).toString(),
+                                style: AppTypography.kLight16.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColors.cBlack),
+                              ),
+                              SizedBox(
+                                width: 5.w,
+                              ),
+                              Text(
+                                AppStrings.defaultCurrency.tr(),
+                                style: AppTypography.kLight16.copyWith(
+                                    fontFamily: AppFonts.boldFontFamily,
+                                    color: AppColors.cWhite),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Text(
+                            AppStrings.allNumberOfIndividuals.tr(),
+                            style: AppTypography.kBold18.copyWith(
+                              color: AppColors.cWhite,
+                              fontFamily: AppFonts.qabasFontFamily,
+                            ),
+                          ),
+                          Text(
+                            getTotalMembersCount(cart).toString(),
+                            style: AppTypography.kLight16.copyWith(
+                                fontWeight: FontWeight.bold,
+                                color: AppColors.cBlack),
+                          ),
+                        ],
+                      ),
                     ],
                   ),
-                ),
-                SizedBox(
-                  height: MediaQuery.sizeOf(context).height * 0.07.h,
-                ),
-              ],
-            );
-          }),
-        ));
+                ],
+              ),
+            ),
+            SizedBox(
+              height: MediaQuery.sizeOf(context).height * 0.07.h,
+            ),
+          ],
+        );
+      }),
+    );
   }
 }

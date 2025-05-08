@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../../../../core/shared/constant/app_constants.dart';
 import '../../../../../../../core/shared/constant/app_fonts.dart';
 import '../../../../../../../core/shared/constant/app_strings.dart';
+import '../../../../../../../core/shared/constant/language_manager.dart';
 
 class PurchaseTotalView extends StatefulWidget {
   final String productName;
@@ -107,7 +108,7 @@ class _PurchaseTotalViewState extends State<PurchaseTotalView> {
                               Text(
                                 "${AppStrings.totalOfQuantityByKilo.tr()}:",
                                 style: AppTypography.kLight16.copyWith(
-                                    fontFamily: AppFonts.boldFontFamily,
+                                    fontFamily: isRtl() ? AppFonts.boldFontFamily : null,
                                     color: AppColors.cBlack),
                               ),
                               SizedBox(
@@ -173,5 +174,9 @@ class _PurchaseTotalViewState extends State<PurchaseTotalView> {
             ),
           ],
         ));
+  }
+
+  bool isRtl() {
+    return context.locale == ARABIC_LOCAL;
   }
 }

@@ -18,82 +18,95 @@ class HomeDrawer extends StatefulWidget {
 }
 
 class _HomeDrawerState extends State<HomeDrawer> {
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Drawer(
       backgroundColor: AppColors.cBackGround,
-      child: SingleChildScrollView(
-        child: Center(
-          child: Container(
-            height: MediaQuery.sizeOf(context).height,
-            padding: EdgeInsets.all(10.w),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Text(
-                  AppStrings.about.tr(),
-                  style: TextStyle(color: AppColors.cBlack, fontSize: 20.sp),
-                ),
-                SizedBox(
-                  height: 10.h,
-                ),
-                Text(
-                  AppStrings.info.tr(),
-                  style: TextStyle(fontSize: 15.sp, color: AppColors.cNumber),textDirection: ui.TextDirection.rtl,
-                ),
-                const Divider(),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 5),
-                  child: Column(
-                    children: [
-                      Text(
-                        AppStrings.evaluation.tr(),
-                        style: TextStyle(color: AppColors.cBlack, fontSize: 20.sp),
-                      ),
-                      SizedBox(
-                        height: AppConstants.heightBetweenElements,
-                      ),
-                      Bounceable(
-                        onTap: () async {
-                          await Future.delayed(
-                              const Duration(milliseconds: 700));
-                          LaunchReview.launch(
-                              androidAppId: "com.To3maa.zakat"
-                          );
-                        },
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SvgPicture.asset(
-                              AppAssets.rate,
-                              width: 25.w,
-                            ),
-                            SvgPicture.asset(
-                              AppAssets.rate,
-                              width: 25.w,
-                            ),
-                            SvgPicture.asset(
-                              AppAssets.rate,
-                              width: 25.w,
-                            ),
-                            SvgPicture.asset(
-                              AppAssets.rate,
-                              width: 25.w,
-                            ),
-                            SvgPicture.asset(
-                              AppAssets.rate,
-                              width: 25.w,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
+      child: Center(
+        child: Container(
+          padding: EdgeInsets.all(10.w),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Text(
+                AppStrings.about.tr(),
+                style: TextStyle(color: AppColors.cBlack, fontSize: 20.sp),
+              ),
+              SizedBox(
+                height: 10.h,
+              ),
+              SizedBox(
+                height: 450.h,
+                child: Scrollbar(
+                  controller: _scrollController,
+                  thumbVisibility: true,
+                  child: SingleChildScrollView(
+                    controller: _scrollController,
+                    child: Text(
+                      AppStrings.info.tr(),
+                      style: TextStyle(fontSize: 15.sp, color: AppColors.cNumber),
+                      // textDirection: ui.TextDirection.rtl,
+                    ),
                   ),
                 ),
-                const Divider(),
-              ],
-            ),
+              ),
+              const Divider(),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 0, 20, 5),
+                child: Column(
+                  children: [
+                    Text(
+                      AppStrings.evaluation.tr(),
+                      style:
+                          TextStyle(color: AppColors.cBlack, fontSize: 20.sp),
+                    ),
+                    SizedBox(
+                      height: AppConstants.heightBetweenElements,
+                    ),
+                    Bounceable(
+                      onTap: () async {
+                        await Future.delayed(const Duration(milliseconds: 700));
+                        LaunchReview.launch(androidAppId: "com.To3maa.zakat");
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SvgPicture.asset(
+                            AppAssets.rate,
+                            width: 25.w,
+                          ),
+                          SvgPicture.asset(
+                            AppAssets.rate,
+                            width: 25.w,
+                          ),
+                          SvgPicture.asset(
+                            AppAssets.rate,
+                            width: 25.w,
+                          ),
+                          SvgPicture.asset(
+                            AppAssets.rate,
+                            width: 25.w,
+                          ),
+                          SvgPicture.asset(
+                            AppAssets.rate,
+                            width: 25.w,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const Divider(),
+            ],
           ),
         ),
       ),

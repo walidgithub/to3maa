@@ -80,505 +80,497 @@ class _ProductsViewState extends State<ProductsView> {
   }
 
   Widget productsBody() {
-    return Directionality(
-        textDirection: ui.TextDirection.rtl,
-        child: Scaffold(
-            appBar: AppBar(
-              backgroundColor: AppColors.cWhite,
-              automaticallyImplyLeading: false,
-              leading: Builder(
-                builder: (BuildContext context) {
-                  return IconButton(
-                    iconSize: 30.w,
-                    icon: const Icon(Icons.add_box_outlined),
-                    onPressed: () {
-                      setState(() {
-                        addNew = true;
-                      });
-                    },
-                    tooltip:
-                        MaterialLocalizations.of(context).openAppDrawerTooltip,
-                  );
+    return Scaffold(
+        appBar: AppBar(
+          backgroundColor: AppColors.cWhite,
+          automaticallyImplyLeading: false,
+          leading: Builder(
+            builder: (BuildContext context) {
+              return IconButton(
+                iconSize: 30.w,
+                icon: const Icon(Icons.add_box_outlined),
+                onPressed: () {
+                  setState(() {
+                    addNew = true;
+                  });
                 },
-              ),
-              surfaceTintColor: Colors.transparent,
-              title: FadeInLeft(
-                duration: Duration(milliseconds: AppConstants.animation),
-                child: Text(
-                  AppStrings.products.tr(),
-                  style: AppTypography.kLight20
-                      .copyWith(fontFamily: AppFonts.boldFontFamily),
-                ),
-              ),
-            ),
-            backgroundColor: AppColors.cWhite,
-            body: BlocConsumer<ZakatCubit, ZakatState>(
-                listener: (context, state) async {
-              if (state.zakatState == RequestState.productsLoading) {
-                showLoading();
-              } else if (state.zakatState == RequestState.productsError) {
-                hideLoading();
-              } else if (state.zakatState == RequestState.productsLoaded) {
-                hideLoading();
-              } else if (state.zakatState == RequestState.getZakatProductsLoading) {
-                showLoading();
-              } else if (state.zakatState == RequestState.getZakatProductsError) {
-                hideLoading();
-              } else if (state.zakatState == RequestState.getZakatProductsLoaded) {
-                zakatProductsList.clear();
-                zakatProductsList.addAll(state.zakatProductsList);
-                hideLoading();
-              } else if (state.zakatState == RequestState.deleteLoading) {
-                showLoading();
-              } else if (state.zakatState == RequestState.deleteError) {
-                hideLoading();
-              } else if (state.zakatState == RequestState.deleteDone) {
-                hideLoading();
-                final snackBar = SnackBar(
-                  duration:
-                      Duration(milliseconds: AppConstants.durationOfSnackBar),
-                  content: Text(AppStrings.successDelete.tr()),
-                );
-                ScaffoldMessenger.of(context).showSnackBar(snackBar);
-              } else if (state.zakatState == RequestState.updateLoading) {
-                showLoading();
-              } else if (state.zakatState == RequestState.updateError) {
-                hideLoading();
-              } else if (state.zakatState == RequestState.updateDone) {
-                hideLoading();
-                final snackBar = SnackBar(
-                  duration:
-                      Duration(milliseconds: AppConstants.durationOfSnackBar),
-                  content: Text(AppStrings.successUpdate.tr()),
-                );
-                ScaffoldMessenger.of(context).showSnackBar(snackBar);
-              }
-            }, builder: (context, state) {
-              return Column(
-                children: [
-                  SizedBox(
-                    height: 10.h,
-                  ),
-                  Expanded(
-                      child: state.productsList.isNotEmpty
-                          ? SingleChildScrollView(
-                              child: ListView.separated(
-                                  itemCount: state.productsList.length,
-                                  shrinkWrap: true,
-                                  scrollDirection: Axis.vertical,
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  separatorBuilder:
-                                      (BuildContext productContext,
-                                              int index) =>
-                                          SizedBox(
-                                            height: 20.h,
-                                          ),
-                                  itemBuilder:
-                                      (BuildContext productContext, int index) {
-                                    DeleteProductRequest deleteProductRequest =
-                                        (DeleteProductRequest(
-                                            id: state.productsList[index].id));
-
-                                    return ProductView(
-                                      productName: state
-                                          .productsList[index].productName!,
-                                      productImage: state
-                                          .productsList[index].productImage!,
-                                      productPrice: state
-                                          .productsList[index].productPrice!,
-                                      productDesc: state
-                                          .productsList[index].productDesc!,
-                                      deleteProduct: () async {
-                                        await showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) {
-                                              return Directionality(
-                                                textDirection:
-                                                    ui.TextDirection.rtl,
-                                                child: AlertDialog(
-                                                  title: Text(
-                                                      AppStrings.warning.tr(),
-                                                      style: AppTypography
-                                                          .kBold18),
-                                                  content: Text(
-                                                      AppStrings.checkToDelete.tr()),
-                                                  actions: [
-                                                    TextButton(
-                                                        onPressed: () async {
-                                                          await ZakatCubit.get(
-                                                                  productContext)
-                                                              .deleteProduct(
-                                                                  deleteProductRequest);
-                                                          await getAllProducts();
-                                                          setState(() {});
-
-                                                          Navigator.of(context)
-                                                              .pop(false);
-                                                        },
-                                                        child: Text(
-                                                            AppStrings.yes.tr(),
-                                                            style: AppTypography
-                                                                .kLight14)),
-                                                    TextButton(
-                                                        onPressed: () {
-                                                          Navigator.of(context)
-                                                              .pop(false);
-                                                        },
-                                                        child: Text(
-                                                            AppStrings.no.tr(),
-                                                            style: AppTypography
-                                                                .kLight14)),
-                                                  ],
-                                                ),
-                                              );
-                                            });
-                                      },
-                                      editProduct: () {
-                                        editProductId =
-                                            state.productsList[index].id;
-                                        _productPriceController.text = state
-                                            .productsList[index].productPrice!;
-                                        _productNameController.text = state
-                                            .productsList[index].productName!;
-                                        oldProductName = state
-                                            .productsList[index].productName!;
-                                        _productDescController.text = state
-                                            .productsList[index].productDesc!;
-                                        _sa3WeightController.text = state
-                                            .productsList[index].sa3Weight!
-                                            .toString();
-                                        productImage = state
-                                            .productsList[index].productImage!;
-
-                                        for (var n in productImages) {
-                                          n.activeImage = false;
-                                        }
-
-                                        int getImageIndex = productImages
-                                            .indexWhere((element) =>
-                                                element.imagePath ==
-                                                state.productsList[index]
-                                                    .productImage!);
-                                        productImages[getImageIndex]
-                                            .activeImage = true;
-
-                                        editProduct = true;
-                                        setState(() {
-                                          addNew = true;
-                                        });
-                                      },
-                                      editPrice: (String productPrice) async {
-                                        // check before edit to prevent edit in any data;
-                                        if (state
-                                            .productsList[index].productName! != "") {
-                                          bool checkIfProductExist =  zakatProductsList.any((product) => product.productName == state
-                                              .productsList[index].productName!);
-
-                                          if (checkIfProductExist) {
-                                            final snackBar = SnackBar(
-                                              duration:
-                                              Duration(milliseconds: AppConstants.durationOfSnackBar),
-                                              content: Text(AppStrings.productIsExist.tr()),
-                                            );
-                                            ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                                            return;
-                                          }
-                                        }
-                                        UpdateProductRequest
-                                            updateProductRequest =
-                                            (UpdateProductRequest(
-                                                id: state
-                                                    .productsList[index].id,
-                                                productPrice: productPrice,
-                                                productDesc: state
-                                                    .productsList[index]
-                                                    .productDesc,
-                                                productName: state
-                                                    .productsList[index]
-                                                    .productName,
-                                                sa3Weight: state
-                                                    .productsList[index]
-                                                    .sa3Weight,
-                                                productImage: state
-                                                    .productsList[index]
-                                                    .productImage));
-
-                                        await ZakatCubit.get(productContext)
-                                            .updateProduct(
-                                                updateProductRequest);
-
-                                        await getAllProducts();
-                                        setState(() {});
-                                      },
-                                    );
-                                  }),
-                            )
-                          : Center(
-                              child: Text(
-                                AppStrings.noProducts.tr(),
-                                style: const TextStyle(
-                                    fontFamily: AppFonts.qabasFontFamily),
-                              ),
-                            )),
-                  SizedBox(
-                    height: MediaQuery.sizeOf(context).height * 0.07.h,
-                  ),
-                ],
+                tooltip:
+                    MaterialLocalizations.of(context).openAppDrawerTooltip,
               );
-            })));
+            },
+          ),
+          surfaceTintColor: Colors.transparent,
+          title: FadeInLeft(
+            duration: Duration(milliseconds: AppConstants.animation),
+            child: Text(
+              AppStrings.products.tr(),
+              style: AppTypography.kLight20
+                  .copyWith(fontFamily: AppFonts.boldFontFamily),
+            ),
+          ),
+        ),
+        backgroundColor: AppColors.cWhite,
+        body: BlocConsumer<ZakatCubit, ZakatState>(
+            listener: (context, state) async {
+          if (state.zakatState == RequestState.productsLoading) {
+            showLoading();
+          } else if (state.zakatState == RequestState.productsError) {
+            hideLoading();
+          } else if (state.zakatState == RequestState.productsLoaded) {
+            hideLoading();
+          } else if (state.zakatState == RequestState.getZakatProductsLoading) {
+            showLoading();
+          } else if (state.zakatState == RequestState.getZakatProductsError) {
+            hideLoading();
+          } else if (state.zakatState == RequestState.getZakatProductsLoaded) {
+            zakatProductsList.clear();
+            zakatProductsList.addAll(state.zakatProductsList);
+            hideLoading();
+          } else if (state.zakatState == RequestState.deleteLoading) {
+            showLoading();
+          } else if (state.zakatState == RequestState.deleteError) {
+            hideLoading();
+          } else if (state.zakatState == RequestState.deleteDone) {
+            hideLoading();
+            final snackBar = SnackBar(
+              duration:
+                  Duration(milliseconds: AppConstants.durationOfSnackBar),
+              content: Text(AppStrings.successDelete.tr()),
+            );
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          } else if (state.zakatState == RequestState.updateLoading) {
+            showLoading();
+          } else if (state.zakatState == RequestState.updateError) {
+            hideLoading();
+          } else if (state.zakatState == RequestState.updateDone) {
+            hideLoading();
+            final snackBar = SnackBar(
+              duration:
+                  Duration(milliseconds: AppConstants.durationOfSnackBar),
+              content: Text(AppStrings.successUpdate.tr()),
+            );
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          }
+        }, builder: (context, state) {
+          return Column(
+            children: [
+              SizedBox(
+                height: 10.h,
+              ),
+              Expanded(
+                  child: state.productsList.isNotEmpty
+                      ? SingleChildScrollView(
+                          child: ListView.separated(
+                              itemCount: state.productsList.length,
+                              shrinkWrap: true,
+                              scrollDirection: Axis.vertical,
+                              physics: const NeverScrollableScrollPhysics(),
+                              separatorBuilder:
+                                  (BuildContext productContext,
+                                          int index) =>
+                                      SizedBox(
+                                        height: 20.h,
+                                      ),
+                              itemBuilder:
+                                  (BuildContext productContext, int index) {
+                                DeleteProductRequest deleteProductRequest =
+                                    (DeleteProductRequest(
+                                        id: state.productsList[index].id));
+
+                                return ProductView(
+                                  productName: state
+                                      .productsList[index].productName!,
+                                  productImage: state
+                                      .productsList[index].productImage!,
+                                  productPrice: state
+                                      .productsList[index].productPrice!,
+                                  productDesc: state
+                                      .productsList[index].productDesc!,
+                                  deleteProduct: () async {
+                                    await showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            title: Text(
+                                                AppStrings.warning.tr(),
+                                                style: AppTypography
+                                                    .kBold18),
+                                            content: Text(
+                                                AppStrings.checkToDelete.tr()),
+                                            actions: [
+                                              TextButton(
+                                                  onPressed: () async {
+                                                    await ZakatCubit.get(
+                                                            productContext)
+                                                        .deleteProduct(
+                                                            deleteProductRequest);
+                                                    await getAllProducts();
+                                                    setState(() {});
+
+                                                    Navigator.of(context)
+                                                        .pop(false);
+                                                  },
+                                                  child: Text(
+                                                      AppStrings.yes.tr(),
+                                                      style: AppTypography
+                                                          .kLight14)),
+                                              TextButton(
+                                                  onPressed: () {
+                                                    Navigator.of(context)
+                                                        .pop(false);
+                                                  },
+                                                  child: Text(
+                                                      AppStrings.no.tr(),
+                                                      style: AppTypography
+                                                          .kLight14)),
+                                            ],
+                                          );
+                                        });
+                                  },
+                                  editProduct: () {
+                                    editProductId =
+                                        state.productsList[index].id;
+                                    _productPriceController.text = state
+                                        .productsList[index].productPrice!;
+                                    _productNameController.text = state
+                                        .productsList[index].productName!;
+                                    oldProductName = state
+                                        .productsList[index].productName!;
+                                    _productDescController.text = state
+                                        .productsList[index].productDesc!;
+                                    _sa3WeightController.text = state
+                                        .productsList[index].sa3Weight!
+                                        .toString();
+                                    productImage = state
+                                        .productsList[index].productImage!;
+
+                                    for (var n in productImages) {
+                                      n.activeImage = false;
+                                    }
+
+                                    int getImageIndex = productImages
+                                        .indexWhere((element) =>
+                                            element.imagePath ==
+                                            state.productsList[index]
+                                                .productImage!);
+                                    productImages[getImageIndex]
+                                        .activeImage = true;
+
+                                    editProduct = true;
+                                    setState(() {
+                                      addNew = true;
+                                    });
+                                  },
+                                  editPrice: (String productPrice) async {
+                                    // check before edit to prevent edit in any data;
+                                    if (state
+                                        .productsList[index].productName! != "") {
+                                      bool checkIfProductExist =  zakatProductsList.any((product) => product.productName == state
+                                          .productsList[index].productName!);
+
+                                      if (checkIfProductExist) {
+                                        final snackBar = SnackBar(
+                                          duration:
+                                          Duration(milliseconds: AppConstants.durationOfSnackBar),
+                                          content: Text(AppStrings.productIsExist.tr()),
+                                        );
+                                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                                        return;
+                                      }
+                                    }
+                                    UpdateProductRequest
+                                        updateProductRequest =
+                                        (UpdateProductRequest(
+                                            id: state
+                                                .productsList[index].id,
+                                            productPrice: productPrice,
+                                            productDesc: state
+                                                .productsList[index]
+                                                .productDesc,
+                                            productName: state
+                                                .productsList[index]
+                                                .productName,
+                                            sa3Weight: state
+                                                .productsList[index]
+                                                .sa3Weight,
+                                            productImage: state
+                                                .productsList[index]
+                                                .productImage));
+
+                                    await ZakatCubit.get(productContext)
+                                        .updateProduct(
+                                            updateProductRequest);
+
+                                    await getAllProducts();
+                                    setState(() {});
+                                  },
+                                );
+                              }),
+                        )
+                      : Center(
+                          child: Text(
+                            AppStrings.noProducts.tr(),
+                            style: const TextStyle(
+                                fontFamily: AppFonts.qabasFontFamily),
+                          ),
+                        )),
+              SizedBox(
+                height: MediaQuery.sizeOf(context).height * 0.07.h,
+              ),
+            ],
+          );
+        }));
   }
 
   Widget addNewBody() {
-    return Directionality(
-        textDirection: ui.TextDirection.rtl,
-        child: Scaffold(
-          appBar: AppBar(
-            backgroundColor: AppColors.cWhite,
-            automaticallyImplyLeading: false,
-            leading: Builder(
-              builder: (BuildContext context) {
-                return IconButton(
-                  iconSize: 30.w,
-                  icon: const Icon(Icons.arrow_back),
-                  onPressed: () {
-                    clearValues();
-                    setState(() {
-                      editProduct = false;
-                      addNew = false;
-                    });
-                  },
-                  tooltip:
-                      MaterialLocalizations.of(context).openAppDrawerTooltip,
-                );
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: AppColors.cWhite,
+        automaticallyImplyLeading: false,
+        leading: Builder(
+          builder: (BuildContext context) {
+            return IconButton(
+              iconSize: 30.w,
+              icon: const Icon(Icons.arrow_back),
+              onPressed: () {
+                clearValues();
+                setState(() {
+                  editProduct = false;
+                  addNew = false;
+                });
               },
-            ),
-            surfaceTintColor: Colors.transparent,
-            title: FadeInLeft(
-              duration: Duration(milliseconds: AppConstants.animation),
-              child: Text(
-                !editProduct ? AppStrings.addNew.tr() : AppStrings.editProduct.tr(),
-                style: AppTypography.kLight20
-                    .copyWith(fontFamily: AppFonts.boldFontFamily),
-              ),
-            ),
+              tooltip:
+                  MaterialLocalizations.of(context).openAppDrawerTooltip,
+            );
+          },
+        ),
+        surfaceTintColor: Colors.transparent,
+        title: FadeInLeft(
+          duration: Duration(milliseconds: AppConstants.animation),
+          child: Text(
+            !editProduct ? AppStrings.addNew.tr() : AppStrings.editProduct.tr(),
+            style: AppTypography.kLight20
+                .copyWith(fontFamily: AppFonts.boldFontFamily),
           ),
-          backgroundColor: AppColors.cWhite,
-          body: BlocConsumer<ZakatCubit, ZakatState>(
-            listener: (context, state) async {
-              if (state.zakatState == RequestState.insertLoading) {
-                showLoading();
-              } else if (state.zakatState == RequestState.insertError) {
-                hideLoading();
-              } else if (state.zakatState == RequestState.insertDone) {
-                hideLoading();
-                final snackBar = SnackBar(
-                  duration:
-                      Duration(milliseconds: AppConstants.durationOfSnackBar),
-                  content: Text(AppStrings.successAdd.tr()),
-                );
-                ScaffoldMessenger.of(context).showSnackBar(snackBar);
-              } else if (state.zakatState == RequestState.productsLoading) {
-                showLoading();
-              } else if (state.zakatState == RequestState.productsError) {
-                hideLoading();
-              } else if (state.zakatState == RequestState.productsLoaded) {
-                hideLoading();
-              } else if (state.zakatState == RequestState.updateLoading) {
-                showLoading();
-              } else if (state.zakatState == RequestState.updateError) {
-                hideLoading();
-              } else if (state.zakatState == RequestState.updateDone) {
-                hideLoading();
-                final snackBar = SnackBar(
-                  duration:
-                      Duration(milliseconds: AppConstants.durationOfSnackBar),
-                  content: Text(AppStrings.successUpdate.tr()),
-                );
-                ScaffoldMessenger.of(context).showSnackBar(snackBar);
-              }
-            },
-            builder: (context, state) {
-              return Column(
-                children: [
-                  SizedBox(
-                    height: 10.h,
-                  ),
-                  textFieldWidget(
-                      _productNameController,
-                      AppStrings.productName.tr(),
-                      TextInputType.text,
-                      (String textVal) {},true,true),
-                  SizedBox(
-                    height: AppConstants.heightBetweenElements,
-                  ),
-                  textFieldWidget(
-                      _productPriceController,
-                      AppStrings.productPrice.tr(),
-                      TextInputType.number,
-                      (String textVal) {},false,true),
-                  SizedBox(
-                    height: AppConstants.heightBetweenElements,
-                  ),
-                  textFieldWidget(_sa3WeightController, AppStrings.sa3Weight.tr(),
-                      TextInputType.number, (String textVal) {},false,true),
-                  SizedBox(
-                    height: AppConstants.heightBetweenElements,
-                  ),
-                  textFieldWidget(
-                      _productDescController,
-                      AppStrings.productDesc.tr(),
-                      TextInputType.text,
-                      (String textVal) {},false,true),
-                  SizedBox(
-                    height: 10.h,
-                  ),
-                  Expanded(
-                      child: Scrollbar(
-                        thumbVisibility: true,
-                        controller: _scrollController,
-                    child: GridView.builder(
-                        padding: const EdgeInsets.only(right: 8,left: 8),
-                        controller: _scrollController,
-                        scrollDirection: Axis.vertical,
-                        shrinkWrap: true,
-                        gridDelegate:
-                            const SliverGridDelegateWithMaxCrossAxisExtent(
-                                maxCrossAxisExtent: 200,
-                                childAspectRatio: 1,
-                                crossAxisSpacing: 20,
-                                mainAxisSpacing: 20),
-                        itemCount: productImages.length,
-                        itemBuilder: (_, index) {
-                          return ProductImageView(
-                            imagePath: productImages[index].imagePath!,
-                            activeImage: productImages[index].activeImage!,
-                            imageName: productImages[index].imageName!,
-                            makeActive: (String imagePath) {
-                              productImage = imagePath;
-                              setState(() {
-                                for (var n in productImages) {
-                                  n.activeImage = false;
-                                }
-                                productImages[index].activeImage = true;
-                                _productNameController.text =
-                                    productImages[index].imageName!;
-                              });
-                            },
-                          );
-                        }),
-                  )),
-                  SizedBox(
-                    height: 10.h,
-                  ),
-                  GestureDetector(
-                    onTap: () async {
-                      if (editProduct) {
-                        // check before edit to prevent edit in any data;
-                        if (oldProductName != "") {
-                          bool checkIfProductExist =  zakatProductsList.any((product) => product.productName == oldProductName);
+        ),
+      ),
+      backgroundColor: AppColors.cWhite,
+      body: BlocConsumer<ZakatCubit, ZakatState>(
+        listener: (context, state) async {
+          if (state.zakatState == RequestState.insertLoading) {
+            showLoading();
+          } else if (state.zakatState == RequestState.insertError) {
+            hideLoading();
+          } else if (state.zakatState == RequestState.insertDone) {
+            hideLoading();
+            final snackBar = SnackBar(
+              duration:
+                  Duration(milliseconds: AppConstants.durationOfSnackBar),
+              content: Text(AppStrings.successAdd.tr()),
+            );
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          } else if (state.zakatState == RequestState.productsLoading) {
+            showLoading();
+          } else if (state.zakatState == RequestState.productsError) {
+            hideLoading();
+          } else if (state.zakatState == RequestState.productsLoaded) {
+            hideLoading();
+          } else if (state.zakatState == RequestState.updateLoading) {
+            showLoading();
+          } else if (state.zakatState == RequestState.updateError) {
+            hideLoading();
+          } else if (state.zakatState == RequestState.updateDone) {
+            hideLoading();
+            final snackBar = SnackBar(
+              duration:
+                  Duration(milliseconds: AppConstants.durationOfSnackBar),
+              content: Text(AppStrings.successUpdate.tr()),
+            );
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          }
+        },
+        builder: (context, state) {
+          return Column(
+            children: [
+              SizedBox(
+                height: 10.h,
+              ),
+              textFieldWidget(
+                  _productNameController,
+                  AppStrings.productName.tr(),
+                  TextInputType.text,
+                  (String textVal) {},true,true),
+              SizedBox(
+                height: AppConstants.heightBetweenElements,
+              ),
+              textFieldWidget(
+                  _productPriceController,
+                  AppStrings.productPrice.tr(),
+                  TextInputType.number,
+                  (String textVal) {},false,true),
+              SizedBox(
+                height: AppConstants.heightBetweenElements,
+              ),
+              textFieldWidget(_sa3WeightController, AppStrings.sa3Weight.tr(),
+                  TextInputType.number, (String textVal) {},false,true),
+              SizedBox(
+                height: AppConstants.heightBetweenElements,
+              ),
+              textFieldWidget(
+                  _productDescController,
+                  AppStrings.productDesc.tr(),
+                  TextInputType.text,
+                  (String textVal) {},false,true),
+              SizedBox(
+                height: 10.h,
+              ),
+              Expanded(
+                  child: Scrollbar(
+                    thumbVisibility: true,
+                    controller: _scrollController,
+                child: GridView.builder(
+                    padding: const EdgeInsets.only(right: 8,left: 8),
+                    controller: _scrollController,
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    gridDelegate:
+                        const SliverGridDelegateWithMaxCrossAxisExtent(
+                            maxCrossAxisExtent: 200,
+                            childAspectRatio: 1,
+                            crossAxisSpacing: 20,
+                            mainAxisSpacing: 20),
+                    itemCount: productImages.length,
+                    itemBuilder: (_, index) {
+                      return ProductImageView(
+                        imagePath: productImages[index].imagePath!,
+                        activeImage: productImages[index].activeImage!,
+                        imageName: productImages[index].imageName!,
+                        makeActive: (String imagePath) {
+                          productImage = imagePath;
+                          setState(() {
+                            for (var n in productImages) {
+                              n.activeImage = false;
+                            }
+                            productImages[index].activeImage = true;
+                            _productNameController.text =
+                                productImages[index].imageName!;
+                          });
+                        },
+                      );
+                    }),
+              )),
+              SizedBox(
+                height: 10.h,
+              ),
+              GestureDetector(
+                onTap: () async {
+                  if (editProduct) {
+                    // check before edit to prevent edit in any data;
+                    if (oldProductName != "") {
+                      bool checkIfProductExist =  zakatProductsList.any((product) => product.productName == oldProductName);
 
-                          if (checkIfProductExist) {
-                            final snackBar = SnackBar(
-                              duration:
-                              Duration(milliseconds: AppConstants.durationOfSnackBar),
-                              content: Text(AppStrings.productIsExist.tr()),
-                            );
-                            ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                            return;
-                          }
-                        }
-
-                        if (_productNameController.text.trim() == "" ||
-                            double.parse(_productPriceController.text.trim()) <=
-                                0 ||
-                            double.parse(_sa3WeightController.text.trim()) <=
-                                0) {
-                          return;
-                        }
-
-                        if (double.parse(_productPriceController.text.trim()) <=
-                            0) {
-                          return;
-                        }
-
-                        UpdateProductRequest updateProductRequest =
-                            (UpdateProductRequest(
-                                id: editProductId,
-                                productPrice:
-                                    _productPriceController.text.trim(),
-                                productDesc: _productDescController.text.trim(),
-                                productName: _productNameController.text.trim(),
-                                sa3Weight: double.parse(
-                                    _sa3WeightController.text.trim()),
-                                productImage: productImage));
-
-                        await ZakatCubit.get(context)
-                            .updateProduct(updateProductRequest);
-
-                        editProductId = 0;
-                        _productPriceController.text = '';
-                        _productNameController.text = '';
-                        _productDescController.text = '';
-                        _sa3WeightController.text = '';
-                        editProduct = false;
-                      } else {
-                        if (_productNameController.text.trim() == "" ||
-                            double.parse(_productPriceController.text.trim()) <=
-                                0 ||
-                            double.parse(_sa3WeightController.text.trim()) <=
-                                0) {
-                          return;
-                        }
-                        InsertProductRequest insertProductRequest =
-                            InsertProductRequest(
-                                productDesc: _productDescController.text.trim(),
-                                productImage: productImage,
-                                productName: _productNameController.text.trim(),
-                                sa3Weight:
-                                    double.parse(_sa3WeightController.text),
-                                productQuantity: 0,
-                                productPrice:
-                                    _productPriceController.text.trim());
-
-                        await ZakatCubit.get(context)
-                            .insertProduct(insertProductRequest);
+                      if (checkIfProductExist) {
+                        final snackBar = SnackBar(
+                          duration:
+                          Duration(milliseconds: AppConstants.durationOfSnackBar),
+                          content: Text(AppStrings.productIsExist.tr()),
+                        );
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        return;
                       }
+                    }
 
-                      clearValues();
-                      await getAllProducts();
+                    if (_productNameController.text.trim() == "" ||
+                        double.parse(_productPriceController.text.trim()) <=
+                            0 ||
+                        double.parse(_sa3WeightController.text.trim()) <=
+                            0) {
+                      return;
+                    }
 
-                      setState(() {
-                        addNew = false;
-                      });
-                    },
-                    child: Container(
-                      height: 50.h,
-                      width: MediaQuery.sizeOf(context).width * 0.75,
-                      padding: EdgeInsets.symmetric(
-                          vertical: 10.h, horizontal: 10.w),
-                      decoration: BoxDecoration(
-                        borderRadius:
-                            BorderRadius.circular(AppConstants.radius),
-                        color: AppColors.cButton,
-                      ),
-                      child: Center(
-                        child: Text(
-                          AppStrings.save.tr(),
-                          style: AppTypography.kLight16.copyWith(
-                            fontFamily: AppFonts.qabasFontFamily,
-                            color: AppColors.cWhite,
-                          ),
-                        ),
+                    if (double.parse(_productPriceController.text.trim()) <=
+                        0) {
+                      return;
+                    }
+
+                    UpdateProductRequest updateProductRequest =
+                        (UpdateProductRequest(
+                            id: editProductId,
+                            productPrice:
+                                _productPriceController.text.trim(),
+                            productDesc: _productDescController.text.trim(),
+                            productName: _productNameController.text.trim(),
+                            sa3Weight: double.parse(
+                                _sa3WeightController.text.trim()),
+                            productImage: productImage));
+
+                    await ZakatCubit.get(context)
+                        .updateProduct(updateProductRequest);
+
+                    editProductId = 0;
+                    _productPriceController.text = '';
+                    _productNameController.text = '';
+                    _productDescController.text = '';
+                    _sa3WeightController.text = '';
+                    editProduct = false;
+                  } else {
+                    if (_productNameController.text.trim() == "" ||
+                        double.parse(_productPriceController.text.trim()) <=
+                            0 ||
+                        double.parse(_sa3WeightController.text.trim()) <=
+                            0) {
+                      return;
+                    }
+                    InsertProductRequest insertProductRequest =
+                        InsertProductRequest(
+                            productDesc: _productDescController.text.trim(),
+                            productImage: productImage,
+                            productName: _productNameController.text.trim(),
+                            sa3Weight:
+                                double.parse(_sa3WeightController.text),
+                            productQuantity: 0,
+                            productPrice:
+                                _productPriceController.text.trim());
+
+                    await ZakatCubit.get(context)
+                        .insertProduct(insertProductRequest);
+                  }
+
+                  clearValues();
+                  await getAllProducts();
+
+                  setState(() {
+                    addNew = false;
+                  });
+                },
+                child: Container(
+                  height: 50.h,
+                  width: MediaQuery.sizeOf(context).width * 0.75,
+                  padding: EdgeInsets.symmetric(
+                      vertical: 10.h, horizontal: 10.w),
+                  decoration: BoxDecoration(
+                    borderRadius:
+                        BorderRadius.circular(AppConstants.radius),
+                    color: AppColors.cButton,
+                  ),
+                  child: Center(
+                    child: Text(
+                      AppStrings.save.tr(),
+                      style: AppTypography.kLight16.copyWith(
+                        fontFamily: AppFonts.qabasFontFamily,
+                        color: AppColors.cWhite,
                       ),
                     ),
                   ),
-                  SizedBox(
-                    height: MediaQuery.sizeOf(context).height * 0.07.h,
-                  ),
-                ],
-              );
-            },
-          ),
-        ));
+                ),
+              ),
+              SizedBox(
+                height: MediaQuery.sizeOf(context).height * 0.07.h,
+              ),
+            ],
+          );
+        },
+      ),
+    );
   }
 }

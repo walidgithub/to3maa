@@ -10,6 +10,7 @@ import '../../../../../../core/preferences/app_pref.dart';
 import '../../../../../../core/shared/constant/app_constants.dart';
 import '../../../../../../core/shared/constant/app_fonts.dart';
 import '../../../../../../core/shared/constant/app_strings.dart';
+import '../../../../../../core/shared/constant/language_manager.dart';
 import '../../../../../../core/shared/style/app_colors.dart';
 
 class AddProductView extends StatefulWidget {
@@ -45,14 +46,20 @@ class _AddProductViewState extends State<AddProductView> {
   final AppPreferences _appPreferences = sl<AppPreferences>();
 
   double usedAmount(var products) {
-    return products.fold(0, (sum, item) => sum + (double.parse(item.productQuantity.toString()) * double.parse(item.productPrice.toString())));
+    return products.fold(
+        0,
+        (sum, item) =>
+            sum +
+            (double.parse(item.productQuantity.toString()) *
+                double.parse(item.productPrice.toString())));
   }
 
   int? _itemQuantity;
   String currency = AppStrings.defaultCurrency.tr();
 
   int getTotalProductQuantity(List<ProductsResponse> products) {
-    return products.fold(0, (sum, product) => sum + (product.productQuantity ?? 0));
+    return products.fold(
+        0, (sum, product) => sum + (product.productQuantity ?? 0));
   }
 
   @override
@@ -146,7 +153,8 @@ class _AddProductViewState extends State<AddProductView> {
                   ),
                 )),
             Positioned(
-                left: 15.w,
+                right: isRtl() ? null : 15.w,
+                left: isRtl() ? 15.w : null,
                 top: 0,
                 child: Transform.flip(
                   flipX: true,
@@ -167,13 +175,16 @@ class _AddProductViewState extends State<AddProductView> {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          double remain =
-                              widget.allValue - usedAmount(widget.productsList) - double.parse(widget.productPrice);
+                          double remain = widget.allValue -
+                              usedAmount(widget.productsList) -
+                              double.parse(widget.productPrice);
                           if (remain.isNegative) {
                             return;
                           }
 
-                          if (widget.membersCount < getTotalProductQuantity(widget.productsList) + 1) {
+                          if (widget.membersCount <
+                              getTotalProductQuantity(widget.productsList) +
+                                  1) {
                             return;
                           }
 
@@ -201,8 +212,9 @@ class _AddProductViewState extends State<AddProductView> {
                       ),
                       Text(
                         widget.productQuantity.toString(),
-                        style: AppTypography.kLight14
-                            .copyWith(fontWeight: FontWeight.bold,),
+                        style: AppTypography.kLight14.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                       GestureDetector(
                         onTap: () {
@@ -236,5 +248,9 @@ class _AddProductViewState extends State<AddProductView> {
         ),
       ),
     );
+  }
+
+  bool isRtl() {
+    return context.locale == ARABIC_LOCAL;
   }
 }

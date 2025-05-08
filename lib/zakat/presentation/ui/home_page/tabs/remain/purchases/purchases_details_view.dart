@@ -152,37 +152,34 @@ class _PurchasesDetailsViewState extends State<PurchasesDetailsView> {
                                   await showDialog(
                                       context: context,
                                       builder: (BuildContext context) {
-                                        return Directionality(
-                                          textDirection: ui.TextDirection.rtl,
-                                          child: AlertDialog(
-                                            title: Text(AppStrings.warning.tr(),
-                                                style: AppTypography.kBold20),
-                                            content: Text(
-                                                AppStrings.checkToDelete.tr()),
-                                            actions: [
-                                              TextButton(
-                                                  onPressed: () async {
-                                                    DeletePurchaseRequest deletePurchaseRequest = DeletePurchaseRequest(id: purchasesList[index].id);
-                                                    await ZakatCubit.get(
-                                                        cartContext)
-                                                        .deletePurchase(
-                                                        deletePurchaseRequest);
+                                        return AlertDialog(
+                                          title: Text(AppStrings.warning.tr(),
+                                              style: AppTypography.kBold20),
+                                          content: Text(
+                                              AppStrings.checkToDelete.tr()),
+                                          actions: [
+                                            TextButton(
+                                                onPressed: () async {
+                                                  DeletePurchaseRequest deletePurchaseRequest = DeletePurchaseRequest(id: purchasesList[index].id);
+                                                  await ZakatCubit.get(
+                                                      cartContext)
+                                                      .deletePurchase(
+                                                      deletePurchaseRequest);
 
-                                                    widget.deletePurchase();
-                                                  },
-                                                  child: Text(AppStrings.yes.tr(),
-                                                      style: AppTypography
-                                                          .kLight16)),
-                                              TextButton(
-                                                  onPressed: () {
-                                                    Navigator.of(context)
-                                                        .pop(false);
-                                                  },
-                                                  child: Text(AppStrings.no.tr(),
-                                                      style: AppTypography
-                                                          .kLight16)),
-                                            ],
-                                          ),
+                                                  widget.deletePurchase();
+                                                },
+                                                child: Text(AppStrings.yes.tr(),
+                                                    style: AppTypography
+                                                        .kLight16)),
+                                            TextButton(
+                                                onPressed: () {
+                                                  Navigator.of(context)
+                                                      .pop(false);
+                                                },
+                                                child: Text(AppStrings.no.tr(),
+                                                    style: AppTypography
+                                                        .kLight16)),
+                                          ],
                                         );
                                       });
                                 },

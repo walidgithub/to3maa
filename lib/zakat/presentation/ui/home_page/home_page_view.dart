@@ -24,6 +24,7 @@ import '../../../../../../core/shared/constant/app_constants.dart';
 import '../../../../../../core/shared/constant/app_fonts.dart';
 import '../../../../../../core/shared/constant/app_strings.dart';
 import '../../../../../../core/shared/style/app_colors.dart';
+import '../../../../core/shared/constant/language_manager.dart';
 
 class HomePageView extends StatefulWidget {
   const HomePageView({super.key});
@@ -35,16 +36,24 @@ class HomePageView extends StatefulWidget {
 class _HomePageViewState extends State<HomePageView> {
   List<TabItem> tabItems = [
     TabItem(
-        title: AppStrings.addZakat.tr(), activeTab: true, icon: AppAssets.addNew),
-    TabItem(title: AppStrings.cart.tr(), activeTab: false, icon: AppAssets.cart),
+        title: AppStrings.addZakat.tr(),
+        activeTab: true,
+        icon: AppAssets.addNew),
     TabItem(
-        title: AppStrings.totals.tr(), activeTab: false, icon: AppAssets.totals),
+        title: AppStrings.cart.tr(), activeTab: false, icon: AppAssets.cart),
     TabItem(
-        title: AppStrings.remainTab.tr(), activeTab: false, icon: AppAssets.remain),
+        title: AppStrings.totals.tr(),
+        activeTab: false,
+        icon: AppAssets.totals),
     TabItem(
-        title: AppStrings.products.tr(), activeTab: false, icon: AppAssets.products),
+        title: AppStrings.remainTab.tr(),
+        activeTab: false,
+        icon: AppAssets.remain),
     TabItem(
-        title: "", activeTab: false, icon: AppAssets.settings)
+        title: AppStrings.products.tr(),
+        activeTab: false,
+        icon: AppAssets.products),
+    TabItem(title: "", activeTab: false, icon: AppAssets.settings)
   ];
 
   int selectedTab = 0;
@@ -67,10 +76,10 @@ class _HomePageViewState extends State<HomePageView> {
         onTap: () => FocusScope.of(context).unfocus(),
         child: SafeArea(
             child: Scaffold(
-              key: scaffoldKey,
-              drawer: SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.75,
-                  child: const HomeDrawer()),
+          key: scaffoldKey,
+          drawer: SizedBox(
+              width: MediaQuery.of(context).size.width * 0.75,
+              child: const HomeDrawer()),
           body: BlocProvider(
               create: (context) => sl<ZakatCubit>(),
               child: contentBody(context)),
@@ -97,7 +106,8 @@ class _HomePageViewState extends State<HomePageView> {
             decoration: const BoxDecoration(color: AppColors.cWhite),
           ),
           Positioned(
-            right: 0,
+            left: isRtl() ? null : 0,
+            right: isRtl() ? 0 : null,
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
               height: MediaQuery.sizeOf(context).height,
@@ -106,7 +116,8 @@ class _HomePageViewState extends State<HomePageView> {
             ),
           ),
           Positioned(
-            left: 0,
+            left: isRtl() ? 0 : null,
+            right: isRtl() ? null : 0,
             child: Container(
               width: MediaQuery.sizeOf(context).width / 4,
               height: MediaQuery.sizeOf(context).height,
@@ -119,8 +130,11 @@ class _HomePageViewState extends State<HomePageView> {
                     decoration: BoxDecoration(
                         color: AppColors.cPrimary,
                         borderRadius: BorderRadius.only(
+                            bottomLeft:
+                            isRtl() ? const Radius.circular(0) : Radius.circular(AppConstants.moreRadius),
                             bottomRight:
-                                Radius.circular(AppConstants.moreRadius))),
+                            isRtl() ? Radius.circular(AppConstants.moreRadius) : const Radius.circular(0)
+                        )),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
@@ -129,15 +143,15 @@ class _HomePageViewState extends State<HomePageView> {
                           child: Center(
                             child: Text(
                               AppStrings.appName.tr(),
-                              style: AppTypography.kBold24
-                                  .copyWith(fontFamily: AppFonts.boldFontFamily),
+                              style: AppTypography.kBold24.copyWith(
+                                  fontFamily:
+                                      isRtl() ? AppFonts.boldFontFamily : null),
                             ),
                           ),
                         ),
                         GestureDetector(
                           onTap: () {
-                            scaffoldKey.currentState
-                                ?.openDrawer();
+                            scaffoldKey.currentState?.openDrawer();
                           },
                           child: SvgPicture.asset(
                             AppAssets.menu,
@@ -186,5 +200,9 @@ class _HomePageViewState extends State<HomePageView> {
         ],
       );
     });
+  }
+
+  bool isRtl() {
+    return context.locale == ARABIC_LOCAL;
   }
 }

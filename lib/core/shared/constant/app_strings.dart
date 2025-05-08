@@ -41,7 +41,7 @@ class AppStrings {
   static const String getAll = "Total view";
   static const String getDetails = "Show details";
 
-  static const String package = "_";
+  static const String package = "";
   static const String rice = "Rice";
   static const String dates = "Dates";
   static const String pasta = "Pasta";
@@ -116,9 +116,9 @@ Whether you are responsible for collecting Zakat at a mosque or a charitable org
   static const remainValue = "Remaining amount";
   static const zakatYear = "Zakat al-Fitr year";
   static const hejri = "Hijri";
-  static const toEnsureDelete = "To confirm deletion ";
+  static const toEnsureDelete = "to confirm deletion ";
   static const writeThis = "Write ";
-  static const deleteAll = "Delete all";
+  static const deleteAll = "delete all ";
   static const exportData = "Extract current data";
   static const fileExported = "File exported successfully! ✅";
 

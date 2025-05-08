@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../../../core/shared/constant/app_constants.dart';
 import '../../../../../../core/shared/constant/app_fonts.dart';
 import '../../../../../../core/shared/constant/app_strings.dart';
+import '../../../../../../core/shared/constant/language_manager.dart';
 import '../../../../../../core/shared/style/app_colors.dart';
 
 class ProductView extends StatefulWidget {
@@ -109,7 +110,8 @@ class _ProductViewState extends State<ProductView> {
                   ),
                 )),
             Positioned(
-                left: 15.w,
+                right: isRtl() ? null : 15.w,
+                left: isRtl() ? 15.w : null,
                 top: 0,
                 child: Transform.flip(
                   flipX: true,
@@ -122,7 +124,8 @@ class _ProductViewState extends State<ProductView> {
                 )),
             Positioned(
                 top: 5.h,
-                right: 10.w,
+                left: isRtl() ? null : 15.w,
+                right: isRtl() ? 15.w : null,
                 child: SizedBox(
                     width: 100.w,
                     child: Row(
@@ -249,5 +252,9 @@ class _ProductViewState extends State<ProductView> {
         ),
       ),
     );
+  }
+
+  bool isRtl() {
+    return context.locale == ARABIC_LOCAL;
   }
 }

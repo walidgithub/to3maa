@@ -151,36 +151,33 @@ class _SundriesDetailsViewState extends State<SundriesDetailsView> {
                                       await showDialog(
                                           context: context,
                                           builder: (BuildContext context) {
-                                            return Directionality(
-                                              textDirection: ui.TextDirection.rtl,
-                                              child: AlertDialog(
-                                                title: Text(AppStrings.warning.tr(),
-                                                    style: AppTypography.kBold20),
-                                                content: const Text(
-                                                    AppStrings.checkToDelete),
-                                                actions: [
-                                                  TextButton(
-                                                      onPressed: () async {
-                                                        DeleteSundryRequest deleteSundryRequest = DeleteSundryRequest(id: sundriesList[index].id);
-                                                        await ZakatCubit.get(
-                                                            cartContext)
-                                                            .deleteSundry(
-                                                            deleteSundryRequest);
-                                                        widget.deleteSundry();
-                                                      },
-                                                      child: Text(AppStrings.yes.tr(),
-                                                          style: AppTypography
-                                                              .kLight16)),
-                                                  TextButton(
-                                                      onPressed: () {
-                                                        Navigator.of(context)
-                                                            .pop(false);
-                                                      },
-                                                      child: Text(AppStrings.no.tr(),
-                                                          style: AppTypography
-                                                              .kLight16)),
-                                                ],
-                                              ),
+                                            return AlertDialog(
+                                              title: Text(AppStrings.warning.tr(),
+                                                  style: AppTypography.kBold20),
+                                              content: const Text(
+                                                  AppStrings.checkToDelete),
+                                              actions: [
+                                                TextButton(
+                                                    onPressed: () async {
+                                                      DeleteSundryRequest deleteSundryRequest = DeleteSundryRequest(id: sundriesList[index].id);
+                                                      await ZakatCubit.get(
+                                                          cartContext)
+                                                          .deleteSundry(
+                                                          deleteSundryRequest);
+                                                      widget.deleteSundry();
+                                                    },
+                                                    child: Text(AppStrings.yes.tr(),
+                                                        style: AppTypography
+                                                            .kLight16)),
+                                                TextButton(
+                                                    onPressed: () {
+                                                      Navigator.of(context)
+                                                          .pop(false);
+                                                    },
+                                                    child: Text(AppStrings.no.tr(),
+                                                        style: AppTypography
+                                                            .kLight16)),
+                                              ],
                                             );
                                           });
                                     },

@@ -28,6 +28,7 @@ import '../../../../../../core/preferences/app_pref.dart';
 import '../../../../../../core/shared/constant/app_constants.dart';
 import '../../../../../../core/shared/constant/app_fonts.dart';
 import '../../../../../../core/shared/constant/app_strings.dart';
+import '../../../../../../core/shared/constant/language_manager.dart';
 import '../../../../../../core/shared/style/app_colors.dart';
 
 class AddZakatView extends StatefulWidget {
@@ -51,7 +52,9 @@ class _AddZakatViewState extends State<AddZakatView> {
 
   @override
   void initState() {
-    HijriCalendar.setLocal('ar');
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      HijriCalendar.setLocal(isRtl() ? 'ar' : 'en');
+    });
     getAllZakat();
     clearData();
     getCurrency();
@@ -154,270 +157,271 @@ class _AddZakatViewState extends State<AddZakatView> {
 
   @override
   Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: ui.TextDirection.rtl,
-      child: Scaffold(
-          appBar: AppBar(
-            backgroundColor: AppColors.cWhite,
-            automaticallyImplyLeading: false,
-            surfaceTintColor: Colors.transparent,
-            title: FadeInLeft(
-              duration: Duration(milliseconds: AppConstants.animation),
-              child: Text(
-                AppStrings.addZakat.tr(),
-                style: AppTypography.kLight20
-                    .copyWith(fontFamily: AppFonts.boldFontFamily),
-              ),
+    return Scaffold(
+        appBar: AppBar(
+          backgroundColor: AppColors.cWhite,
+          automaticallyImplyLeading: false,
+          surfaceTintColor: Colors.transparent,
+          title: FadeInLeft(
+            duration: Duration(milliseconds: AppConstants.animation),
+            child: Text(
+              AppStrings.addZakat.tr(),
+              style: AppTypography.kLight20
+                  .copyWith(fontFamily: AppFonts.boldFontFamily),
             ),
           ),
-          backgroundColor: AppColors.cWhite,
-          body: BlocConsumer<ZakatCubit, ZakatState>(
-              listener: (context, state) async {
-            if (state.zakatState == RequestState.productsLoading) {
-              showLoading();
-            } else if (state.zakatState == RequestState.productsError) {
-              hideLoading();
-            } else if (state.zakatState == RequestState.productsLoaded) {
-              remain = allValue - calcRemain(state.productsList);
-              hideLoading();
-            } else if (state.zakatState == RequestState.insertLoading) {
-              showLoading();
-            } else if (state.zakatState == RequestState.insertError) {
-              hideLoading();
-            } else if (state.zakatState == RequestState.insertDone) {
-              hideLoading();
-              insertedZakatId = state.zakatId;
-              getAllZakat();
-            } else if (state.zakatState == RequestState.zakatLoading) {
-              showLoading();
-            } else if (state.zakatState == RequestState.zakatError) {
-              hideLoading();
-            } else if (state.zakatState == RequestState.zakatLoaded) {
-              cartItems = state.zakatList;
-              hideLoading();
-            }
-          }, builder: (context, state) {
-            return Column(
-              children: [
-                SizedBox(
-                  height: 10.h,
-                ),
-                textFieldWidget(
-                    _membersCountController,
-                    AppStrings.numberOfIndividuals.tr(),
-                    TextInputType.number, (String textVal) async {
-                  await resetQuantity();
-                  await getAllProducts();
+        ),
+        backgroundColor: AppColors.cWhite,
+        body: BlocConsumer<ZakatCubit, ZakatState>(
+            listener: (context, state) async {
+          if (state.zakatState == RequestState.productsLoading) {
+            showLoading();
+          } else if (state.zakatState == RequestState.productsError) {
+            hideLoading();
+          } else if (state.zakatState == RequestState.productsLoaded) {
+            remain = allValue - calcRemain(state.productsList);
+            hideLoading();
+          } else if (state.zakatState == RequestState.insertLoading) {
+            showLoading();
+          } else if (state.zakatState == RequestState.insertError) {
+            hideLoading();
+          } else if (state.zakatState == RequestState.insertDone) {
+            hideLoading();
+            insertedZakatId = state.zakatId;
+            getAllZakat();
+          } else if (state.zakatState == RequestState.zakatLoading) {
+            showLoading();
+          } else if (state.zakatState == RequestState.zakatError) {
+            hideLoading();
+          } else if (state.zakatState == RequestState.zakatLoaded) {
+            cartItems = state.zakatList;
+            hideLoading();
+          }
+        }, builder: (context, state) {
+          return Column(
+            children: [
+              SizedBox(
+                height: 10.h,
+              ),
+              textFieldWidget(
+                  _membersCountController,
+                  AppStrings.numberOfIndividuals.tr(),
+                  TextInputType.number, (String textVal) async {
+                await resetQuantity();
+                await getAllProducts();
 
-                  if (_zakatValueController.text.isNotEmpty) {
-                    final zakatValue = int.tryParse(_zakatValueController.text);
-                    if (zakatValue != null) {
-                      getSuggested(
-                          int.parse(_membersCountController.text),
-                          zakatValue,
-                          state.productsList);
-                    } else {
-                    }
+                if (_zakatValueController.text.isNotEmpty) {
+                  final zakatValue = int.tryParse(_zakatValueController.text);
+                  if (zakatValue != null) {
+                    getSuggested(
+                        int.parse(_membersCountController.text),
+                        zakatValue,
+                        state.productsList);
                   } else {
                   }
-                },true,true),
-                SizedBox(
-                  height: AppConstants.heightBetweenElements,
-                ),
-                textFieldWidget(_zakatValueController, AppStrings.zakatValue.tr(),
-                    TextInputType.number, (String textVal) async {
-                  setState(() {
-                    allValue = double.parse(textVal);
-                    remain = allValue - calcRemain(state.productsList);
-                  });
+                } else {
+                }
+              },true,true),
+              SizedBox(
+                height: AppConstants.heightBetweenElements,
+              ),
+              textFieldWidget(_zakatValueController, AppStrings.zakatValue.tr(),
+                  TextInputType.number, (String textVal) async {
+                setState(() {
+                  allValue = double.parse(textVal);
+                  remain = allValue - calcRemain(state.productsList);
+                });
 
-                  await resetQuantity();
-                  await getAllProducts();
+                await resetQuantity();
+                await getAllProducts();
 
-                  getSuggested(
-                      int.parse(_membersCountController.text),
-                      int.parse(_zakatValueController.text),
-                      state.productsList);
-                },false,true),
-                showError
-                    ? Text(
-                        errorMessage,
-                        style:
-                            const TextStyle(fontFamily: AppFonts.boldFontFamily)
-                                .copyWith(color: AppColors.cButton),
-                      )
-                    : Container(),
-                suggested
-                    ? SizedBox(
-                        height: 5.h,
-                      )
-                    : Container(),
-                suggested
-                    ? Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            AppStrings.suggested.tr(),
-                            style:
-                                const TextStyle(fontFamily: AppFonts.qabasFontFamily),
+                getSuggested(
+                    int.parse(_membersCountController.text),
+                    int.parse(_zakatValueController.text),
+                    state.productsList);
+              },false,true),
+              showError
+                  ? Text(
+                      errorMessage,
+                      style:
+                          const TextStyle(fontFamily: AppFonts.boldFontFamily)
+                              .copyWith(color: AppColors.cButton),
+                    )
+                  : Container(),
+              suggested
+                  ? SizedBox(
+                      height: 5.h,
+                    )
+                  : Container(),
+              suggested
+                  ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          AppStrings.suggested.tr(),
+                          style:
+                              const TextStyle(fontFamily: AppFonts.qabasFontFamily),
+                        ),
+                        SizedBox(
+                          height: 5.h,
+                        ),
+                        Container(
+                          width: MediaQuery.sizeOf(context).width * 0.75,
+                          height: 120.h,
+                          padding: EdgeInsets.symmetric(
+                              vertical: 10.h, horizontal: 10.w),
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                                width: 2.w, color: AppColors.cPrimary),
+                            borderRadius:
+                                BorderRadius.circular(AppConstants.radius),
                           ),
-                          SizedBox(
-                            height: 5.h,
+                          child: ListView.separated(
+                              itemCount: suggestedItems.length,
+                              shrinkWrap: true,
+                              scrollDirection: Axis.horizontal,
+                              physics: const AlwaysScrollableScrollPhysics(),
+                              separatorBuilder:
+                                  (BuildContext context, int index) =>
+                                      SizedBox(
+                                        width: 10.h,
+                                      ),
+                              itemBuilder: (BuildContext context, int index) {
+                                return SuggestedView(
+                                  imagePath: suggestedItems[index].imagePath!,
+                                  imageName: suggestedItems[index].imageName!,
+                                  imageDesc: suggestedItems[index].imageDesc!,
+                                  selected: suggestedItems[index].selected!,
+                                  id: suggestedItems[index].imageId!,
+                                  addSuggested: (int id) async {
+                                    setState(() {
+                                      for (var n in suggestedItems) {
+                                        n.selected = false;
+                                      }
+                                      suggestedItems[index].selected = true;
+                                    });
+
+                                    await resetQuantity();
+
+                                    UpdateProductQuantityRequest
+                                        updateProductQuantityRequest =
+                                        (UpdateProductQuantityRequest(
+                                            id: suggestedItems[index].imageId!,
+                                            productQuantity: int.parse(
+                                                _membersCountController
+                                                    .text)));
+
+                                    await ZakatCubit.get(context)
+                                        .updateProductQuantity(
+                                            updateProductQuantityRequest);
+
+                                    await getAllProducts();
+                                  },
+                                );
+                              }),
+                        )
+                      ],
+                    )
+                  : Container(),
+              SizedBox(
+                height: 5.h,
+              ),
+              Expanded(
+                  child: state.productsList.isNotEmpty
+                      ? SingleChildScrollView(
+                          child: ListView.separated(
+                              itemCount: state.productsList.length,
+                              shrinkWrap: true,
+                              scrollDirection: Axis.vertical,
+                              physics: const NeverScrollableScrollPhysics(),
+                              separatorBuilder:
+                                  (BuildContext context, int index) =>
+                                      SizedBox(
+                                        height: 20.h,
+                                      ),
+                              itemBuilder: (BuildContext context, int index) {
+                                return AddProductView(
+                                  membersCount: getQuantityFromTextField(_membersCountController),
+                                  productName:
+                                      state.productsList[index].productName!,
+                                  productImage:
+                                      state.productsList[index].productImage!,
+                                  productPrice:
+                                      state.productsList[index].productPrice!,
+                                  productDesc:
+                                      state.productsList[index].productDesc!,
+                                  productQuantity: state
+                                      .productsList[index].productQuantity!,
+                                  allValue: allValue,
+                                  productsList: state.productsList,
+                                  increaseQunatity: (int quantity) async {
+                                    UpdateProductQuantityRequest
+                                        updateProductQuantityRequest =
+                                        (UpdateProductQuantityRequest(
+                                            id: state.productsList[index].id,
+                                            productQuantity: quantity));
+
+                                    await ZakatCubit.get(context)
+                                        .updateProductQuantity(
+                                            updateProductQuantityRequest);
+
+                                    setState(() {
+                                      state.productsList[index]
+                                          .productQuantity = quantity;
+                                      remain = allValue -
+                                          calcRemain(state.productsList);
+                                    });
+                                  },
+                                  decreaseQunatity: (int quantity) async {
+                                    UpdateProductQuantityRequest
+                                        updateProductQuantityRequest =
+                                        (UpdateProductQuantityRequest(
+                                            id: state.productsList[index].id,
+                                            productQuantity: quantity));
+
+                                    await ZakatCubit.get(context)
+                                        .updateProductQuantity(
+                                            updateProductQuantityRequest);
+
+                                    setState(() {
+                                      state.productsList[index]
+                                          .productQuantity = quantity;
+                                      remain = allValue -
+                                          calcRemain(state.productsList);
+                                    });
+                                  },
+                                );
+                              }),
+                        )
+                      : Center(
+                          child: Text(
+                            AppStrings.noProducts.tr(),
+                            style: const TextStyle(
+                                fontFamily: AppFonts.qabasFontFamily),
                           ),
-                          Container(
-                            width: MediaQuery.sizeOf(context).width * 0.75,
-                            height: 120.h,
-                            padding: EdgeInsets.symmetric(
-                                vertical: 10.h, horizontal: 10.w),
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                  width: 2.w, color: AppColors.cPrimary),
-                              borderRadius:
-                                  BorderRadius.circular(AppConstants.radius),
-                            ),
-                            child: ListView.separated(
-                                itemCount: suggestedItems.length,
-                                shrinkWrap: true,
-                                scrollDirection: Axis.horizontal,
-                                physics: const AlwaysScrollableScrollPhysics(),
-                                separatorBuilder:
-                                    (BuildContext context, int index) =>
-                                        SizedBox(
-                                          width: 10.h,
-                                        ),
-                                itemBuilder: (BuildContext context, int index) {
-                                  return SuggestedView(
-                                    imagePath: suggestedItems[index].imagePath!,
-                                    imageName: suggestedItems[index].imageName!,
-                                    imageDesc: suggestedItems[index].imageDesc!,
-                                    selected: suggestedItems[index].selected!,
-                                    id: suggestedItems[index].imageId!,
-                                    addSuggested: (int id) async {
-                                      setState(() {
-                                        for (var n in suggestedItems) {
-                                          n.selected = false;
-                                        }
-                                        suggestedItems[index].selected = true;
-                                      });
-
-                                      await resetQuantity();
-
-                                      UpdateProductQuantityRequest
-                                          updateProductQuantityRequest =
-                                          (UpdateProductQuantityRequest(
-                                              id: suggestedItems[index].imageId!,
-                                              productQuantity: int.parse(
-                                                  _membersCountController
-                                                      .text)));
-
-                                      await ZakatCubit.get(context)
-                                          .updateProductQuantity(
-                                              updateProductQuantityRequest);
-
-                                      await getAllProducts();
-                                    },
-                                  );
-                                }),
-                          )
-                        ],
-                      )
-                    : Container(),
-                SizedBox(
-                  height: 5.h,
+                        )),
+              SizedBox(
+                height: 5.h,
+              ),
+              Container(
+                height: 115.h,
+                width: MediaQuery.sizeOf(context).width * 0.75,
+                padding:
+                    EdgeInsets.symmetric(vertical: 10.h, horizontal: 10.w),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(AppConstants.radius),
+                  color: AppColors.cButton,
                 ),
-                Expanded(
-                    child: state.productsList.isNotEmpty
-                        ? SingleChildScrollView(
-                            child: ListView.separated(
-                                itemCount: state.productsList.length,
-                                shrinkWrap: true,
-                                scrollDirection: Axis.vertical,
-                                physics: const NeverScrollableScrollPhysics(),
-                                separatorBuilder:
-                                    (BuildContext context, int index) =>
-                                        SizedBox(
-                                          height: 20.h,
-                                        ),
-                                itemBuilder: (BuildContext context, int index) {
-                                  return AddProductView(
-                                    membersCount: getQuantityFromTextField(_membersCountController),
-                                    productName:
-                                        state.productsList[index].productName!,
-                                    productImage:
-                                        state.productsList[index].productImage!,
-                                    productPrice:
-                                        state.productsList[index].productPrice!,
-                                    productDesc:
-                                        state.productsList[index].productDesc!,
-                                    productQuantity: state
-                                        .productsList[index].productQuantity!,
-                                    allValue: allValue,
-                                    productsList: state.productsList,
-                                    increaseQunatity: (int quantity) async {
-                                      UpdateProductQuantityRequest
-                                          updateProductQuantityRequest =
-                                          (UpdateProductQuantityRequest(
-                                              id: state.productsList[index].id,
-                                              productQuantity: quantity));
-
-                                      await ZakatCubit.get(context)
-                                          .updateProductQuantity(
-                                              updateProductQuantityRequest);
-
-                                      setState(() {
-                                        state.productsList[index]
-                                            .productQuantity = quantity;
-                                        remain = allValue -
-                                            calcRemain(state.productsList);
-                                      });
-                                    },
-                                    decreaseQunatity: (int quantity) async {
-                                      UpdateProductQuantityRequest
-                                          updateProductQuantityRequest =
-                                          (UpdateProductQuantityRequest(
-                                              id: state.productsList[index].id,
-                                              productQuantity: quantity));
-
-                                      await ZakatCubit.get(context)
-                                          .updateProductQuantity(
-                                              updateProductQuantityRequest);
-
-                                      setState(() {
-                                        state.productsList[index]
-                                            .productQuantity = quantity;
-                                        remain = allValue -
-                                            calcRemain(state.productsList);
-                                      });
-                                    },
-                                  );
-                                }),
-                          )
-                        : Center(
-                            child: Text(
-                              AppStrings.noProducts.tr(),
-                              style: const TextStyle(
-                                  fontFamily: AppFonts.qabasFontFamily),
-                            ),
-                          )),
-                SizedBox(
-                  height: 5.h,
-                ),
-                Container(
-                  height: 110.h,
-                  width: MediaQuery.sizeOf(context).width * 0.75,
-                  padding:
-                      EdgeInsets.symmetric(vertical: 10.h, horizontal: 10.w),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(AppConstants.radius),
-                    color: AppColors.cButton,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Row(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        SizedBox(
+                          width: MediaQuery.sizeOf(context).width * 0.5,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Text(
                                 AppStrings.total.tr(),
@@ -427,6 +431,7 @@ class _AddZakatViewState extends State<AddZakatView> {
                                 ),
                               ),
                               Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   Text(
                                     allValue.toString(),
@@ -447,7 +452,11 @@ class _AddZakatViewState extends State<AddZakatView> {
                               ),
                             ],
                           ),
-                          Row(
+                        ),
+                        SizedBox(
+                          width: MediaQuery.sizeOf(context).width * 0.5,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Text(
                                 AppStrings.remain.tr(),
@@ -477,229 +486,233 @@ class _AddZakatViewState extends State<AddZakatView> {
                               ),
                             ],
                           ),
-                          GestureDetector(
-                            onTap: () async {
-                              if (remain > allValue) {
-                                HapticFeedback.vibrate();
-                                setState(() {
-                                  showError = true;
-                                  errorMessage = AppStrings.addZakatErrorCountOrValue.tr();
-                                });
-                                return;
-                              } else {
-                                if (showError) {
-                                  setState(() {
-                                    showError = false;
-                                    errorMessage = "";
-                                  });
-                                }
-                              }
-
-                              if (remain.isNegative) {
-                                HapticFeedback.vibrate();
-                                setState(() {
-                                  showError = true;
-                                  errorMessage = AppStrings.addZakatErrorCountOrValue.tr();
-                                });
-                                return;
-                              } else {
-                                if (showError) {
-                                  setState(() {
-                                    showError = false;
-                                    errorMessage = "";
-                                  });
-                                }
-                              }
-
-                              if (double.parse(_membersCountController.text
-                                          .trim()) <=
-                                      0 ||
-                                  double.parse(
-                                          _zakatValueController.text.trim()) <=
-                                      0) {
-                                setState(() {
-                                  showError = true;
-                                  errorMessage = AppStrings.addZakatErrorEmptyValue.tr();
-                                });
-                                return;
-                              } else {
-                                if (showError) {
-                                  setState(() {
-                                    showError = false;
-                                    errorMessage = "";
-                                  });
-                                }
-                              }
-
-                              var maxVal =
-                                  getMaxProductPrice(state.productsList);
-
-                              if (allValue <
-                                  (maxVal *
-                                      int.parse(_membersCountController.text
-                                          .trim()))) {
-                                HapticFeedback.vibrate();
-                                setState(() {
-                                  showError = true;
-                                  errorMessage = AppStrings.addZakatErrorLowLimit.tr();
-                                });
-                                return;
-                              } else {
-                                if (showError) {
-                                  setState(() {
-                                    showError = false;
-                                    errorMessage = "";
-                                  });
-                                }
-                              }
-
-                              int totalQuantity = state.productsList.fold(
-                                0,
-                                    (sum, product) => sum + (product.productQuantity ?? 0),
-                              );
-
-                              if (totalQuantity < int.parse(
-                                  _membersCountController.text.trim())) {
-                                HapticFeedback.vibrate();
-                                setState(() {
-                                  showError = true;
-                                  errorMessage = AppStrings.addZakatErrorNoSuitableItems.tr();
-                                });
-                                return;
-                              } else {
-                                if (showError) {
-                                  setState(() {
-                                    showError = false;
-                                    errorMessage = "";
-                                  });
-                                }
-                              }
-
-                              if ((allValue - remain) <
-                                  (maxVal *
-                                      int.parse(_membersCountController.text
-                                          .trim()))) {
-                                HapticFeedback.vibrate();
-                                setState(() {
-                                  showError = true;
-                                  errorMessage = AppStrings.addZakatErrorQuantity.tr();
-                                });
-                                return;
-                              } else {
-                                if (showError) {
-                                  setState(() {
-                                    showError = false;
-                                    errorMessage = "";
-                                  });
-                                }
-                              }
-
-                              if (remain == allValue) {
-                                HapticFeedback.vibrate();
-                                setState(() {
-                                  showError = true;
-                                  errorMessage = AppStrings.addZakatErrorNoSelectedItems.tr();
-                                });
-                                return;
-                              } else {
-                                if (showError) {
-                                  setState(() {
-                                    showError = false;
-                                    errorMessage = "";
-                                  });
-                                }
-                              }
-
-                              DateTime now = DateTime.now();
-                              String formattedTime =
-                                  DateFormat('hh:mm ss a').format(now);
-
-                              InsertZakatRequest insertZakatRequest =
-                                  InsertZakatRequest(
-                                      membersCount:
-                                          _membersCountController.text.trim(),
-                                      zakatValue:
-                                          _zakatValueController.text.trim(),
-                                      hegriDate:
-                                          "${hijriDate.fullDate().toString()} - $formattedTime",
-                                      remainValue: remain.toString());
-
-                              await ZakatCubit.get(context)
-                                  .insertZakat(insertZakatRequest);
-
-                              for (var x in state.productsList) {
-                                if (x.productQuantity != 0) {
-                                  InsertZakatProductsRequest
-                                      insertZakatProductsRequest =
-                                      InsertZakatProductsRequest(
-                                          productDesc: x.productDesc,
-                                          productImage: x.productImage,
-                                          productName: x.productName,
-                                          productPrice: x.productPrice,
-                                          productQuantity: x.productQuantity,
-                                          hegriDate:
-                                              "${hijriDate.fullDate().toString()} - $formattedTime",
-                                          sa3Weight: x.sa3Weight,
-                                          zakatId: DbHelper.insertedNewZakat);
-
-                                  // ignore: use_build_context_synchronously
-                                  await ZakatCubit.get(context)
-                                      .insertZakatProducts(
-                                          insertZakatProductsRequest);
-
-                                  InsertMembersCount insertMembersCount = InsertMembersCount(productName: x.productName,membersCount: x.productQuantity,zakatId: insertedZakatId);
-                                  await ZakatCubit.get(context).insertMembersCount(insertMembersCount);
-
-                                  x.productQuantity = 0;
-                                }
-                              }
-
-                              final snackBar = SnackBar(
-                                duration: Duration(
-                                    milliseconds:
-                                        AppConstants.durationOfSnackBar),
-                                content: Text(AppStrings.successAdd.tr()),
-                              );
-                              // ignore: use_build_context_synchronously
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(snackBar);
-
+                        ),
+                        GestureDetector(
+                          onTap: () async {
+                            if (remain > allValue) {
+                              HapticFeedback.vibrate();
                               setState(() {
-                                clearData();
+                                showError = true;
+                                errorMessage = AppStrings.addZakatErrorCountOrValue.tr();
                               });
-                            },
-                            child: Container(
-                                width: 70.w,
-                                height: 50.w,
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                      width: 2.w, color: AppColors.cPrimary),
-                                  borderRadius: BorderRadius.circular(
-                                      AppConstants.radius),
-                                  color: AppColors.cWhite,
-                                  shape: BoxShape.rectangle,
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    AppStrings.save.tr(),
-                                    style: AppTypography.kLight14.copyWith(
-                                      fontFamily: AppFonts.qabasFontFamily,
-                                      color: AppColors.cButton,
-                                    ),
+                              return;
+                            } else {
+                              if (showError) {
+                                setState(() {
+                                  showError = false;
+                                  errorMessage = "";
+                                });
+                              }
+                            }
+
+                            if (remain.isNegative) {
+                              HapticFeedback.vibrate();
+                              setState(() {
+                                showError = true;
+                                errorMessage = AppStrings.addZakatErrorCountOrValue.tr();
+                              });
+                              return;
+                            } else {
+                              if (showError) {
+                                setState(() {
+                                  showError = false;
+                                  errorMessage = "";
+                                });
+                              }
+                            }
+
+                            if (double.parse(_membersCountController.text
+                                        .trim()) <=
+                                    0 ||
+                                double.parse(
+                                        _zakatValueController.text.trim()) <=
+                                    0) {
+                              setState(() {
+                                showError = true;
+                                errorMessage = AppStrings.addZakatErrorEmptyValue.tr();
+                              });
+                              return;
+                            } else {
+                              if (showError) {
+                                setState(() {
+                                  showError = false;
+                                  errorMessage = "";
+                                });
+                              }
+                            }
+
+                            var maxVal =
+                                getMaxProductPrice(state.productsList);
+
+                            if (allValue <
+                                (maxVal *
+                                    int.parse(_membersCountController.text
+                                        .trim()))) {
+                              HapticFeedback.vibrate();
+                              setState(() {
+                                showError = true;
+                                errorMessage = AppStrings.addZakatErrorLowLimit.tr();
+                              });
+                              return;
+                            } else {
+                              if (showError) {
+                                setState(() {
+                                  showError = false;
+                                  errorMessage = "";
+                                });
+                              }
+                            }
+
+                            int totalQuantity = state.productsList.fold(
+                              0,
+                                  (sum, product) => sum + (product.productQuantity ?? 0),
+                            );
+
+                            if (totalQuantity < int.parse(
+                                _membersCountController.text.trim())) {
+                              HapticFeedback.vibrate();
+                              setState(() {
+                                showError = true;
+                                errorMessage = AppStrings.addZakatErrorNoSuitableItems.tr();
+                              });
+                              return;
+                            } else {
+                              if (showError) {
+                                setState(() {
+                                  showError = false;
+                                  errorMessage = "";
+                                });
+                              }
+                            }
+
+                            if ((allValue - remain) <
+                                (maxVal *
+                                    int.parse(_membersCountController.text
+                                        .trim()))) {
+                              HapticFeedback.vibrate();
+                              setState(() {
+                                showError = true;
+                                errorMessage = AppStrings.addZakatErrorQuantity.tr();
+                              });
+                              return;
+                            } else {
+                              if (showError) {
+                                setState(() {
+                                  showError = false;
+                                  errorMessage = "";
+                                });
+                              }
+                            }
+
+                            if (remain == allValue) {
+                              HapticFeedback.vibrate();
+                              setState(() {
+                                showError = true;
+                                errorMessage = AppStrings.addZakatErrorNoSelectedItems.tr();
+                              });
+                              return;
+                            } else {
+                              if (showError) {
+                                setState(() {
+                                  showError = false;
+                                  errorMessage = "";
+                                });
+                              }
+                            }
+
+                            DateTime now = DateTime.now();
+                            String formattedTime =
+                                DateFormat('hh:mm ss a').format(now);
+
+                            InsertZakatRequest insertZakatRequest =
+                                InsertZakatRequest(
+                                    membersCount:
+                                        _membersCountController.text.trim(),
+                                    zakatValue:
+                                        _zakatValueController.text.trim(),
+                                    hegriDate:
+                                        "${hijriDate.fullDate().toString()} - $formattedTime",
+                                    remainValue: remain.toString());
+
+                            await ZakatCubit.get(context)
+                                .insertZakat(insertZakatRequest);
+
+                            for (var x in state.productsList) {
+                              if (x.productQuantity != 0) {
+                                InsertZakatProductsRequest
+                                    insertZakatProductsRequest =
+                                    InsertZakatProductsRequest(
+                                        productDesc: x.productDesc,
+                                        productImage: x.productImage,
+                                        productName: x.productName,
+                                        productPrice: x.productPrice,
+                                        productQuantity: x.productQuantity,
+                                        hegriDate:
+                                            "${hijriDate.fullDate().toString()} - $formattedTime",
+                                        sa3Weight: x.sa3Weight,
+                                        zakatId: DbHelper.insertedNewZakat);
+
+                                // ignore: use_build_context_synchronously
+                                await ZakatCubit.get(context)
+                                    .insertZakatProducts(
+                                        insertZakatProductsRequest);
+
+                                InsertMembersCount insertMembersCount = InsertMembersCount(productName: x.productName,membersCount: x.productQuantity,zakatId: insertedZakatId);
+                                await ZakatCubit.get(context).insertMembersCount(insertMembersCount);
+
+                                x.productQuantity = 0;
+                              }
+                            }
+
+                            final snackBar = SnackBar(
+                              duration: Duration(
+                                  milliseconds:
+                                      AppConstants.durationOfSnackBar),
+                              content: Text(AppStrings.successAdd.tr()),
+                            );
+                            // ignore: use_build_context_synchronously
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(snackBar);
+
+                            setState(() {
+                              clearData();
+                            });
+                          },
+                          child: Container(
+                              width: 70.w,
+                              height: 50.w,
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                    width: 2.w, color: AppColors.cPrimary),
+                                borderRadius: BorderRadius.circular(
+                                    AppConstants.radius),
+                                color: AppColors.cWhite,
+                                shape: BoxShape.rectangle,
+                              ),
+                              child: Center(
+                                child: Text(
+                                  AppStrings.save.tr(),
+                                  style: AppTypography.kLight14.copyWith(
+                                    fontFamily: AppFonts.qabasFontFamily,
+                                    color: AppColors.cButton,
                                   ),
-                                )),
-                          )
-                        ],
-                      ),
-                    ],
-                  ),
+                                ),
+                              )),
+                        )
+                      ],
+                    ),
+                  ],
                 ),
-                SizedBox(
-                  height: MediaQuery.sizeOf(context).height * 0.07.h,
-                ),
-              ],
-            );
-          })),
-    );
+              ),
+              SizedBox(
+                height: MediaQuery.sizeOf(context).height * 0.07.h,
+              ),
+            ],
+          );
+        }));
+  }
+
+  bool isRtl() {
+    return context.locale == ARABIC_LOCAL;
   }
 }

@@ -16,6 +16,8 @@ import '../../../../../../core/shared/constant/app_fonts.dart';
 import '../../../../../../core/shared/constant/app_strings.dart';
 import 'dart:ui' as ui;
 
+import '../../../../../../core/shared/constant/language_manager.dart';
+
 class CartItemView extends StatefulWidget {
   final bool selected;
   final int index;
@@ -139,22 +141,20 @@ class _CartItemViewState extends State<CartItemView> {
                                 height: 10.h,
                               ),
                               Text(
-                                "$dayName - $hijriDate , $hijriYear",
+                                "$dayName\n$hijriDate, $hijriYear",
                                 style: AppTypography.kLight16.copyWith(
-                                    fontFamily: AppFonts.boldFontFamily,
-                                    color: AppColors.cNumber),
+                                  fontFamily: isRtl() ? AppFonts.boldFontFamily : null,
+                                  color: AppColors.cNumber,
+                                ),
                               ),
                               SizedBox(
                                 height: 5.h,
                               ),
-                              Directionality(
-                                textDirection: ui.TextDirection.ltr,
-                                child: Text(
-                                    "$time",
-                                  style: AppTypography.kLight16.copyWith(
-                                      fontWeight: FontWeight.bold,
-                                      color: AppColors.cNumber),
-                                ),
+                              Text(
+                                  time,
+                                style: AppTypography.kLight16.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColors.cNumber),
                               ),
                               SizedBox(
                                 height: 10.h,
@@ -394,5 +394,9 @@ class _CartItemViewState extends State<CartItemView> {
             );
           },
         ));
+  }
+
+  bool isRtl() {
+    return context.locale == ARABIC_LOCAL;
   }
 }

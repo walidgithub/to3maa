@@ -1,7 +1,9 @@
 import 'dart:ui';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../shared/constant/app_strings.dart';
 import '../shared/constant/language_manager.dart';
 
 const String PREFS_KEY_LANG = "PREFS_KEY_LANG";
@@ -57,7 +59,7 @@ class AppPreferences {
   }
 
   String? getCurrency(String key) {
-    return _sharedPreferences.getString(key);
+    return _sharedPreferences.getString(key) ?? AppStrings.defaultCurrency.tr();
   }
 
   Future<void> removeCurrency(String key) async {

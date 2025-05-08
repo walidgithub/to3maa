@@ -9,24 +9,21 @@ Future<bool> onBackButtonPressed(BuildContext context) async {
   bool exitApp = await showDialog(
       context: context,
       builder: (BuildContext context) {
-        return Directionality(
-          textDirection: ui.TextDirection.rtl,
-          child: AlertDialog(
-            title: Text(AppStrings.warning.tr(),style: AppTypography.kBold18,),
-            content: Text(AppStrings.closeApp.tr(),style: AppTypography.kBold16),
-            actions: [
-              TextButton(
-                  onPressed: () {
-                    SystemNavigator.pop();
-                  },
-                  child: Text(AppStrings.yes.tr(),style: AppTypography.kLight14)),
-              TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop(false);
-                  },
-                  child: Text(AppStrings.no.tr(),style: AppTypography.kLight14)),
-            ],
-          ),
+        return AlertDialog(
+          title: Text(AppStrings.warning.tr(),style: AppTypography.kBold18,),
+          content: Text(AppStrings.closeApp.tr(),style: AppTypography.kBold16),
+          actions: [
+            TextButton(
+                onPressed: () {
+                  SystemNavigator.pop();
+                },
+                child: Text(AppStrings.yes.tr(),style: AppTypography.kLight14)),
+            TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(false);
+                },
+                child: Text(AppStrings.no.tr(),style: AppTypography.kLight14)),
+          ],
         );
       });
   return exitApp;

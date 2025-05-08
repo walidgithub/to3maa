@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:To3maa/core/shared/constant/app_typography.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -5,6 +6,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:badges/badges.dart' as badges;
 import '../../../../../../core/shared/constant/app_fonts.dart';
 import '../../../../../../core/shared/style/app_colors.dart';
+import '../../../../../core/shared/constant/language_manager.dart';
+import 'dart:ui' as ui;
 
 class TabBarWidget extends StatefulWidget {
   final bool activeTab;
@@ -39,7 +42,7 @@ class _TabBarWidgetState extends State<TabBarWidget> {
         color: AppColors.cBackGround,
         child: RotatedBox(
           quarterTurns: 3,
-          child: Column(
+          child: isRtl() ? Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               SizedBox(
@@ -92,9 +95,66 @@ class _TabBarWidgetState extends State<TabBarWidget> {
                         : AppColors.cBackGround),
               )
             ],
+          ) : Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                width: 30.w,
+                height: 5.h,
+                decoration: BoxDecoration(
+                    color: widget.activeTab
+                        ? AppColors.cPrimary
+                        : AppColors.cBackGround),
+              ),
+              Text(
+                widget.title,
+                style: AppTypography.kBold16.copyWith(
+                    fontFamily: AppFonts.qabasFontFamily,
+                    color:
+                    widget.activeTab ? AppColors.cBlack : AppColors.cGray),
+              ),
+              RotatedBox(
+                quarterTurns: 1,
+                child: widget.index == 1
+                    ? widget.badgeVal > 0
+                    ? Center(
+                  child: badges.Badge(
+                    position: badges.BadgePosition.topEnd(
+                        top: -18, end: 0),
+                    badgeContent: Text(
+                      widget.badgeVal > 99 ? '99+' : widget.badgeVal.toString(),
+                      style: AppTypography.kBold14.copyWith(
+                          color: AppColors.cWhite,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    showBadge: true,
+                    ignorePointer: false,
+                    child: SvgPicture.asset(
+                      widget.icon,
+                      width: 25.w,
+                    ),
+                  ),
+                )
+                    : SvgPicture.asset(
+                  widget.icon,
+                  width: 25.w,
+                )
+                    : SvgPicture.asset(
+                  widget.icon,
+                  width: 25.w,
+                ),
+              ),
+              SizedBox(
+                height: 1.h,
+              ),
+            ],
           ),
         ),
       ),
     );
+  }
+
+  bool isRtl() {
+    return context.locale == ARABIC_LOCAL;
   }
 }

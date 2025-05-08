@@ -8,6 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../../../core/di/di.dart';
 import '../../../../../../core/shared/constant/app_fonts.dart';
 import '../../../../../../core/shared/constant/app_strings.dart';
+import '../../../../../../core/shared/constant/language_manager.dart';
 import '../../../../../../core/shared/style/app_colors.dart';
 
 import '../../../../../../core/utils/enums.dart';
@@ -88,7 +89,8 @@ class _TotalsProductsViewState extends State<TotalsProductsView> {
                       ),
                     )),
                 Positioned(
-                    left: 15.w,
+                    right: isRtl() ? null : 15.w,
+                    left: isRtl() ? 15.w : null,
                     top: 0,
                     child: Transform.flip(
                       flipX: true,
@@ -101,7 +103,8 @@ class _TotalsProductsViewState extends State<TotalsProductsView> {
                     )),
                 Positioned(
                     top: 30.h,
-                    right: 10.w,
+                    right: isRtl() ? 10.w : null,
+                    left: isRtl() ? null : 10.w,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -121,7 +124,7 @@ class _TotalsProductsViewState extends State<TotalsProductsView> {
                         Row(
                           children: [
                             Text(
-                              AppStrings.numberOfIndividuals.tr(),
+                              AppStrings.allNumberOfIndividuals.tr(),
                               style: AppTypography.kLight16.copyWith(
                                   fontFamily: AppFonts.boldFontFamily,
                                   color: AppColors.cBlack),
@@ -242,5 +245,9 @@ class _TotalsProductsViewState extends State<TotalsProductsView> {
         );
       }),
     );
+  }
+
+  bool isRtl() {
+    return context.locale == ARABIC_LOCAL;
   }
 }

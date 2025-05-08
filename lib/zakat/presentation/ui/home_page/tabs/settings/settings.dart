@@ -11,6 +11,7 @@ import '../../../../../../core/shared/constant/app_constants.dart';
 import '../../../../../../core/shared/constant/app_fonts.dart';
 import '../../../../../../core/shared/constant/app_strings.dart';
 import '../../../../../../core/shared/constant/app_typography.dart';
+import '../../../../../../core/shared/constant/language_manager.dart';
 import '../../../../../../core/shared/style/app_colors.dart';
 import '../../../../ui_components/text_field_widget.dart';
 
@@ -27,9 +28,11 @@ class _SettingsViewState extends State<SettingsView> {
 
   final AppPreferences _appPreferences = sl<AppPreferences>();
 
+  final List<String> langs = ['عـربـى', 'English'];
+
   String selectedLang = 'عـربـى';
 
-  final List<String> langs = ['عـربـى', 'English'];
+  String currency = AppStrings.defaultCurrency.tr();
 
   _changeLanguage() {
     _appPreferences.changeAppLanguage();
@@ -37,208 +40,209 @@ class _SettingsViewState extends State<SettingsView> {
   }
 
   @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {
+        selectedLang = isRtl() ? 'عـربـى' : 'English';
+      });
+    });
+    getCurrency();
+    super.initState();
+  }
+
+  void getCurrency() async {
+    currency = _appPreferences.getCurrency(PREFS_KEY_CURRENCY)!;
+    _currencyController.text = currency;
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: ui.TextDirection.rtl,
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: AppColors.cWhite,
-          automaticallyImplyLeading: false,
-          surfaceTintColor: Colors.transparent,
-          title: FadeInLeft(
-            duration: Duration(milliseconds: AppConstants.animation),
-            child: Text(
-              AppStrings.settings.tr(),
-              style: AppTypography.kLight20
-                  .copyWith(fontFamily: AppFonts.boldFontFamily),
-            ),
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: AppColors.cWhite,
+        automaticallyImplyLeading: false,
+        surfaceTintColor: Colors.transparent,
+        title: FadeInLeft(
+          duration: Duration(milliseconds: AppConstants.animation),
+          child: Text(
+            AppStrings.settings.tr(),
+            style: AppTypography.kLight20
+                .copyWith(fontFamily: AppFonts.boldFontFamily),
           ),
         ),
-        backgroundColor: AppColors.cWhite,
-        body: Column(
-          children: [
-            Center(
-              child:
-              SizedBox(
-                width: 300.w,
-                child: DropdownButton2(
-                  underline: Container(),
-                  value: selectedLang,
-                  items: langs.map((item) {
-                    return DropdownMenuItem(
-                        value: item,
-                        child: Row(
-                          children: [
-                            Container(
-                                constraints:
-                                BoxConstraints(maxWidth: 200.w),
-                                child: Text(item,
-                                    textDirection: ui.TextDirection.rtl,
-                                    style: TextStyle(
-                                        fontSize: 15.sp,
-                                        fontWeight: FontWeight.w400,
-                                        color:
-                                        AppColors.cPrimary))),
-                          ],
-                        ));
-                  }).toList(),
-                  onChanged: (dropDownSelectedLang) {
-                    selectedLang = dropDownSelectedLang as String;
-                    setState(() {});
-                  },
-                  dropdownSearchData: DropdownSearchData(
-                    searchController: _languageController,
-                    searchInnerWidgetHeight: 60,
-                    searchInnerWidget: Container(
-                      height: 60,
-                      padding: const EdgeInsets.only(
-                          top: 8, bottom: 4, right: 8, left: 8),
-                      child: TextField(
-                        expands: true,
-                        maxLines: null,
-                        controller: _languageController,
-                        textDirection: ui.TextDirection.rtl,
-                        textAlign: TextAlign.right,
-                        decoration: InputDecoration(
-                          isDense: true,
-                          contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 10,
-                            vertical: 8,
-                          ),
-                          hintText: AppStrings.selectLang.tr(),
-                          hintStyle: TextStyle(
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w400,
-                              color: AppColors.cPrimary),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10.r),
-                          ),
+      ),
+      backgroundColor: AppColors.cWhite,
+      body: Column(
+        children: [
+          Center(
+            child: SizedBox(
+              width: 300.w,
+              child: DropdownButton2(
+                underline: Container(),
+                value: selectedLang,
+                items: langs.map((item) {
+                  return DropdownMenuItem(
+                      value: item,
+                      child: Row(
+                        children: [
+                          Container(
+                              constraints: BoxConstraints(maxWidth: 200.w),
+                              child: Text(item,
+                                  textDirection: ui.TextDirection.rtl,
+                                  style: TextStyle(
+                                      fontSize: 15.sp,
+                                      fontWeight: FontWeight.w400,
+                                      color: AppColors.cPrimary))),
+                        ],
+                      ));
+                }).toList(),
+                onChanged: (dropDownSelectedLang) {
+                  selectedLang = dropDownSelectedLang as String;
+                  setState(() {});
+                },
+                dropdownSearchData: DropdownSearchData(
+                  searchController: _languageController,
+                  searchInnerWidgetHeight: 60,
+                  searchInnerWidget: Container(
+                    height: 60,
+                    padding: const EdgeInsets.only(
+                        top: 8, bottom: 4, right: 8, left: 8),
+                    child: TextField(
+                      expands: true,
+                      maxLines: null,
+                      controller: _languageController,
+                      textDirection: ui.TextDirection.rtl,
+                      textAlign: TextAlign.right,
+                      decoration: InputDecoration(
+                        isDense: true,
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 8,
+                        ),
+                        hintText: AppStrings.selectLang.tr(),
+                        hintStyle: TextStyle(
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w400,
+                            color: AppColors.cPrimary),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.r),
                         ),
                       ),
                     ),
-                    searchMatchFn: (item, searchValue) {
-                      selectedLang = item.value as String;
-                      var choose =
-                      selectedLang.toLowerCase();
-                      return choose
-                          .contains(searchValue.toLowerCase());
-                    },
                   ),
-                  onMenuStateChange: (isOpen) {
-                    if (!isOpen) {
-                      _languageController.clear();
-                    }
+                  searchMatchFn: (item, searchValue) {
+                    selectedLang = item.value as String;
+                    var choose = selectedLang.toLowerCase();
+                    return choose.contains(searchValue.toLowerCase());
                   },
-                  buttonStyleData: ButtonStyleData(
-                    height: 50.h,
-                    padding:
-                    const EdgeInsets.only(left: 14, right: 14),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10.r),
-                      border: Border.all(
-                        color: AppColors.cBorder,
-                      ),
-                    ),
-                    elevation: 0,
-                  ),
-                  dropdownStyleData: DropdownStyleData(
-                    maxHeight: 300.h,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10.r),
-                        border: Border.all(
-                            color: AppColors.cBorder)),
-                    elevation: 0,
-                    offset: const Offset(0, 0),
-                    scrollbarTheme: ScrollbarThemeData(
-                      radius: Radius.circular(10.r),
-                      thickness: MaterialStateProperty.all<double>(6),
-                      thumbVisibility:
-                      MaterialStateProperty.all<bool>(true),
-                    ),
-                  ),
-                  isExpanded: true,
-                  hint: Row(
-                    children: [
-                      Text(AppStrings.selectLang.tr(),
-                          textDirection: ui.TextDirection.rtl,
-                          style: TextStyle(
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w400)),
-                      SizedBox(
-                        width: AppConstants.heightBetweenElements,
-                      )
-                    ],
-                  ),
-                  style: TextStyle(
-                      fontSize: 14.sp, fontWeight: FontWeight.w400),
-                  iconStyleData: IconStyleData(iconSize: 20.w),
                 ),
+                onMenuStateChange: (isOpen) {
+                  if (!isOpen) {
+                    _languageController.clear();
+                  }
+                },
+                buttonStyleData: ButtonStyleData(
+                  height: 50.h,
+                  padding: const EdgeInsets.only(left: 14, right: 14),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10.r),
+                    border: Border.all(
+                      color: AppColors.cBorder,
+                    ),
+                  ),
+                  elevation: 0,
+                ),
+                dropdownStyleData: DropdownStyleData(
+                  maxHeight: 300.h,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10.r),
+                      border: Border.all(color: AppColors.cBorder)),
+                  elevation: 0,
+                  offset: const Offset(0, 0),
+                  scrollbarTheme: ScrollbarThemeData(
+                    radius: Radius.circular(10.r),
+                    thickness: MaterialStateProperty.all<double>(6),
+                    thumbVisibility: MaterialStateProperty.all<bool>(true),
+                  ),
+                ),
+                isExpanded: true,
+                hint: Row(
+                  children: [
+                    Text(AppStrings.selectLang.tr(),
+                        textDirection: ui.TextDirection.rtl,
+                        style: TextStyle(
+                            fontSize: 14.sp, fontWeight: FontWeight.w400)),
+                    SizedBox(
+                      width: AppConstants.heightBetweenElements,
+                    )
+                  ],
+                ),
+                style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w400),
+                iconStyleData: IconStyleData(iconSize: 20.w),
               ),
             ),
-            SizedBox(
-              height: 10.h,
-            ),
-            textFieldWidget(_currencyController, AppStrings.selectCurrency.tr(),
-                TextInputType.text, (String textVal) async {},false,true),
-            SizedBox(
-              height: 10.h,
-            ),
-            GestureDetector(
-              onTap: () async {
-                if (_languageController.text != "" && _currencyController.text != "") {
-
+          ),
+          SizedBox(
+            height: 10.h,
+          ),
+          textFieldWidget(_currencyController, AppStrings.selectCurrency.tr(),
+              TextInputType.text, (String textVal) async {}, false, true),
+          SizedBox(
+            height: 10.h,
+          ),
+          GestureDetector(
+            onTap: () async {
+              if (selectedLang != "" && _currencyController.text != "") {
+                if (isRtl() && selectedLang != "عـربـى" ||
+                    !isRtl() && selectedLang != "English") {
                   setState(() {
                     _changeLanguage();
                   });
+                }
+                await _appPreferences.removeCurrency(PREFS_KEY_CURRENCY);
 
-                  await _appPreferences.removeCurrency(PREFS_KEY_CURRENCY);
+                await _appPreferences.setCurrency(
+                    PREFS_KEY_CURRENCY, _currencyController.text);
 
-                  await _appPreferences.setCurrency(
-                      PREFS_KEY_CURRENCY, _currencyController.text);
-
+                if (isRtl() && selectedLang == "عـربـى" ||
+                    !isRtl() && selectedLang == "English") {
                   final snackBar = SnackBar(
                     duration: Duration(
                         milliseconds:
                         AppConstants.durationOfSnackBar),
-                    content: Text(AppStrings.successAdd.tr()),
+                    content: Text(AppStrings.successUpdate.tr()),
                   );
                   // ignore: use_build_context_synchronously
                   ScaffoldMessenger.of(context)
                       .showSnackBar(snackBar);
                 }
-              },
-              child: Container(
-                  width: 80.w,
-                  height: 60.w,
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                        width: 2.w,
-                        color: AppColors
-                            .cPrimary),
-                    borderRadius:
-                    BorderRadius.circular(
-                        AppConstants
-                            .radius),
-                    color: AppColors.cWhite,
-                    shape: BoxShape.rectangle,
-                  ),
-                  child: Center(
-                    child: Text(
-                      AppStrings.save.tr(),
-                      style: AppTypography
-                          .kLight14
-                          .copyWith(
-                        fontFamily: AppFonts
-                            .qabasFontFamily,
-                        color:
-                        AppColors.cButton,
-                      ),
+              }
+            },
+            child: Container(
+                width: 80.w,
+                height: 60.w,
+                decoration: BoxDecoration(
+                  border: Border.all(width: 2.w, color: AppColors.cPrimary),
+                  borderRadius: BorderRadius.circular(AppConstants.radius),
+                  color: AppColors.cWhite,
+                  shape: BoxShape.rectangle,
+                ),
+                child: Center(
+                  child: Text(
+                    AppStrings.save.tr(),
+                    style: AppTypography.kLight14.copyWith(
+                      fontFamily: AppFonts.qabasFontFamily,
+                      color: AppColors.cButton,
                     ),
-                  )),
-            ),
-          ],
-        ),
+                  ),
+                )),
+          ),
+        ],
       ),
     );
+  }
+
+  bool isRtl() {
+    return context.locale == ARABIC_LOCAL;
   }
 }
